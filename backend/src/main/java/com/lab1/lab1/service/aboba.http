@@ -1,0 +1,107 @@
+### Register a New User - true
+POST http://localhost:8080/lab1-1.0-SNAPSHOT/api/auth/register
+Content-Type: application/json
+
+{
+  "username": "testuser2",
+  "password": "testpassword",
+  "adminRequest": false
+}
+
+### Register a New Admin User (Pending Approval) - true
+POST http://localhost:8080/lab1-1.0-SNAPSHOT/api/auth/register
+Content-Type: application/json
+
+{
+  "username": "adminuser",
+  "password": "adminpassword",
+  "adminRequest": true
+}
+
+### Login with Registered User - true
+POST http://localhost:8080/lab1-1.0-SNAPSHOT/api/auth/login
+Content-Type: application/json
+
+{
+  "username": "testuser2",
+  "password": "testpassword"
+}
+
+> {% client.test("Extract Token", function() {
+        var response = JSON.parse(responseBody);
+        client.global.set("jwt_token", response.token);
+    }); %}
+
+### Login with Admin User - true
+POST http://localhost:8080/lab1-1.0-SNAPSHOT/api/auth/login
+Content-Type: application/json
+
+{
+  "username": "adminuser",
+  "password": "adminpassword"
+}
+
+> {% client.test("Extract Admin Token", function() {
+        var response = JSON.parse(responseBody);
+        client.global.set("jwt_token_admin", response.token);
+    }); %}
+
+### Get All Products - true
+GET http://localhost:8080/lab1-1.0-SNAPSHOT/api/products
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0dXNlciIsInJvbGUiOiJVU0VSIiwiaWF0IjoxNzI5MTkyMDIwLCJleHAiOjE3MjkyNzg0MjB9.8XuXeRm0bTf9aOzZlo6cWgQlcoXXGNwenFu5nZOBjeY
+Accept: application/json
+
+### Create a New Products - true
+POST http://localhost:8080/lab1-1.0-SNAPSHOT/api/products
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0dXNlcjIiLCJyb2xlIjoiVVNFUiIsImlhdCI6MTcyOTE5NTc2MiwiZXhwIjoxNzI5MjgyMTYyfQ.ZRqzS-JM3GyoMAjjwaHOsfffOq-eFt-1tjOqYvbH16M
+Content-Type: application/json
+
+{
+  "name": "Dota4",
+  "coordinates": {
+    "x": 5,
+    "y": 100
+  },
+  "unitOfMeasure": "METERS",
+  "manufacturer": {
+    "id": 3
+  },
+  "price": 20,
+  "manufactureCost": 150.0,
+  "rating": 5,
+  "owner": {
+    "id": 1
+  }
+}
+
+### Update a Products - true
+PUT http://localhost:8080/lab1-1.0-SNAPSHOT/api/products/7
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0dXNlcjIiLCJyb2xlIjoiVVNFUiIsImlhdCI6MTcyOTE5NTc2MiwiZXhwIjoxNzI5MjgyMTYyfQ.ZRqzS-JM3GyoMAjjwaHOsfffOq-eFt-1tjOqYvbH16M
+Content-Type: application/json
+
+{
+  "id": 7,
+  "name": "Dota5",
+  "coordinates": {
+    "x": 5,
+    "y": 100
+  },
+  "unitOfMeasure": "METERS",
+  "manufacturer": {
+    "id": 10
+  },
+  "price": 20,
+  "manufactureCost": 150.0,
+  "rating": 5,
+  "owner": {
+    "id": 2
+  }
+}
+
+### Delete a Movie - true
+DELETE http://localhost:8080/lab1-1.0-SNAPSHOT/api/products/1
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0dXNlcjEiLCJyb2xlIjoiVVNFUiIsImlhdCI6MTcyOTE4MjgxMiwiZXhwIjoxNzI5MjY5MjEyfQ.GoXbghmF-9Eb87ylW39VtabvHTVsZdABGvgVQoNdi3E
+
+### Approve Pending Admin User - true
+POST http://localhost:8080/lab1-1.0-SNAPSHOT/api/auth/approve-admin/3
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbnVzZXIiLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE3MjkwODg4NjQsImV4cCI6MTcyOTE3NTI2NH0.zfpUZFMO9AWvU8tl-EfpPKF8rO0nBgyTjuOkm0duOFo

@@ -1,0 +1,80 @@
+package com.lab1.lab1.controller;
+
+import com.lab1.lab1.model.entities.Product;
+import com.lab1.lab1.model.entities.User;
+import com.lab1.lab1.service.ProductService;
+import jakarta.inject.Inject;
+import jakarta.ws.rs.*;
+import jakarta.ws.rs.core.*;
+
+import java.util.List;
+
+/**
+ * RESTful API for managing movies
+ */
+@Path("/products")
+@Produces(MediaType.APPLICATION_JSON)
+@Consumes(MediaType.APPLICATION_JSON)
+public class ProductController {
+
+    @Inject
+    private ProductService productService;
+
+    @Context
+    private SecurityContext securityContext;
+
+    @GET
+    public Response getProducts(@QueryParam("page") @DefaultValue("1") int page,
+                              @QueryParam("size") @DefaultValue("10") int size) {
+        List<Product> products = productService.getAllProducts(page, size);
+        return Response.ok(products).build();
+    }
+
+    @GET
+    @Path("/{id}")
+    public Response getProductsById(@PathParam("id") int id) {
+        Product product = productService.getProductById(id);
+        if (product != null) {
+            return Response.ok(product).build();
+        } else {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+    }
+
+    @POST
+    public Response createProduct(Product product) {
+        User user = (User) securityContext.getUserPrincipal();
+        try {
+            productService.createProduct(product, user);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return Response.status(Response.Status.BAD_REQUEST).entity("Owner not found").build();
+        }
+        return Response.status(Response.Status.CREATED).entity(product).build();
+    }
+
+    @PUT
+    @Path("/{id}")
+    public Response updateProduct(@PathParam("id") int id, Product updatedProduct) {
+        try {
+            User user = (User) securityContext.getUserPrincipal();
+            updatedProduct.setId(id);
+            productService.updateProduct(updatedProduct, user);
+            return Response.ok(updatedProduct).build();
+        } catch (Exception e) {
+            return Response.status(Response.Status.FORBIDDEN).entity(e.getMessage()).build();
+        }
+    }
+
+    @DELETE
+    @Path("/{id}")
+    public Response deleteProduct(@PathParam("id") int id) {
+        try {
+            User user = (User) securityContext.getUserPrincipal();
+            productService.deleteProduct(id, user);
+            return Response.ok().build();
+        } catch (Exception e) {
+            return Response.status(Response.Status.FORBIDDEN).entity(e.getMessage()).build();
+        }
+    }
+}
