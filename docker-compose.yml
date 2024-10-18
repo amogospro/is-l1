@@ -1,0 +1,30 @@
+version: '3.7'
+
+services:
+  wildfly:
+    build: ./backend
+    ports:
+      - '8080:8080'
+    depends_on:
+      - db
+    environment:
+      - DB_HOST=db
+      - DB_PORT=5432
+      - DB_NAME=studs
+      - DB_USER=s368100
+      - DB_PASSWORD=peUGVgjH0345TYXh # Replace <password> with the actual password
+
+  db:
+    image: postgres:latest
+    ports:
+      - '5432:5432'
+    environment:
+      - POSTGRES_USER=s368100
+      - POSTGRES_PASSWORD=peUGVgjH0345TYXh # Use the password specified in your properties file
+      - POSTGRES_DB=studs
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./postgres-init:/docker-entrypoint-initdb.d
+
+volumes:
+  postgres_data:
