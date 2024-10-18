@@ -7,6 +7,7 @@
     addHiddenColumns,
     addSelectedRows
   } from 'svelte-headless-table/plugins';
+  import * as Dialog from '$lib/components/ui/dialog';
   import { readable } from 'svelte/store';
   import ArrowUpDown from 'lucide-svelte/icons/arrow-up-down';
   import ChevronDown from 'lucide-svelte/icons/chevron-down';
@@ -17,11 +18,12 @@
   import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
   import DataTableCheckbox from './data-table-checkbox.svelte';
   import moment from 'moment';
-  import type { SpaceMarine, SpaceMarineScheme } from '$lib/types';
-  import { spaceMarines } from '$lib/data';
+  import type { Product } from '$lib/types';
+  import { products } from '$lib/data';
   import _ from 'lodash';
+  import SpaceMarineEdit from '../space-marine-edit.svelte';
 
-  const data: SpaceMarine[] = JSON.parse(JSON.stringify(spaceMarines));
+  const data: Product[] = JSON.parse(JSON.stringify(products));
 
   const table = createTable(readable(data), {
     page: addPagination(),
@@ -35,6 +37,7 @@
   });
 
   const columns = table.createColumns([
+    // Selection Checkbox
     table.column({
       accessor: 'id',
       header: (_, { pluginStates }) => {
@@ -60,89 +63,44 @@
         }
       }
     }),
+    // Name Column
     table.column({
       accessor: 'name',
       header: 'Name'
-      // plugins: {
-      //   sort: {
-      //     disable: true
-      //   },
-      //   filter: {
-      //     exclude: true
-      //   }
-      // }
     }),
+    // Coordinates Column
     table.column({
       accessor: 'coordinates',
       header: 'Coordinates',
       cell: ({ value }) => {
-        // const formatted = new Intl.NumberFormat('en-US', {
-        //   style: 'currency',
-        //   currency: 'USD'
-        // }).format(value);
         return `x: ${value.x}, y: ${value.y}`;
-      },
-      plugins: {
-        sort: {
-          // disable: true
-        },
-        filter: {
-          // exclude: true
-        }
       }
     }),
+    // Price Column
     table.column({
-      accessor: (item) => item,
-
-      header: 'Chapter Name',
-      cell: ({ value }) => {
-        return value.chapter?.name ?? '';
-      }
+      accessor: 'price',
+      header: 'Price',
+      cell: ({ value }) => `$${value.toFixed(2)}`
     }),
+    // Manufacture Cost Column
     table.column({
-      accessor: (item) => item,
-
-      header: 'Chapter World',
-      cell: ({ value }) => {
-        return value.chapter?.world ?? '';
-      }
+      accessor: 'manufactureCost',
+      header: 'Manufacture Cost',
+      cell: ({ value }) => `$${value.toFixed(2)}`
     }),
+    // Rating Column
     table.column({
-      accessor: 'health',
-      header: 'Health',
-      cell: ({ value }) => {
-        return `${value} hp`;
-      },
-      plugins: {
-        sort: {
-          // disable: true
-        },
-        filter: {
-          // exclude: true
-        }
-      }
+      accessor: 'rating',
+      header: 'Rating',
+      cell: ({ value }) => (value != null ? value : 'N/A')
     }),
+    // Unit of Measure Column
     table.column({
-      accessor: 'category',
-      header: 'Category',
-      cell: ({ value }) => {
-        return value ? _.startCase(_.toLower(value)) : '';
-      }
+      accessor: 'unitOfMeasure',
+      header: 'Unit of Measure',
+      cell: ({ value }) => (value ? _.startCase(_.toLower(value)) : '')
     }),
-    table.column({
-      accessor: 'weaponType',
-      header: 'Weapon Type',
-      cell: ({ value }) => {
-        return value ? _.startCase(_.toLower(value)) : '';
-      }
-    }),
-    table.column({
-      accessor: 'meleeWeapon',
-      header: 'Melee Weapon',
-      cell: ({ value }) => {
-        return value ? _.startCase(_.toLower(value)) : '';
-      }
-    }),
+    // Creation Date Column
     table.column({
       accessor: 'creationDate',
       header: 'Creation Date',
@@ -151,11 +109,28 @@
         return formatted;
       }
     }),
+    // Manufacturer Name Column
+    table.column({
+      accessor: (item) => item,
+      header: 'Manufacturer',
+      cell: ({ value }) => {
+        return value.manufacturer ? value.manufacturer.name : 'N/A';
+      }
+    }),
+    // Owner Name Column
+    table.column({
+      accessor: 'owner',
+      header: 'Owner'
+    }),
+    // Actions Column
     table.column({
       accessor: (item) => item,
       header: '',
-      cell: (item, state) => {
-        return createRender(DataTableActions, { id: String(item.value.id), data: item.value });
+      cell: (item) => {
+        return createRender(DataTableActions, {
+          id: String(item.value.id),
+          data: item.value
+        });
       },
       plugins: {
         sort: {
@@ -183,15 +158,87 @@
     .filter(([, hide]) => !hide)
     .map(([id]) => id);
 
-  const hidableCols = ['name'];
+  const hidableCols = [
+    'name',
+    'price',
+    'manufactureCost',
+    'rating',
+    'unitOfMeasure',
+    'manufacturer',
+    'owner.name'
+  ];
 </script>
 
 <div>
-  <div class="flex items-center py-4">
+  <div class="gap-10px flex items-center py-4">
     <Input class="max-w-sm" placeholder="Filter by name..." type="text" bind:value={$filterValue} />
+
+    <Dialog.Root>
+      <Dialog.Trigger class="ml-auto">
+        <!-- <Icon class="h-[1.2rem] w-[1.2rem]" /> -->
+        <Button>New Product</Button>
+      </Dialog.Trigger>
+      <Dialog.Content class="w-full max-w-[1500px]">
+        <!-- <Dialog.Header>
+      <Dialog.Title>Are you sure absolutely sure?</Dialog.Title>
+      <Dialog.Description>
+        This action cannot be undone. This will permanently delete your account and remove your data
+        from our servers.
+      </Dialog.Description>
+    </Dialog.Header> -->
+
+        <SpaceMarineEdit
+          data={{
+            id: 1,
+            name: 'Super Widget',
+            coordinates: {
+              x: 500, // Within the maximum value of 864
+              y: 300
+            },
+            creationDate: new Date(), // Auto-generated
+            unitOfMeasure: 'METERS',
+            manufacturer: {
+              id: 1,
+              name: 'Acme Corporation',
+              officialAddress: {
+                zipCode: '12345',
+                town: {
+                  x: 10,
+                  y: 20,
+                  z: 30
+                }
+              },
+              annualTurnover: 1_000_000, // Value > 0
+              employeesCount: 250, // Value > 0
+              rating: 5, // Value > 0
+              type: 'COMMERCIAL'
+            },
+            price: 150, // Value > 0
+            manufactureCost: 75,
+            rating: 4, // Value > 0
+            owner: {
+              name: 'Alice Johnson',
+              eyeColor: 'BLUE',
+              hairColor: 'YELLOW', // Valid enum value
+              location: {
+                x: 5,
+                y: 10,
+                z: 15
+              },
+              birthday: new Date('1990-01-01'),
+              nationality: 'USA'
+            }
+          }}
+        >
+          <svelte:fragment slot="title">Create new Product</svelte:fragment>
+          <svelte:fragment slot="button">Create</svelte:fragment>
+        </SpaceMarineEdit>
+      </Dialog.Content>
+    </Dialog.Root>
+
     <DropdownMenu.Root>
       <DropdownMenu.Trigger asChild let:builder>
-        <Button variant="outline" class="ml-auto" builders={[builder]}>
+        <Button variant="outline" builders={[builder]}>
           Columns <ChevronDown class="ml-2 h-4 w-4" />
         </Button>
       </DropdownMenu.Trigger>
@@ -215,15 +262,7 @@
               {#each headerRow.cells as cell (cell.id)}
                 <Subscribe attrs={cell.attrs()} let:attrs props={cell.props()} let:props>
                   <Table.Head {...attrs} class="[&:has([role=checkbox])]:pl-3">
-                    {#if cell.id === 'amount'}
-                      <div class="text-right">
-                        <Render of={cell.render()} />
-                      </div>
-                    {:else if cell.id === 'name'}
-                      <p>amogus</p>
-                    {:else}
-                      <Render of={cell.render()} />
-                    {/if}
+                    <Render of={cell.render()} />
                   </Table.Head>
                 </Subscribe>
               {/each}
@@ -238,21 +277,7 @@
               {#each row.cells as cell (cell.id)}
                 <Subscribe attrs={cell.attrs()} let:attrs>
                   <Table.Cell {...attrs} class="[&:has([role=checkbox])]:pl-3">
-                    {#if cell.id === 'amount'}
-                      <div class="text-right font-medium">
-                        <Render of={cell.render()} />
-                      </div>
-                    {:else if cell.id === 'status'}
-                      <div class="capitalize">
-                        <Render of={cell.render()} />
-                      </div>
-                    {:else if cell.id === 'status'}
-                      <div class="capitalize">
-                        <Render of={cell.render()} />
-                      </div>
-                    {:else}
-                      <Render of={cell.render()} />
-                    {/if}
+                    <Render of={cell.render()} />
                   </Table.Cell>
                 </Subscribe>
               {/each}
@@ -264,8 +289,7 @@
   </div>
   <div class="flex items-center justify-end space-x-4 py-4">
     <div class="text-muted-foreground flex-1 text-sm">
-      {Object.keys($selectedDataIds).length} of{' '}
-      {$rows.length} row(s) selected.
+      {Object.keys($selectedDataIds).length} of {$rows.length} row(s) selected.
     </div>
     <Button
       variant="outline"

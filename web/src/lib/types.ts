@@ -1,102 +1,68 @@
 import { z } from 'zod';
 
-// export type SpaceMarine = {
-//   id: number; // Auto-generated and unique
-//   name: string; // Non-null and not empty
-//   coordinates: Coordinates; // Non-null
-//   creationDate: Date; // Auto-generated
-//   chapter?: Chapter; // Optional
-//   health: number; // Must be greater than 0
-//   category?: AstartesCategory; // Optional
-//   weaponType: Weapon; // Non-null
-//   meleeWeapon: MeleeWeapon; // Non-null
-// };
-
-// export type Coordinates = {
-//   x: number; // Must be greater than -714, non-null
-//   y: number;
-// };
-
-// export type Chapter = {
-//   name: string; // Non-null, not empty
-//   world?: string; // Optional
-// };
-
-// type AstartesCategory = 'DREADNOUGHT' | 'TACTICAL' | 'CHAPLAIN';
-
-// type Weapon = 'BOLT_RIFLE' | 'PLASMA_GUN' | 'GRAV_GUN' | 'INFERNO_PISTOL' | 'HEAVY_FLAMER';
-
-// type MeleeWeapon = 'MANREAPER' | 'POWER_BLADE' | 'POWER_FIST';
-
-// export type User = {
-//   id: number;
-//   username: string;
-//   password: string; // Consider handling password securely
-//   role: UserRole;
-// };
-
-const AstartesCategory = z.union([
-  z.literal('DREADNOUGHT'),
-  z.literal('TACTICAL'),
-  z.literal('CHAPLAIN')
+// Enums
+export const UnitOfMeasure = z.enum(['METERS', 'MILLILITERS', 'GRAMS', 'MILLIGRAMS']);
+export const OrganizationType = z.enum([
+  'COMMERCIAL',
+  'PUBLIC',
+  'TRUST',
+  'PRIVATE_LIMITED_COMPANY',
+  'OPEN_JOINT_STOCK_COMPANY',
 ]);
+export const Color = z.enum(['GREEN', 'BLUE', 'YELLOW', 'ORANGE', 'WHITE']);
+export const Country = z.enum(['USA', 'FRANCE', 'THAILAND']);
 
-export const Categories: z.infer<typeof AstartesCategory>[] = [
-  'DREADNOUGHT',
-  'TACTICAL',
-  'CHAPLAIN'
-];
-
-const Weapon = z.union([
-  z.literal('BOLT_RIFLE'),
-  z.literal('PLASMA_GUN'),
-  z.literal('GRAV_GUN'),
-  z.literal('INFERNO_PISTOL'),
-  z.literal('HEAVY_FLAMER')
-]);
-
-export const Weapons: z.infer<typeof Weapon>[] = [
-  'BOLT_RIFLE',
-  'PLASMA_GUN',
-  'GRAV_GUN',
-  'INFERNO_PISTOL',
-  'HEAVY_FLAMER'
-];
-
-const MeleeWeapon = z.union([
-  z.literal('MANREAPER'),
-  z.literal('POWER_BLADE'),
-  z.literal('POWER_FIST')
-]);
-
-export const MeleeWeapons: z.infer<typeof MeleeWeapon>[] = [
-  'MANREAPER',
-  'POWER_BLADE',
-  'POWER_FIST'
-];
-
-const Coordinates = z.object({
-  x: z.number().min(-713, { message: 'X coordinate must be greater than -714' }),
-  y: z.number()
+// Schemas
+export const LocationSchema = z.object({
+  x: z.number().int(),
+  y: z.number(),
+  z: z.number(),
 });
 
-const Chapter = z.object({
-  name: z.string().min(1, { message: 'Chapter name cannot be empty' }),
-  world: z.string().optional()
+export const AddressSchema = z.object({
+  zipCode: z.string().optional().nullable(), // Can be null
+  town: LocationSchema.optional().nullable(), // Can be null
 });
 
-export const SpaceMarineScheme = z.object({
-  id: z.number().positive({ message: 'ID must be a positive number' }),
-  name: z.string().min(1, { message: 'Name cannot be empty' }),
-  coordinates: Coordinates,
-  creationDate: z.union([z.date(), z.string()]),
-  chapter: Chapter.optional(),
-  health: z.number().positive({ message: 'Health must be greater than 0' }),
-  category: AstartesCategory.optional(),
-  weaponType: Weapon,
-  meleeWeapon: MeleeWeapon
+export const CoordinatesSchema = z.object({
+  x: z.number().int().max(864), // Max value: 864
+  y: z.number().int(), // Cannot be null
 });
 
-export type SpaceMarine = z.infer<typeof SpaceMarineScheme>;
+export const OrganizationSchema = z.object({
+  id: z.number().int().positive().optional(), // Auto-generated, cannot be null, value > 0
+  name: z.string().min(1), // Cannot be null, cannot be empty
+  officialAddress: AddressSchema.optional().nullable(), // Can be null
+  annualTurnover: z.number().positive().optional().nullable(), // Can be null, value > 0
+  employeesCount: z.number().int().positive(), // Value > 0
+  rating: z.number().int().positive(), // Value > 0
+  type: OrganizationType.optional(), // Can be null
+});
+
+export const PersonSchema = z.object({
+  name: z.string().min(1), // Cannot be null, cannot be empty
+  eyeColor: Color, // Cannot be null
+  hairColor: Color, // Cannot be null
+  location: LocationSchema, // Cannot be null
+  birthday: z.date(), // Cannot be null
+  nationality: Country, // Cannot be null
+});
+export type Person = z.infer<typeof PersonSchema>;
+
+
+export const ProductSchema = z.object({
+  id: z.number().int().positive().optional(), // Auto-generated, value > 0
+  name: z.string().min(1), // Cannot be null, cannot be empty
+  coordinates: CoordinatesSchema, // Cannot be null
+  creationDate: z.date().optional(), // Auto-generated, cannot be null
+  unitOfMeasure: UnitOfMeasure.optional(), // Can be null
+  manufacturer: OrganizationSchema.optional(), // Can be null
+  price: z.number().positive(), // Value > 0
+  manufactureCost: z.number(), // No constraints specified
+  rating: z.number().int().positive().optional().nullable(), // Can be null, value > 0
+  owner: PersonSchema, // Cannot be null
+});
+export type Product = z.infer<typeof ProductSchema>;
+
 
 // type UserRole = 'GUEST' | 'USER' | 'ADMIN';

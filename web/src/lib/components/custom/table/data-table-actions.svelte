@@ -4,10 +4,10 @@
   import { Button } from '$lib/components/ui/button';
   import * as Dialog from '$lib/components/ui/dialog';
   import SpaceMarineEdit from '../space-marine-edit.svelte';
-  import type { SpaceMarine } from '$lib/types';
+  import type { Product } from '$lib/types';
   import Icon from 'svelte-radix/Pencil1.svelte';
 
-  export let data: SpaceMarine;
+  export let data: Product;
 
   export let id: string;
 </script>
@@ -36,7 +36,7 @@
   <Dialog.Trigger>
     <Icon class="h-[1.2rem] w-[1.2rem]" />
   </Dialog.Trigger>
-  <Dialog.Content class="max-w-[1500px] w-full">
+  <Dialog.Content class="w-full max-w-[1500px]">
     <!-- <Dialog.Header>
       <Dialog.Title>Are you sure absolutely sure?</Dialog.Title>
       <Dialog.Description>

@@ -1,15 +1,17 @@
 <script lang="ts">
   import { onMount } from 'svelte';
   import * as d3 from 'd3';
-  import type { SpaceMarine, SpaceMarineScheme } from '$lib/types';
   import { toast } from 'svelte-sonner';
-  import { spaceMarines } from '$lib/data';
   import * as Dialog from '$lib/components/ui/dialog/index.js';
   import SpaceMarineEdit from '$lib/components/custom/space-marine-edit.svelte';
+  import type { Product } from '$lib/types';
+  import { products } from '$lib/data';
 
   let svg;
 
-  let data: SpaceMarine | null = null;
+  let data: Product | null = null;
+
+  const spaceMarines = products;
   const hash = (str: string) => {
     let hash = 0;
     for (let i = 0; i < str.length; i++) {

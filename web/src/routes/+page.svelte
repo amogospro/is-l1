@@ -3,7 +3,7 @@
 </script>
 
 <Link href="./extra">Extra functions</Link>
-<Link href="./table">Space Marines Table</Link>
+<Link href="./table">Table</Link>
 <Link href="./visualization">Visualization</Link>
 
 <Link href="./login">Login</Link>
