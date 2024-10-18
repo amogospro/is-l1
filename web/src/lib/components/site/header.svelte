@@ -1,18 +1,18 @@
 <script lang="ts">
-  // import {
-  // 	CommandMenu,
-  // 	MainNav,
-  // 	MobileNav,
-  // 	ModeToggle,
-  // } from "$lib/components/docs/index.js";
-  // import { buttonVariants } from "$lib/registry/new-york/ui/button/index.js";
   import Button from '$lib/components/ui/button/button.svelte';
   import Sun from 'svelte-radix/Sun.svelte';
   import Moon from 'svelte-radix/Moon.svelte';
-  // import { siteConfig } from "$lib/config/site.js";
-  import { cn } from '$lib/utils.js';
+  import Exit from 'svelte-radix/Exit.svelte';
   import { toggleMode } from 'mode-watcher';
   import Link from '../ui/link/link.svelte';
+  import _ from 'lodash';
+  import { clearToken, role, username } from '$lib/api';
+  import { goto } from '$app/navigation';
+
+  function logOut() {
+    clearToken();
+    goto('/login');
+  }
 </script>
 
 <header
@@ -20,43 +20,31 @@
 >
   <div class="container flex h-14 max-w-screen-2xl items-center gap-2">
     <h1 class="text-xl font-bold">Лабораторная работа #1</h1>
-    <h1 class="text-xl">Space Marines</h1>
+    <!-- <h1 class="text-xl">Space Marines</h1> -->
     <Link href="/">Main menu</Link>
-    <!-- <MainNav />
-		<MobileNav /> -->
     <div class="flex flex-1 items-center justify-between space-x-2 md:justify-end">
-      <div class="w-full flex-1 md:w-auto md:flex-none">
-        <!-- <CommandMenu /> -->
-      </div>
-      <nav class="flex items-center">
-        <!-- <a href={siteConfig.links.github} target="_blank" rel="noopener noreferrer">
-					<div
-						class={cn(
-							buttonVariants({
-								size: "sm",
-								variant: "ghost",
-							}),
-							"h-8 w-8 px-0"
-						)}
-					>
-						<Icons.gitHub class="h-4 w-4" />
-						<span class="sr-only">GitHub</span>
-					</div>
-				</a>
-				<a href={siteConfig.links.twitter} target="_blank" rel="noreferrer">
-					<div
-						class={cn(
-							buttonVariants({
-								size: "sm",
-								variant: "ghost",
-							}),
-							"h-8 w-8 px-0"
-						)}
-					>
-						<Icons.twitter class="h-3 w-3 fill-current" />
-						<span class="sr-only">X (formerly known as Twitter)</span>
-					</div>
-				</a> -->
+      <nav class="gap-10px flex items-center">
+        <div>
+          <p>
+            Hi
+            {#if $username != null}
+              {$username}, you are
+            {/if}
+            {#if $role != null}
+              {_.startCase(_.toLower($role))}
+            {/if}
+          </p>
+        </div>
+        <Button on:click={logOut} variant="outline" size="icon">
+          <Exit
+            class="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0"
+          />
+          <Exit
+            class="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100"
+          />
+          <span class="sr-only">Logout</span>
+        </Button>
+
         <Button on:click={toggleMode} variant="outline" size="icon">
           <Sun
             class="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0"

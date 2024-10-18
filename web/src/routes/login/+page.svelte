@@ -10,6 +10,9 @@
   import { toast } from 'svelte-sonner';
   import { type Infer } from 'sveltekit-superforms/client';
   import { Link } from '$lib/components/ui/link';
+  import { login, register } from '$lib/api';
+  import Checkbox from '$lib/components/ui/checkbox/checkbox.svelte';
+    import { goto } from '$app/navigation';
 
   export const registerSchema = z.object({
     username: z.string().min(6),
@@ -21,10 +24,13 @@
   const form = superForm(data, {
     SPA: true,
     validators: zodClient(registerSchema),
-    onUpdated: ({ form: f }) => {
+    onUpdated: async ({ form: f }) => {
       if (f.valid) {
         $formData = f.data;
-        toast.success(`You submitted ${JSON.stringify(f.data, null, 2)}`);
+        await login(f.data);
+        toast.success('Login successful');
+        goto('/')
+        // toast.success(`You submitted ${JSON.stringify(f.data, null, 2)}`);
       } else {
         toast.error('Please fix the errors in the form.');
       }

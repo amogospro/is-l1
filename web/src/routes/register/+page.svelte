@@ -10,12 +10,15 @@
   import { toast } from 'svelte-sonner';
   import { type Infer } from 'sveltekit-superforms/client';
   import { Link } from '$lib/components/ui/link';
+  import { register } from '$lib/api';
+  import { Checkbox } from '$lib/components/ui/checkbox';
 
   export const signUpSchema = z
     .object({
       username: z.string().min(6),
       password: z.string().min(6, 'Password must be 6 characters long'),
-      password2: z.string()
+      password2: z.string(),
+      adminRequest: z.boolean()
     })
     .refine((data) => data.password === data.password2, {
       message: 'Passwords must match',
@@ -27,10 +30,19 @@
   const form = superForm(data, {
     SPA: true,
     validators: zodClient(signUpSchema),
-    onUpdated: ({ form: f }) => {
+    onUpdated: async ({ form: f }) => {
       if (f.valid) {
         $formData = f.data;
-        toast.success(`You submitted ${JSON.stringify(f.data, null, 2)}`);
+
+        const { username, password, adminRequest } = f.data;
+        await register({
+          username,
+          password,
+          adminRequest
+        });
+        toast.success('Registration successful');
+
+        // toast.success(`You submitted ${JSON.stringify(f.data, null, 2)}`);
       } else {
         toast.error('Please fix the errors in the form.');
       }
@@ -70,6 +82,13 @@
           <Control let:attrs>
             <Label>Confirm password</Label>
             <Input {...attrs} type="password" bind:value={$formData.password2} />
+          </Control>
+          <FieldErrors />
+        </Field>
+        <Field {form} name="adminRequest">
+          <Control let:attrs>
+            <Label>Admin request</Label>
+            <Checkbox {...attrs} bind:checked={$formData.adminRequest} />
           </Control>
           <FieldErrors />
         </Field>
