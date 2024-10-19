@@ -1,5 +1,8 @@
 package com.lab1.lab1.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.lab1.lab1.controller.WebSocketEndpoint;
 import com.lab1.lab1.model.entities.Person;
 import com.lab1.lab1.model.entities.Product;
 import com.lab1.lab1.model.entities.Role;
@@ -9,6 +12,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 
+import java.io.IOException;
 import java.util.List;
 
 @ApplicationScoped
@@ -17,9 +21,14 @@ public class PersonService {
     private PersonRepository personRepository;
 
     @Transactional
-    public void createPerson(Person person, User user) {
+    public void createPerson(Person person, User user) throws Exception {
         person.setUserOwner(user);
         personRepository.create(person);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        String updateJson = objectMapper.writeValueAsString(person);
+
+        WebSocketEndpoint.sendUpdate(updateJson);
     }
 
     public Person getPersonById(int id) { return personRepository.findById(id); }
@@ -36,6 +45,11 @@ public class PersonService {
             currentPerson.setBirthday(person.getBirthday());
             currentPerson.setNationality(person.getNationality());
             personRepository.update(currentPerson);
+
+            ObjectMapper objectMapper = new ObjectMapper();
+            String updateJson = objectMapper.writeValueAsString(person);
+
+            WebSocketEndpoint.sendUpdate(updateJson);
         } else {
             throw new Exception("Access Denied");
         }
@@ -50,6 +64,11 @@ public class PersonService {
                 // Check for related objects
                 // If related objects exist, throw exception
                 personRepository.delete(person);
+
+                ObjectMapper objectMapper = new ObjectMapper();
+                String updateJson = objectMapper.writeValueAsString(person);
+
+                WebSocketEndpoint.sendUpdate(updateJson);
             } else {
                 throw new Exception("Access Denied");
             }

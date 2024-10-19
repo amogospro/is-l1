@@ -1,5 +1,7 @@
 package com.lab1.lab1.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.lab1.lab1.controller.WebSocketEndpoint;
 import com.lab1.lab1.model.entities.*;
 import com.lab1.lab1.repository.OrganizationRepository;
 import com.lab1.lab1.repository.PersonRepository;
@@ -62,6 +64,11 @@ public class ProductService {
 
         product.setUserOwner(user);
         productRepository.create(product);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        String updateJson = objectMapper.writeValueAsString(product);
+
+        WebSocketEndpoint.sendUpdate(updateJson);
     }
 
     public Product getProductById(int id) {
@@ -101,6 +108,11 @@ public class ProductService {
             currentProduct.setManufactureCost(product.getManufactureCost());
             currentProduct.setRating(product.getRating());
             productRepository.update(currentProduct);
+
+            ObjectMapper objectMapper = new ObjectMapper();
+            String updateJson = objectMapper.writeValueAsString(product);
+
+            WebSocketEndpoint.sendUpdate(updateJson);
         } else {
             throw new Exception("Access Denied");
         }
@@ -114,6 +126,11 @@ public class ProductService {
                 // Check for related objects
                 // If related objects exist, throw exception
                 productRepository.delete(product);
+
+                ObjectMapper objectMapper = new ObjectMapper();
+                String updateJson = objectMapper.writeValueAsString(product);
+
+                WebSocketEndpoint.sendUpdate(updateJson);
             } else {
                 throw new Exception("Access Denied");
             }
