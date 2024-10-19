@@ -45,6 +45,7 @@
         $formData = f.data;
         onSubmit(f.data);
       } else {
+        console.log(f);
         toast.error('Please fix the errors in the form.');
       }
     },
@@ -332,4 +333,4 @@
     </Card.Footer>
   </form>
 </div>
-<SuperDebug data={$formData} />
+<!-- <SuperDebug data={$formData} /> -->
