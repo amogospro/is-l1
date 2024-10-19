@@ -9,11 +9,13 @@ import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.jws.soap.SOAPBinding;
 import jakarta.transaction.Transactional;
 
 import java.security.Key;
 import java.security.NoSuchAlgorithmException;
 import java.util.Date;
+import java.util.List;
 
 @ApplicationScoped
 public class AuthService {
@@ -98,6 +100,10 @@ public class AuthService {
         } else {
             throw new Exception("Invalid user or already approved");
         }
+    }
+
+    public List<User> getAllPendingAdmins() {
+        return userRepository.findAllPendingAdmins();
     }
 }
 

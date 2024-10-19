@@ -1,11 +1,14 @@
 package com.lab1.lab1.repository;
 
+import com.lab1.lab1.model.entities.Person;
 import com.lab1.lab1.model.entities.Role;
 import com.lab1.lab1.model.entities.User;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
+
+import java.util.List;
 
 @ApplicationScoped
 public class UserRepository {
@@ -43,6 +46,15 @@ public class UserRepository {
         } catch (Exception e) {
             return null;
         }
+    }
+
+    public List<User> findAllPendingAdmins() {
+        List<User> users = em.createQuery("SELECT u FROM User u WHERE u.role = :role", User.class)
+                .setParameter("role", Role.PENDING_ADMIN)
+                .getResultList();
+
+
+        return users;
     }
 
     // Other user-related queries

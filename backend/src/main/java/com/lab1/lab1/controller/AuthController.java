@@ -15,6 +15,7 @@ import jakarta.ws.rs.core.*;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.Principal;
+import java.util.List;
 
 @Path("/auth")
 @Produces(MediaType.APPLICATION_JSON)
@@ -26,6 +27,12 @@ public class AuthController {
 
     @Context
     private SecurityContext securityContext;
+
+    @GET
+    public Response getPendingAdmins() {
+        List<User> user = authService.getAllPendingAdmins();
+        return Response.ok(user).build();
+    }
 
     @POST
     @Path("/login")
