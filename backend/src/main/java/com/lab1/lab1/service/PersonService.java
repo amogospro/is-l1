@@ -2,6 +2,7 @@ package com.lab1.lab1.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.lab1.lab1.controller.WebSocketEndpoint;
 import com.lab1.lab1.model.entities.Person;
 import com.lab1.lab1.model.entities.Product;
@@ -26,6 +27,7 @@ public class PersonService {
         personRepository.create(person);
 
         ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
         String updateJson = objectMapper.writeValueAsString(person);
 
         WebSocketEndpoint.sendUpdate(updateJson);
@@ -47,6 +49,7 @@ public class PersonService {
             personRepository.update(currentPerson);
 
             ObjectMapper objectMapper = new ObjectMapper();
+            objectMapper.registerModule(new JavaTimeModule());
             String updateJson = objectMapper.writeValueAsString(person);
 
             WebSocketEndpoint.sendUpdate(updateJson);
@@ -66,6 +69,7 @@ public class PersonService {
                 personRepository.delete(person);
 
                 ObjectMapper objectMapper = new ObjectMapper();
+                objectMapper.registerModule(new JavaTimeModule());
                 String updateJson = objectMapper.writeValueAsString(person);
 
                 WebSocketEndpoint.sendUpdate(updateJson);

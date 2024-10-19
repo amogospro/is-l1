@@ -112,7 +112,7 @@ Content-Type: application/json
 
 {
   "id": 1,
-  "name": "Dota5",
+  "name": "Dota6",
   "coordinates": {
     "x": 5,
     "y": 100

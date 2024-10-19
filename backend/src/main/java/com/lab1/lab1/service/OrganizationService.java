@@ -1,6 +1,7 @@
 package com.lab1.lab1.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.lab1.lab1.controller.WebSocketEndpoint;
 import com.lab1.lab1.model.entities.Organization;
 import com.lab1.lab1.model.entities.Role;
@@ -23,6 +24,7 @@ public class OrganizationService {
         organizationRepository.create(organization);
 
         ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
         String updateJson = objectMapper.writeValueAsString(organization);
 
         WebSocketEndpoint.sendUpdate(updateJson);
@@ -44,6 +46,7 @@ public class OrganizationService {
             organizationRepository.update(currentOrganization);
 
             ObjectMapper objectMapper = new ObjectMapper();
+            objectMapper.registerModule(new JavaTimeModule());
             String updateJson = objectMapper.writeValueAsString(organization);
 
             WebSocketEndpoint.sendUpdate(updateJson);
@@ -62,6 +65,7 @@ public class OrganizationService {
                 organizationRepository.delete(organization);
 
                 ObjectMapper objectMapper = new ObjectMapper();
+                objectMapper.registerModule(new JavaTimeModule());
                 String updateJson = objectMapper.writeValueAsString(organization);
 
                 WebSocketEndpoint.sendUpdate(updateJson);
