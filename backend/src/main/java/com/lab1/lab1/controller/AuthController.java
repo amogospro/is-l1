@@ -29,6 +29,7 @@ public class AuthController {
     private SecurityContext securityContext;
 
     @GET
+    @Path("/pending")
     public Response getPendingAdmins() {
         List<User> user = authService.getAllPendingAdmins();
         return Response.ok(user).build();
