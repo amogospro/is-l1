@@ -3,7 +3,7 @@ POST http://localhost:8080/lab1-1.0-SNAPSHOT/api/auth/register
 Content-Type: application/json
 
 {
-  "username": "testuser2",
+  "username": "testuser",
   "password": "testpassword",
   "adminRequest": false
 }
@@ -23,7 +23,7 @@ POST http://localhost:8080/lab1-1.0-SNAPSHOT/api/auth/login
 Content-Type: application/json
 
 {
-  "username": "testuser2",
+  "username": "testuser",
   "password": "testpassword"
 }
 
@@ -47,13 +47,13 @@ Content-Type: application/json
     }); %}
 
 ### Get All Products - true
-GET http://localhost:8080/lab1-1.0-SNAPSHOT/api/products
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0dXNlciIsInJvbGUiOiJVU0VSIiwiaWF0IjoxNzI5MTkyMDIwLCJleHAiOjE3MjkyNzg0MjB9.8XuXeRm0bTf9aOzZlo6cWgQlcoXXGNwenFu5nZOBjeY
+GET http://localhost:8080/lab1-1.0-SNAPSHOT/api/products?page=1&size=10&filterBy=name&filter=Dota5&sortBy=name&sortDirection=ASC
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0dXNlciIsInJvbGUiOiJVU0VSIiwiaWF0IjoxNzI5MzI2NTQzLCJleHAiOjE3Mjk0MTI5NDN9.9kX1D8xQRWcfuLp8rsNnK3qKwbAKsmrOeo3QbOU9gWg
 Accept: application/json
 
 ### Create a New Products - true
 POST http://localhost:8080/lab1-1.0-SNAPSHOT/api/products
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0dXNlcjIiLCJyb2xlIjoiVVNFUiIsImlhdCI6MTcyOTE5NTc2MiwiZXhwIjoxNzI5MjgyMTYyfQ.ZRqzS-JM3GyoMAjjwaHOsfffOq-eFt-1tjOqYvbH16M
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0dXNlciIsInJvbGUiOiJVU0VSIiwiaWF0IjoxNzI5Mjg1OTExLCJleHAiOjE3MjkzNzIzMTF9.MA8ucIR55JePKpoffb0XseS55G5YE0Ic_0eZnxVrUYc
 Content-Type: application/json
 
 {
@@ -64,7 +64,7 @@ Content-Type: application/json
   },
   "unitOfMeasure": "METERS",
   "manufacturer": {
-    "id": 3
+    "id": 1
   },
   "price": 20,
   "manufactureCost": 150.0,
@@ -74,13 +74,44 @@ Content-Type: application/json
   }
 }
 
-### Update a Products - true
-PUT http://localhost:8080/lab1-1.0-SNAPSHOT/api/products/7
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0dXNlcjIiLCJyb2xlIjoiVVNFUiIsImlhdCI6MTcyOTE5NTc2MiwiZXhwIjoxNzI5MjgyMTYyfQ.ZRqzS-JM3GyoMAjjwaHOsfffOq-eFt-1tjOqYvbH16M
+### Create a New Person - true
+POST http://localhost:8080/lab1-1.0-SNAPSHOT/api/persons
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0dXNlciIsInJvbGUiOiJVU0VSIiwiaWF0IjoxNzI5Mjg1OTExLCJleHAiOjE3MjkzNzIzMTF9.MA8ucIR55JePKpoffb0XseS55G5YE0Ic_0eZnxVrUYc
 Content-Type: application/json
 
 {
-  "id": 7,
+  "name": "abobik",
+  "eyeColor": "GREEN",
+  "hairColor": "BLUE",
+  "birthday": "1990-01-01T12:00:00",
+  "location": {
+    "x": 10,
+    "y": 20,
+    "z": 30
+  },
+  "nationality": "USA"
+}
+
+### Create a New Organization - true
+POST http://localhost:8080/lab1-1.0-SNAPSHOT/api/organizations
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0dXNlciIsInJvbGUiOiJVU0VSIiwiaWF0IjoxNzI5Mjg1OTExLCJleHAiOjE3MjkzNzIzMTF9.MA8ucIR55JePKpoffb0XseS55G5YE0Ic_0eZnxVrUYc
+Content-Type: application/json
+
+{
+  "name": "Mojang",
+  "annualTurnover": 15000.0,
+  "employeesCount": 50,
+  "rating": 5,
+  "type":"COMMERCIAL"
+}
+
+### Update a Products - true
+PUT http://localhost:8080/lab1-1.0-SNAPSHOT/api/products/1
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0dXNlciIsInJvbGUiOiJVU0VSIiwiaWF0IjoxNzI5Mjg1OTExLCJleHAiOjE3MjkzNzIzMTF9.MA8ucIR55JePKpoffb0XseS55G5YE0Ic_0eZnxVrUYc
+Content-Type: application/json
+
+{
+  "id": 1,
   "name": "Dota5",
   "coordinates": {
     "x": 5,
@@ -88,13 +119,13 @@ Content-Type: application/json
   },
   "unitOfMeasure": "METERS",
   "manufacturer": {
-    "id": 10
+    "id": 1
   },
   "price": 20,
   "manufactureCost": 150.0,
   "rating": 5,
   "owner": {
-    "id": 2
+    "id": 1
   }
 }
 

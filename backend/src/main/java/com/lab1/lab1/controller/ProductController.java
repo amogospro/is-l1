@@ -25,8 +25,12 @@ public class ProductController {
 
     @GET
     public Response getProducts(@QueryParam("page") @DefaultValue("1") int page,
-                              @QueryParam("size") @DefaultValue("10") int size) {
-        List<Product> products = productService.getAllProducts(page, size);
+                                @QueryParam("size") @DefaultValue("10") int size,
+                                @QueryParam("filterBy") String filterBy,
+                                @QueryParam("filter") String filter,
+                                @QueryParam("sortBy") @DefaultValue("name") String sortBy,
+                                @QueryParam("sortDirection") @DefaultValue("ASC") String sortDirection) {
+        List<Product> products = productService.getAllProducts(page, size, filterBy, filter, sortBy, sortDirection);
         return Response.ok(products).build();
     }
 

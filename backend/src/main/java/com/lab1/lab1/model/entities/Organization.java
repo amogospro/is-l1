@@ -6,16 +6,21 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+
+import java.util.Date;
 
 @Data
 @NoArgsConstructor
 @Table(name = "organization")
 @Entity
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Organization {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @EqualsAndHashCode.Include
     private Integer id;
 
     @NotNull
@@ -36,4 +41,14 @@ public class Organization {
 
     @Enumerated(EnumType.STRING)
     private OrganizationType type;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "owner_id", nullable = false)
+    @EqualsAndHashCode.Exclude
+    private User userOwner;
+
+    // Additional fields like creation and update timestamps
+    @Column(name = "updated_at")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date updatedAt = new Date();
 }

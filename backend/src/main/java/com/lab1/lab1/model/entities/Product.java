@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import jakarta.persistence.*;
 
@@ -17,10 +18,12 @@ import java.util.Date;
 @Entity
 @Table(name = "product")
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Product {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @EqualsAndHashCode.Include
     private int id; // Auto-generated, must be > 0
 
     @NotNull
@@ -37,8 +40,9 @@ public class Product {
     @Enumerated(EnumType.STRING)
     private UnitOfMeasure unitOfMeasure;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "organization_id")
+    @EqualsAndHashCode.Exclude
     private Organization manufacturer;
 
     @Positive(message = "Price must be greater than 0")
@@ -49,14 +53,16 @@ public class Product {
     @Positive(message = "Rating must be greater than 0")
     private Integer rating;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "person_id")
     @NotNull
+    @EqualsAndHashCode.Exclude
     private Person owner;
 
-    // Owner of the movie
+    // Owner of the product
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "owner_id", nullable = false)
+    @EqualsAndHashCode.Exclude
     private User userOwner;
 
     // Additional fields like creation and update timestamps

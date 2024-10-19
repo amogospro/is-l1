@@ -120,9 +120,9 @@ public class ProductService {
         }
     }
 
-    public List<Product> getAllProducts(int page, int size) {
+    public List<Product> getAllProducts(int page, int size, String filterBy, String filter, String sortBy, String sortDirection) {
         int offset = (page - 1) * size;
-        return productRepository.findAll(offset, size);
+        return productRepository.findAll(filterBy, filter, sortBy, sortDirection, offset, size);
     }
 }
 

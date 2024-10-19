@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.security.Principal;
@@ -15,10 +16,12 @@ import java.util.Set;
 @Entity
 @Table(name = "users")
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class User implements Principal {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @EqualsAndHashCode.Include
     private Long id;
 
     @Column(unique = true, nullable = false)
@@ -31,8 +34,17 @@ public class User implements Principal {
     @Column(nullable = false)
     private Role role; // USER, ADMIN, PENDING_ADMIN
 
-    @OneToMany(mappedBy = "userOwner", fetch = FetchType.EAGER)
-    private Set<Product> products;
+//    @OneToMany(mappedBy = "userOwner", fetch = FetchType.EAGER)
+//    @EqualsAndHashCode.Exclude
+//    private Set<Product> products;
+//
+//    @OneToMany(mappedBy = "userOwner", fetch = FetchType.EAGER)
+//    @EqualsAndHashCode.Exclude
+//    private Set<Person> persons;
+//
+//    @OneToMany(mappedBy = "userOwner", fetch = FetchType.EAGER)
+//    @EqualsAndHashCode.Exclude
+//    private Set<Organization> organizations;
 
     // Additional fields like registration date
     @Override

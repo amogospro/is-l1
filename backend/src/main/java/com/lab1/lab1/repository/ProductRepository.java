@@ -5,6 +5,7 @@ import com.lab1.lab1.model.entities.User;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.TypedQuery;
 import jakarta.transaction.Transactional;
 
 import java.util.List;
@@ -31,13 +32,34 @@ public class ProductRepository {
     }
 
 
-    public List<Product> findAll(int offset, int limit) {
-        List<Product> products = em.createQuery("SELECT p FROM Product p", Product.class)
-                .setFirstResult(offset)
-                .setMaxResults(limit)
-                .getResultList();
+    public List<Product> findAll(String filterBy, String filter, String sortBy, String sortDirection, int offset, int limit) {
+        String  queryStr = "SELECT p FROM Product p WHERE 1=1";
 
-//         Очищаем поле passwordHash у каждого владельца фильма
+        System.out.println(filterBy);
+        System.out.println(filter);
+
+        if (filterBy != null && filter != null && !filter.isEmpty()) {
+            queryStr += " AND p." + filterBy + " LIKE :filter";
+        }
+
+        if (sortBy != null && sortDirection != null) {
+            queryStr += " ORDER BY p." + sortBy + " " + sortDirection;
+        }
+
+        System.out.println("ABOBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+        System.out.println(queryStr);
+
+        TypedQuery<Product> query = em.createQuery(queryStr, Product.class);
+
+        if (filter != null && !filter.isEmpty()) {
+            query.setParameter("filter", "%" + filter + "%");
+        }
+
+        query.setFirstResult(offset);
+        query.setMaxResults(limit);
+
+        List<Product> products = query.getResultList();
+
         products.forEach(product -> {
             User owner = product.getUserOwner();
             if (owner != null) {
