@@ -1,5 +1,7 @@
 package com.lab1.lab1.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.lab1.lab1.controller.WebSocketEndpoint;
 import com.lab1.lab1.model.entities.Organization;
 import com.lab1.lab1.model.entities.Role;
 import com.lab1.lab1.model.entities.User;
@@ -16,9 +18,14 @@ public class OrganizationService {
     private OrganizationRepository organizationRepository;
 
     @Transactional
-    public void createOrganization(Organization organization, User user) {
+    public void createOrganization(Organization organization, User user) throws Exception {
         organization.setUserOwner(user);
         organizationRepository.create(organization);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        String updateJson = objectMapper.writeValueAsString(organization);
+
+        WebSocketEndpoint.sendUpdate(updateJson);
     }
 
     public Organization getOrganizationById(Integer id) { return organizationRepository.findById(id); }
@@ -35,6 +42,11 @@ public class OrganizationService {
             currentOrganization.setRating(organization.getRating());
             currentOrganization.setType(organization.getType());
             organizationRepository.update(currentOrganization);
+
+            ObjectMapper objectMapper = new ObjectMapper();
+            String updateJson = objectMapper.writeValueAsString(organization);
+
+            WebSocketEndpoint.sendUpdate(updateJson);
         } else {
             throw new Exception("Access Denied");
         }
@@ -48,6 +60,11 @@ public class OrganizationService {
                 // Check for related objects
                 // If related objects exist, throw exception
                 organizationRepository.delete(organization);
+
+                ObjectMapper objectMapper = new ObjectMapper();
+                String updateJson = objectMapper.writeValueAsString(organization);
+
+                WebSocketEndpoint.sendUpdate(updateJson);
             } else {
                 throw new Exception("Access Denied");
             }
