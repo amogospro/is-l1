@@ -4,6 +4,7 @@ import { jwtDecode } from 'jwt-decode';
 import { toast } from 'svelte-sonner';
 import { writable } from 'svelte/store';
 import type { Organization, Person, Product, ProductEdit } from './types';
+import ReconnectingWebSocket from 'reconnecting-websocket';
 
 export const username = writable<string | null>(null);
 export const role = writable('Guest');
@@ -91,8 +92,14 @@ export const createProduct = async (product: ProductEdit) => {
   const { data } = await api.post('/products', product);
   console.log(data);
 };
+export const updateProduct = async (product: ProductEdit) => {
+  const { data } = await api.put(`/products/${product.id}`, product);
+  console.log(data);
+};
 export const updateProducts = async () => {
-  products.set((await api.get('/products')).data);
+  const { data } = await api.get('/products');
+  products.set(data);
+  console.log(data);
 };
 updateProducts();
 
@@ -115,3 +122,42 @@ export const updatePersons = async () => {
   persons.set((await api.get('/persons')).data);
 };
 updatePersons();
+
+let socket: ReconnectingWebSocket | null = null;
+
+export const connectToCommands = () => {
+  if (socket) {
+    socket.close(); // Close the current socket if it's open
+  }
+
+  // const params = `type=control`;
+  socket = new ReconnectingWebSocket(`ws://localhost:8080/lab1-1.0-SNAPSHOT/updates`);
+
+  socket.onmessage = async function (event) {
+    console.log('Got control command', event.data);
+    setTimeout(async () => {
+      await Promise.all([updatePersons(), updateProducts(), updateOrganizations()]);
+    }, 100);
+  };
+
+  socket.onopen = function () {
+    console.log('WebSocket connection established');
+  };
+
+  socket.onerror = function (event) {
+    console.error('WebSocket error observed:', event);
+  };
+
+  socket.onclose = function () {
+    console.log('WebSocket connection closed');
+  };
+};
+connectToCommands();
+// export const sendCommand = (command: any) => {
+//   if (!socket) throw new Error('no socket!');
+//   socket.send(JSON.stringify(command));
+// };
+
+// /updates
+
+// Reconnect

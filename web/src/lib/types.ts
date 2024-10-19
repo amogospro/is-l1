@@ -55,7 +55,7 @@ export const ProductSchema = z.object({
   id: z.number().int().positive().optional(), // Auto-generated, value > 0
   name: z.string().min(1), // Cannot be null, cannot be empty
   coordinates: CoordinatesSchema, // Cannot be null
-  creationDate: z.date().optional(), // Auto-generated, cannot be null
+  creationDate: z.coerce.date(), // Auto-generated, cannot be null
   unitOfMeasure: UnitOfMeasure.optional(), // Can be null
   manufacturer: OrganizationSchema.optional(), // Can be null
   price: z.number().positive(), // Value > 0
@@ -66,16 +66,16 @@ export const ProductSchema = z.object({
 export type Product = z.infer<typeof ProductSchema>;
 
 export const ProductEditSchema = z.object({
-  // id: z.number().int().positive().optional(), // Auto-generated, value > 0
+  id: z.number().int().positive().optional(), // Auto-generated, value > 0
   name: z.string().min(1), // Cannot be null, cannot be empty
   coordinates: CoordinatesSchema, // Cannot be null
-  creationDate: z.date().optional(), // Auto-generated, cannot be null
+  creationDate: z.coerce.date(), // Auto-generated, cannot be null
   unitOfMeasure: UnitOfMeasure.optional(), // Can be null
-  manufacturer: z.object({ id: z.number() }).optional(), // Can be null
+  manufacturer: z.object({ id: z.number().optional() }).optional(), // Can be null
   price: z.number().positive(), // Value > 0
   manufactureCost: z.number(), // No constraints specified
   rating: z.number().int().positive().optional().nullable(), // Can be null, value > 0
-  owner: z.object({ id: z.number() }) // Cannot be null
+  owner: z.object({ id: z.number().optional() }) // Cannot be null
 });
 export type ProductEdit = z.infer<typeof ProductEditSchema>;
 

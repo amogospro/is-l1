@@ -19,15 +19,22 @@
   import DataTableCheckbox from './data-table-checkbox.svelte';
   import moment from 'moment';
   import type { Product } from '$lib/types';
-  import { products } from '$lib/data';
+  // import { products } from '$lib/data';
   import _ from 'lodash';
   import SpaceMarineEdit from '../product-form.svelte';
-    import { toast } from 'svelte-sonner';
-    import { createProduct } from '$lib/api';
+  import { toast } from 'svelte-sonner';
+  import { createProduct, products } from '$lib/api';
 
-  // const data: Product[] = JSON.parse(JSON.stringify(products));
+  // let data: Product[] = JSON.parse(JSON.stringify([]));
 
-  const table = createTable($products, {
+  // data = $products
+
+  // products.subscribe((products) => {
+  //   console.log(products);
+  //   data = products;
+  // });
+
+  const table = createTable(products, {
     page: addPagination(),
     sort: addSortBy({ disableMultiSort: true }),
     filter: addTableFilter({
@@ -110,7 +117,7 @@
         const formatted = moment(value).fromNow();
         return formatted;
       }
-    })
+    }),
     // // Manufacturer Name Column
     // table.column({
     //   accessor: (item) => item,
@@ -124,25 +131,25 @@
     //   accessor: 'owner',
     //   header: 'Owner'
     // }),
-    // // Actions Column
-    // table.column({
-    //   accessor: (item) => item,
-    //   header: '',
-    //   cell: (item) => {
-    //     return createRender(DataTableActions, {
-    //       id: String(item.value.id),
-    //       data: item.value
-    //     });
-    //   },
-    //   plugins: {
-    //     sort: {
-    //       disable: true
-    //     },
-    //     filter: {
-    //       exclude: true
-    //     }
-    //   }
-    // })
+    // Actions Column
+    table.column({
+      accessor: (item) => item,
+      header: '',
+      cell: (item) => {
+        return createRender(DataTableActions, {
+          id: String(item.value.id),
+          data: item.value
+        });
+      },
+      plugins: {
+        sort: {
+          disable: true
+        },
+        filter: {
+          exclude: true
+        }
+      }
+    })
   ]);
 
   const { headerRows, pageRows, tableAttrs, tableBodyAttrs, pluginStates, flatColumns, rows } =
