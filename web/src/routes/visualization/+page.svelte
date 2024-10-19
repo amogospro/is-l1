@@ -3,7 +3,7 @@
   import * as d3 from 'd3';
   import { toast } from 'svelte-sonner';
   import * as Dialog from '$lib/components/ui/dialog/index.js';
-  import SpaceMarineEdit from '$lib/components/custom/space-marine-edit.svelte';
+  import SpaceMarineEdit from '$lib/components/custom/product-form.svelte';
   import type { Product } from '$lib/types';
   import { products } from '$lib/data';
 
@@ -128,7 +128,7 @@
     </Dialog.Header> -->
 
     {#if data != null}
-      <SpaceMarineEdit {data} />
+      <SpaceMarineEdit {data}  />
     {/if}
   </Dialog.Content>
 </Dialog.Root>

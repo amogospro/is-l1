@@ -3,7 +3,7 @@
   import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
   import { Button } from '$lib/components/ui/button';
   import * as Dialog from '$lib/components/ui/dialog';
-  import SpaceMarineEdit from '../space-marine-edit.svelte';
+  import SpaceMarineEdit from '../product-form.svelte';
   import type { Product } from '$lib/types';
   import Icon from 'svelte-radix/Pencil1.svelte';
 

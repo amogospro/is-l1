@@ -21,11 +21,13 @@
   import type { Product } from '$lib/types';
   import { products } from '$lib/data';
   import _ from 'lodash';
-  import SpaceMarineEdit from '../space-marine-edit.svelte';
+  import SpaceMarineEdit from '../product-form.svelte';
+    import { toast } from 'svelte-sonner';
+    import { createProduct } from '$lib/api';
 
-  const data: Product[] = JSON.parse(JSON.stringify(products));
+  // const data: Product[] = JSON.parse(JSON.stringify(products));
 
-  const table = createTable(readable(data), {
+  const table = createTable($products, {
     page: addPagination(),
     sort: addSortBy({ disableMultiSort: true }),
     filter: addTableFilter({
@@ -108,39 +110,39 @@
         const formatted = moment(value).fromNow();
         return formatted;
       }
-    }),
-    // Manufacturer Name Column
-    table.column({
-      accessor: (item) => item,
-      header: 'Manufacturer',
-      cell: ({ value }) => {
-        return value.manufacturer ? value.manufacturer.name : 'N/A';
-      }
-    }),
-    // Owner Name Column
-    table.column({
-      accessor: 'owner',
-      header: 'Owner'
-    }),
-    // Actions Column
-    table.column({
-      accessor: (item) => item,
-      header: '',
-      cell: (item) => {
-        return createRender(DataTableActions, {
-          id: String(item.value.id),
-          data: item.value
-        });
-      },
-      plugins: {
-        sort: {
-          disable: true
-        },
-        filter: {
-          exclude: true
-        }
-      }
     })
+    // // Manufacturer Name Column
+    // table.column({
+    //   accessor: (item) => item,
+    //   header: 'Manufacturer',
+    //   cell: ({ value }) => {
+    //     return value.manufacturer ? value.manufacturer.name : 'N/A';
+    //   }
+    // }),
+    // // Owner Name Column
+    // table.column({
+    //   accessor: 'owner',
+    //   header: 'Owner'
+    // }),
+    // // Actions Column
+    // table.column({
+    //   accessor: (item) => item,
+    //   header: '',
+    //   cell: (item) => {
+    //     return createRender(DataTableActions, {
+    //       id: String(item.value.id),
+    //       data: item.value
+    //     });
+    //   },
+    //   plugins: {
+    //     sort: {
+    //       disable: true
+    //     },
+    //     filter: {
+    //       exclude: true
+    //     }
+    //   }
+    // })
   ]);
 
   const { headerRows, pageRows, tableAttrs, tableBodyAttrs, pluginStates, flatColumns, rows } =
@@ -188,8 +190,12 @@
     </Dialog.Header> -->
 
         <SpaceMarineEdit
+          onSubmit={async (data) => {
+            console.log(data);
+            await createProduct(data);
+            toast.info('Product created');
+          }}
           data={{
-            id: 1,
             name: 'Super Widget',
             coordinates: {
               x: 500, // Within the maximum value of 864
@@ -198,35 +204,36 @@
             creationDate: new Date(), // Auto-generated
             unitOfMeasure: 'METERS',
             manufacturer: {
-              id: 1,
-              name: 'Acme Corporation',
-              officialAddress: {
-                zipCode: '12345',
-                town: {
-                  x: 10,
-                  y: 20,
-                  z: 30
-                }
-              },
-              annualTurnover: 1_000_000, // Value > 0
-              employeesCount: 250, // Value > 0
-              rating: 5, // Value > 0
-              type: 'COMMERCIAL'
+              id: 1
+              //   name: 'Acme Corporation',
+              //   officialAddress: {
+              //     zipCode: '12345',
+              //     town: {
+              //       x: 10,
+              //       y: 20,
+              //       z: 30
+              //     }
+              //   },
+              //   annualTurnover: 1_000_000, // Value > 0
+              //   employeesCount: 250, // Value > 0
+              //   rating: 5, // Value > 0
+              //   type: 'COMMERCIAL'
             },
             price: 150, // Value > 0
             manufactureCost: 75,
             rating: 4, // Value > 0
             owner: {
-              name: 'Alice Johnson',
-              eyeColor: 'BLUE',
-              hairColor: 'YELLOW', // Valid enum value
-              location: {
-                x: 5,
-                y: 10,
-                z: 15
-              },
-              birthday: new Date('1990-01-01'),
-              nationality: 'USA'
+              id: 2
+              //   name: 'Alice Johnson',
+              //   eyeColor: 'BLUE',
+              //   hairColor: 'YELLOW', // Valid enum value
+              //   location: {
+              //     x: 5,
+              //     y: 10,
+              //     z: 15
+              //   },
+              //   birthday: new Date('1990-01-01'),
+              //   nationality: 'USA'
             }
           }}
         >
