@@ -141,5 +141,26 @@ public class ProductService {
         int offset = (page - 1) * size;
         return productRepository.findAll(filterBy, filter, sortBy, sortDirection, offset, size);
     }
+
+    public Double getAverageRating() {
+        return productRepository.calculateAverageRating();
+    }
+
+    public List<Product> getProductsWithRatingGraterThan(Double minRating) {
+        return productRepository.findProductsWithRatingGreaterThan(minRating);
+    }
+
+    public List<Person> getUniqueOwners() {
+        return productRepository.findUniqueOwners();
+    }
+
+    public List<Product> getProductsByPriceRange(Double minPrice, Double maxPrice) {
+        return productRepository.findProductsByPriceRange(minPrice, maxPrice);
+    }
+
+    @Transactional
+    public void increasePriceForAllProducts(Double percentage) {
+        productRepository.increasePriceForAllProducts(percentage);
+    }
 }
 

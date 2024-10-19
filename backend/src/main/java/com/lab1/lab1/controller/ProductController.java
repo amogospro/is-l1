@@ -1,5 +1,6 @@
 package com.lab1.lab1.controller;
 
+import com.lab1.lab1.model.entities.Person;
 import com.lab1.lab1.model.entities.Product;
 import com.lab1.lab1.model.entities.User;
 import com.lab1.lab1.service.ProductService;
@@ -7,6 +8,7 @@ import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.*;
 
+import java.security.PublicKey;
 import java.util.List;
 
 /**
@@ -80,5 +82,36 @@ public class ProductController {
         } catch (Exception e) {
             return Response.status(Response.Status.FORBIDDEN).entity(e.getMessage()).build();
         }
+    }
+
+    @GET
+    @Path("/average-rating")
+    public Double getAverageRating() {
+        return productService.getAverageRating();
+    }
+
+    @GET
+    @Path("/rating-above")
+    public List<Product> getProductsWithRatingGraterThan(@QueryParam("minRating") Double minRating) {
+        return productService.getProductsWithRatingGraterThan(minRating);
+    }
+
+    @GET
+    @Path("/unique-owners")
+    public List<Person> getUniqueOwners() {
+        return productService.getUniqueOwners();
+    }
+
+    @GET
+    @Path("/price-range")
+    public List<Product> getProductsByPriceRange(@QueryParam("minPrice") Double minPrice,
+                                                 @QueryParam("maxPrice") Double maxPrice) {
+        return productService.getProductsByPriceRange(minPrice, maxPrice);
+    }
+
+    @GET
+    @Path("/increase-price")
+    public void increasePriceForAllProducts(@QueryParam("percentage") Double percentage) {
+        productService.increasePriceForAllProducts(percentage);
     }
 }

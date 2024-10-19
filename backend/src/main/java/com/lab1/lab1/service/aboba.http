@@ -129,9 +129,13 @@ Content-Type: application/json
   }
 }
 
-### Delete a Movie - true
-DELETE http://localhost:8080/lab1-1.0-SNAPSHOT/api/products/1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0dXNlcjEiLCJyb2xlIjoiVVNFUiIsImlhdCI6MTcyOTE4MjgxMiwiZXhwIjoxNzI5MjY5MjEyfQ.GoXbghmF-9Eb87ylW39VtabvHTVsZdABGvgVQoNdi3E
+### Delete a Product - true
+DELETE http://localhost:8080/lab1-1.0-SNAPSHOT/api/products/3
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0dXNlciIsInJvbGUiOiJVU0VSIiwiaWF0IjoxNzI5MzI2NTQzLCJleHAiOjE3Mjk0MTI5NDN9.9kX1D8xQRWcfuLp8rsNnK3qKwbAKsmrOeo3QbOU9gWg
+
+### Delete a Person - true
+DELETE http://localhost:8080/lab1-1.0-SNAPSHOT/api/persons/1
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0dXNlciIsInJvbGUiOiJVU0VSIiwiaWF0IjoxNzI5MzI2NTQzLCJleHAiOjE3Mjk0MTI5NDN9.9kX1D8xQRWcfuLp8rsNnK3qKwbAKsmrOeo3QbOU9gWg
 
 ### Approve Pending Admin User - true
 POST http://localhost:8080/lab1-1.0-SNAPSHOT/api/auth/approve-admin/3

@@ -1,5 +1,6 @@
 package com.lab1.lab1.repository;
 
+import com.lab1.lab1.model.entities.Person;
 import com.lab1.lab1.model.entities.Product;
 import com.lab1.lab1.model.entities.User;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -46,9 +47,6 @@ public class ProductRepository {
             queryStr += " ORDER BY p." + sortBy + " " + sortDirection;
         }
 
-        System.out.println("ABOBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-        System.out.println(queryStr);
-
         TypedQuery<Product> query = em.createQuery(queryStr, Product.class);
 
         if (filter != null && !filter.isEmpty()) {
@@ -69,4 +67,36 @@ public class ProductRepository {
 
         return products;
     }
+
+    public Double calculateAverageRating() {
+        return em.createQuery("SELECT AVG(p.rating) FROM Product p", Double.class)
+                .getSingleResult();
+    }
+
+    public List<Product> findProductsWithRatingGreaterThan(Double minRating) {
+        return em.createQuery("SELECT p FROM Product p WHERE p.rating > :minRating", Product.class)
+                .setParameter("minRating", minRating)
+                .getResultList();
+    }
+
+    public List<Person> findUniqueOwners() {
+        return em.createQuery("SELECT DISTINCT p.owner FROM Product p", Person.class)
+                .getResultList();
+    }
+
+    public List<Product> findProductsByPriceRange(Double minPrice, Double maxPrice) {
+        return em.createQuery("SELECT p FROM Product p WHERE p.price BETWEEN :minPrice AND :maxPrice", Product.class)
+                .setParameter("minPrice", minPrice)
+                .setParameter("maxPrice", maxPrice)
+                .getResultList();
+    }
+
+    @Transactional
+    public void increasePriceForAllProducts(Double percentage) {
+        // Обновляем цену всех продуктов, увеличивая её на указанный процент
+        em.createQuery("UPDATE Product p SET p.price = p.price * (1 + :percentage)")
+                .setParameter("percentage", percentage / 100)
+                .executeUpdate();
+    }
+
 }
