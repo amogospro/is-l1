@@ -5,10 +5,13 @@
     addSortBy,
     addTableFilter,
     addHiddenColumns,
-    addSelectedRows
+    addSelectedRows,
+    type SortKey
   } from 'svelte-headless-table/plugins';
   import * as Dialog from '$lib/components/ui/dialog';
-  import { readable } from 'svelte/store';
+  import { readable, writable } from 'svelte/store';
+  import ArrowUp from 'lucide-svelte/icons/arrow-up';
+  import ArrowDown from 'lucide-svelte/icons/arrow-down';
   import ArrowUpDown from 'lucide-svelte/icons/arrow-up-down';
   import ChevronDown from 'lucide-svelte/icons/chevron-down';
   import * as Table from '$lib/components/ui/table';
@@ -23,8 +26,9 @@
   import _ from 'lodash';
   import SpaceMarineEdit from '../product-form.svelte';
   import { toast } from 'svelte-sonner';
-  import { createProduct, products } from '$lib/api';
-
+  import { createProduct, products, getProducts, refresh_signal } from '$lib/api';
+  import { cn } from '$lib/utils';
+  import { onMount } from 'svelte';
   // let data: Product[] = JSON.parse(JSON.stringify([]));
 
   // data = $products
@@ -36,7 +40,7 @@
 
   const table = createTable(products, {
     page: addPagination(),
-    sort: addSortBy({ disableMultiSort: true }),
+    sort: addSortBy({ disableMultiSort: true, serverSide: true }),
     filter: addTableFilter({
       includeHiddenColumns: true,
       fn: ({ filterValue, value }) => !filterValue || value === filterValue
@@ -47,30 +51,35 @@
 
   const columns = table.createColumns([
     // Selection Checkbox
+    // table.column({
+    //   accessor: 'id',
+    //   header: (_, { pluginStates }) => {
+    //     const { allPageRowsSelected } = pluginStates.select;
+    //     return createRender(DataTableCheckbox, {
+    //       checked: allPageRowsSelected
+    //     });
+    //   },
+    //   cell: ({ row }, { pluginStates }) => {
+    //     const { getRowState } = pluginStates.select;
+    //     const { isSelected } = getRowState(row);
+
+    //     return createRender(DataTableCheckbox, {
+    //       checked: isSelected
+    //     });
+    //   },
+    //   plugins: {
+    //     sort: {
+    //       disable: true
+    //     },
+    //     filter: {
+    //       exclude: true
+    //     }
+    //   }
+    // }),
+    // Name Column
     table.column({
       accessor: 'id',
-      header: (_, { pluginStates }) => {
-        const { allPageRowsSelected } = pluginStates.select;
-        return createRender(DataTableCheckbox, {
-          checked: allPageRowsSelected
-        });
-      },
-      cell: ({ row }, { pluginStates }) => {
-        const { getRowState } = pluginStates.select;
-        const { isSelected } = getRowState(row);
-
-        return createRender(DataTableCheckbox, {
-          checked: isSelected
-        });
-      },
-      plugins: {
-        sort: {
-          disable: true
-        },
-        filter: {
-          exclude: true
-        }
-      }
+      header: 'ID'
     }),
     // Name Column
     table.column({
@@ -118,19 +127,22 @@
         return formatted;
       }
     }),
-    // // Manufacturer Name Column
-    // table.column({
-    //   accessor: (item) => item,
-    //   header: 'Manufacturer',
-    //   cell: ({ value }) => {
-    //     return value.manufacturer ? value.manufacturer.name : 'N/A';
-    //   }
-    // }),
-    // // Owner Name Column
-    // table.column({
-    //   accessor: 'owner',
-    //   header: 'Owner'
-    // }),
+    // Manufacturer Name Column
+    table.column({
+      accessor: (item) => item,
+      header: 'Manufacturer',
+      cell: ({ value }) => {
+        return value.manufacturer ? value.manufacturer.name : 'N/A';
+      }
+    }),
+    // Owner Name Column
+    table.column({
+      accessor: 'owner',
+      header: 'Owner',
+      cell: ({ value }) => {
+        return value ? value.name : '';
+      }
+    }),
     // Actions Column
     table.column({
       accessor: (item) => item,
@@ -155,10 +167,11 @@
   const { headerRows, pageRows, tableAttrs, tableBodyAttrs, pluginStates, flatColumns, rows } =
     table.createViewModel(columns);
 
-  const { pageIndex, hasNextPage, hasPreviousPage } = pluginStates.page;
+  const { pageIndex, pageSize } = pluginStates.page;
   const { filterValue } = pluginStates.filter;
   const { hiddenColumnIds } = pluginStates.hide;
   const { selectedDataIds } = pluginStates.select;
+  const { sortKeys } = pluginStates.sort;
 
   const ids = flatColumns.map((col) => col.id);
   let hideForId = Object.fromEntries(ids.map((id) => [id, true]));
@@ -176,6 +189,52 @@
     'manufacturer',
     'owner.name'
   ];
+  let hasNextPage = writable(false),
+    hasPreviousPage = writable(false);
+
+  const checkPages = async () => {};
+
+  const fetchWithQuery = async (
+    update: boolean,
+    pageSize: number,
+    pageIndex: number,
+    sortKeys: SortKey[]
+  ) => {
+    if (pageIndex < 0) return [];
+    const q = new URLSearchParams();
+    if ($sortKeys.length > 0) {
+      q.set('sortBy', $sortKeys[0].id);
+      q.set('sortDirection', $sortKeys[0].order);
+    }
+    // q.set('filter', $filterValue);
+    // q.set('filterBy', 'name');
+    q.set('size', String(pageSize));
+    q.set('page', String(pageIndex + 1));
+    let data: Product[] = [];
+    try {
+      data = await getProducts(q);
+    } catch (e) {}
+    return data;
+  };
+
+  const refetch = async (pageSize: number, pageIndex: number, sortKeys: SortKey[]) => {
+    const [prev, cur, next] = await Promise.all([
+      fetchWithQuery(true, pageSize, pageIndex - 1, sortKeys),
+      fetchWithQuery(true, pageSize, pageIndex, sortKeys),
+      fetchWithQuery(true, pageSize, pageIndex + 1, sortKeys)
+    ]);
+    products.set(cur);
+    hasNextPage.set(next.length > 0);
+    hasPreviousPage.set(prev.length > 0);
+  };
+  $: {
+    refetch($pageSize, $pageIndex, $sortKeys);
+  }
+  onMount(() => {
+    refresh_signal.subscribe(() => {
+      refetch($pageSize, $pageIndex, $sortKeys);
+    });
+  });
 </script>
 
 <div>
@@ -276,7 +335,39 @@
               {#each headerRow.cells as cell (cell.id)}
                 <Subscribe attrs={cell.attrs()} let:attrs props={cell.props()} let:props>
                   <Table.Head {...attrs} class="[&:has([role=checkbox])]:pl-3">
-                    <Render of={cell.render()} />
+                    {#if cell.id === 'amount'}
+                      <div class="text-right font-medium">
+                        <Render of={cell.render()} />
+                      </div>
+                    {:else if cell.id === 'name'}
+                      <Button variant="ghost" on:click={props.sort.toggle}>
+                        <Render of={cell.render()} />
+                        {#if props.sort.order === 'asc'}
+                          <ArrowUp
+                            class={cn(
+                              $sortKeys[0]?.id === cell.id && 'text-foreground',
+                              'ml-2 h-4 w-4'
+                            )}
+                          />
+                        {:else if props.sort.order === 'desc'}
+                          <ArrowDown
+                            class={cn(
+                              $sortKeys[0]?.id === cell.id && 'text-foreground',
+                              'ml-2 h-4 w-4'
+                            )}
+                          />
+                        {:else}
+                          <ArrowUpDown
+                            class={cn(
+                              $sortKeys[0]?.id === cell.id && 'text-foreground',
+                              'ml-2 h-4 w-4'
+                            )}
+                          />
+                        {/if}
+                      </Button>
+                    {:else}
+                      <Render of={cell.render()} />
+                    {/if}
                   </Table.Head>
                 </Subscribe>
               {/each}
@@ -285,7 +376,7 @@
         {/each}
       </Table.Header>
       <Table.Body {...$tableBodyAttrs}>
-        {#each $pageRows as row (row.id)}
+        {#each $rows as row (row.id)}
           <Subscribe rowAttrs={row.attrs()} let:rowAttrs>
             <Table.Row {...rowAttrs} data-state={$selectedDataIds[row.id] && 'selected'}>
               {#each row.cells as cell (cell.id)}
@@ -302,9 +393,9 @@
     </Table.Root>
   </div>
   <div class="flex items-center justify-end space-x-4 py-4">
-    <div class="text-muted-foreground flex-1 text-sm">
+    <!-- <div class="text-muted-foreground flex-1 text-sm">
       {Object.keys($selectedDataIds).length} of {$rows.length} row(s) selected.
-    </div>
+    </div> -->
     <Button
       variant="outline"
       size="sm"

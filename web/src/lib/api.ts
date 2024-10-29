@@ -5,7 +5,7 @@ import { toast } from 'svelte-sonner';
 import { writable } from 'svelte/store';
 import type { Organization, Person, Product, ProductEdit } from './types';
 import ReconnectingWebSocket from 'reconnecting-websocket';
-
+import { Subject } from 'rxjs';
 export const username = writable<string | null>(null);
 export const role = writable('Guest');
 
@@ -96,12 +96,19 @@ export const updateProduct = async (product: ProductEdit) => {
   const { data } = await api.put(`/products/${product.id}`, product);
   console.log(data);
 };
-export const updateProducts = async () => {
-  const { data } = await api.get('/products');
-  products.set(data);
+
+export const getProducts = async (q = new URLSearchParams()) => {
+  const { data } = await api.get<Product[]>(`/products?${q}`);
+  console.log(data);
+  return data;
+};
+
+export const deleteProduct = async (id: number | string) => {
+  const { data } = await api.delete(`/products/${id}`);
   console.log(data);
 };
-updateProducts();
+
+getProducts();
 
 export const organizations = writable<Organization[]>([]);
 export const createOrganization = async (organization: Organization) => {
@@ -125,18 +132,21 @@ updatePersons();
 
 let socket: ReconnectingWebSocket | null = null;
 
+export const refresh_signal = new Subject<void>();
 export const connectToCommands = () => {
   if (socket) {
     socket.close(); // Close the current socket if it's open
   }
 
-  // const params = `type=control`;
   socket = new ReconnectingWebSocket(`ws://localhost:8080/lab1-1.0-SNAPSHOT/updates`);
 
   socket.onmessage = async function (event) {
     console.log('Got control command', event.data);
+
     setTimeout(async () => {
-      await Promise.all([updatePersons(), updateProducts(), updateOrganizations()]);
+      updatePersons();
+      refresh_signal.next();
+      updateOrganizations();
     }, 100);
   };
 
