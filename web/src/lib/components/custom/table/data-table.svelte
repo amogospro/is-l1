@@ -29,6 +29,9 @@
   import { createProduct, products, getProducts, refresh_signal } from '$lib/api';
   import { cn } from '$lib/utils';
   import { onMount } from 'svelte';
+  import Link from '$lib/components/ui/link/link.svelte';
+  import ProductForm from '../product-form.svelte';
+  import IdActions from './id-actions.svelte';
   // let data: Product[] = JSON.parse(JSON.stringify([]));
 
   // data = $products
@@ -42,8 +45,9 @@
     page: addPagination(),
     sort: addSortBy({ disableMultiSort: true, serverSide: true }),
     filter: addTableFilter({
-      includeHiddenColumns: true,
-      fn: ({ filterValue, value }) => !filterValue || value === filterValue
+      serverSide: true,
+      includeHiddenColumns: true
+      // fn: ({ filterValue, value }) => !filterValue || value === filterValue
     }),
     hide: addHiddenColumns(),
     select: addSelectedRows()
@@ -78,8 +82,14 @@
     // }),
     // Name Column
     table.column({
-      accessor: 'id',
-      header: 'ID'
+      accessor: (item) => item,
+      header: 'ID',
+      cell: (item) => {
+        return createRender(IdActions, {
+          id: String(item.value.id),
+          data: item.value
+        });
+      }
     }),
     // Name Column
     table.column({
@@ -198,16 +208,17 @@
     update: boolean,
     pageSize: number,
     pageIndex: number,
-    sortKeys: SortKey[]
+    sortKeys: SortKey[],
+    filterValue: string
   ) => {
     if (pageIndex < 0) return [];
     const q = new URLSearchParams();
-    if ($sortKeys.length > 0) {
-      q.set('sortBy', $sortKeys[0].id);
-      q.set('sortDirection', $sortKeys[0].order);
+    if (sortKeys.length > 0) {
+      q.set('sortBy', sortKeys[0].id);
+      q.set('sortDirection', sortKeys[0].order);
     }
-    // q.set('filter', $filterValue);
-    // q.set('filterBy', 'name');
+    q.set('filter', filterValue);
+    q.set('filterBy', 'name');
     q.set('size', String(pageSize));
     q.set('page', String(pageIndex + 1));
     let data: Product[] = [];
@@ -217,22 +228,27 @@
     return data;
   };
 
-  const refetch = async (pageSize: number, pageIndex: number, sortKeys: SortKey[]) => {
+  const refetch = async (
+    pageSize: number,
+    pageIndex: number,
+    sortKeys: SortKey[],
+    filterValue: string
+  ) => {
     const [prev, cur, next] = await Promise.all([
-      fetchWithQuery(true, pageSize, pageIndex - 1, sortKeys),
-      fetchWithQuery(true, pageSize, pageIndex, sortKeys),
-      fetchWithQuery(true, pageSize, pageIndex + 1, sortKeys)
+      fetchWithQuery(true, pageSize, pageIndex - 1, sortKeys, filterValue),
+      fetchWithQuery(true, pageSize, pageIndex, sortKeys, filterValue),
+      fetchWithQuery(true, pageSize, pageIndex + 1, sortKeys, filterValue)
     ]);
     products.set(cur);
     hasNextPage.set(next.length > 0);
     hasPreviousPage.set(prev.length > 0);
   };
   $: {
-    refetch($pageSize, $pageIndex, $sortKeys);
+    refetch($pageSize, $pageIndex, $sortKeys, $filterValue);
   }
   onMount(() => {
     refresh_signal.subscribe(() => {
-      refetch($pageSize, $pageIndex, $sortKeys);
+      refetch($pageSize, $pageIndex, $sortKeys, $filterValue);
     });
   });
 </script>
