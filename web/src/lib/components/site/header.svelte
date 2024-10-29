@@ -24,7 +24,7 @@
     <Link href="/">Main menu</Link>
     <div class="flex flex-1 items-center justify-between space-x-2 md:justify-end">
       <nav class="gap-10px flex items-center">
-        <div>
+        <div class="gap-10px flex">
           <p>
             Hi
             {#if $username != null}
@@ -34,6 +34,10 @@
               {_.startCase(_.toLower($role))}
             {/if}
           </p>
+
+          {#if _.lowerCase($role) === 'admin'}
+            <Link class="ml-10px" href="./admin">Pending requests</Link>
+          {/if}
         </div>
         <Button on:click={logOut} variant="outline" size="icon">
           <Exit
