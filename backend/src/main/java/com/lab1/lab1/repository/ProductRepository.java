@@ -9,6 +9,7 @@ import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
 import jakarta.transaction.Transactional;
 
+import java.util.Arrays;
 import java.util.List;
 
 @ApplicationScoped
@@ -36,14 +37,11 @@ public class ProductRepository {
     public List<Product> findAll(String filterBy, String filter, String sortBy, String sortDirection, int offset, int limit) {
         String  queryStr = "SELECT p FROM Product p WHERE 1=1";
 
-        System.out.println(filterBy);
-        System.out.println(filter);
-
-        if (filterBy != null && filter != null && !filter.isEmpty()) {
+        if (filterBy != null && isValidFilterColumn(filterBy) && filter != null && !filter.isEmpty()) {
             queryStr += " AND p." + filterBy + " LIKE :filter";
         }
 
-        if (sortBy != null && sortDirection != null) {
+        if (sortBy != null && sortDirection != null && isValidSortColumn(sortBy) && isValidSortDirection(sortDirection)) {
             queryStr += " ORDER BY p." + sortBy + " " + sortDirection;
         }
 
@@ -66,6 +64,25 @@ public class ProductRepository {
         });
 
         return products;
+    }
+
+    private boolean isValidFilterColumn(String filterBy) {
+        // Разрешённые колонки для фильтрации
+        List<String> validColumns = Arrays.asList("name", "manufacturer.name", "owner.name");
+        return validColumns.contains(filterBy);
+    }
+
+    // Метод для проверки допустимых значений для сортировки
+    private boolean isValidSortColumn(String sortBy) {
+        // Разрешённые колонки для сортировки
+        List<String> validColumns = Arrays.asList("name", "price", "rating");
+        return validColumns.contains(sortBy);
+    }
+
+    // Метод для проверки направления сортировки
+    private boolean isValidSortDirection(String sortDirection) {
+        // Допустимые направления сортировки
+        return "ASC".equalsIgnoreCase(sortDirection) || "DESC".equalsIgnoreCase(sortDirection);
     }
 
     public Double calculateAverageRating() {
