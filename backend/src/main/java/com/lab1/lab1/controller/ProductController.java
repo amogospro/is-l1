@@ -139,8 +139,8 @@ public class ProductController {
 
     @GET
     @Path("/price-range")
-    public Response getProductsByPriceRange(@QueryParam("minPrice") Double minPrice,
-                                                 @QueryParam("maxPrice") Double maxPrice) {
+    public Response getProductsByPriceRange(@QueryParam("minPrice") int minPrice,
+                                                 @QueryParam("maxPrice") int maxPrice) {
         try {
             List<Product> products = productService.getProductsByPriceRange(minPrice, maxPrice);
             List<ProductDTO> productsDTO = products.stream()

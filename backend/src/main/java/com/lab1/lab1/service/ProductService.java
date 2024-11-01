@@ -161,7 +161,7 @@ public class ProductService {
         return productRepository.findUniqueOwners();
     }
 
-    public List<Product> getProductsByPriceRange(Double minPrice, Double maxPrice) {
+    public List<Product> getProductsByPriceRange(int minPrice, int maxPrice) {
         return productRepository.findProductsByPriceRange(minPrice, maxPrice);
     }
 

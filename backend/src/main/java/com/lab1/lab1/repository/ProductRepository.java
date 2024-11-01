@@ -94,7 +94,7 @@ public class ProductRepository {
                 .getResultList();
     }
 
-    public List<Product> findProductsByPriceRange(Double minPrice, Double maxPrice) {
+    public List<Product> findProductsByPriceRange(int minPrice, int maxPrice) {
         return em.createQuery("SELECT p FROM Product p WHERE p.price BETWEEN :minPrice AND :maxPrice", Product.class)
                 .setParameter("minPrice", minPrice)
                 .setParameter("maxPrice", maxPrice)
@@ -104,9 +104,12 @@ public class ProductRepository {
     @Transactional
     public void increasePriceForAllProducts(Double percentage) {
         // Обновляем цену всех продуктов, увеличивая её на указанный процент
-        em.createQuery("UPDATE Product p SET p.price = p.price * (1 + :percentage)")
-                .setParameter("percentage", percentage / 100)
-                .executeUpdate();
+        List<Product> products = em.createQuery("SELECT p FROM Product p", Product.class).getResultList();
+        for (Product product : products) {
+            int updatedPrice = (int) Math.round(product.getPrice() * (1 + percentage / 100));
+            product.setPrice(updatedPrice);
+            em.merge(product);
+        }
     }
 
 }

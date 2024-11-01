@@ -4,7 +4,7 @@ Content-Type: application/json
 
 {
   "username": "testuser2",
-  "password": "testpassword",
+  "password": "testpassword2",
   "adminRequest": false
 }
 
@@ -23,8 +23,8 @@ POST http://localhost:8080/lab1-1.0-SNAPSHOT/api/auth/login
 Content-Type: application/json
 
 {
-  "username": "testuser",
-  "password": "testpassword"
+  "username": "testuser2",
+  "password": "testpassword2"
 }
 
 > {% client.test("Extract Token", function() {
@@ -53,11 +53,11 @@ Accept: application/json
 
 ### Create a New Products - true
 POST http://localhost:8080/lab1-1.0-SNAPSHOT/api/products
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0dXNlciIsInJvbGUiOiJVU0VSIiwiaWF0IjoxNzMwNDcwNDc1LCJleHAiOjE3MzA1NTY4NzV9.kgbgDUG6aT7fZxHwsD6uzyNpeID-l2GfXcrOH9F0IMU
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0dXNlcjIiLCJyb2xlIjoiVVNFUiIsImlhdCI6MTczMDQ5NzQyOSwiZXhwIjoxNzMwNTgzODI5fQ.GABkrTm7aXphbar5OTpG7l5qwx6yEjsm0q9cWKKQ4VQ
 Content-Type: application/json
 
 {
-  "name": "Dota7",
+  "name": "Dota722",
   "coordinates": {
     "x": 5,
     "y": 100
@@ -140,4 +140,8 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbnVzZXIiLCJyb2xlIjoiQ
 
 ### Get All rating above
 GET http://localhost:8080/lab1-1.0-SNAPSHOT/api/products/rating-above?minRating=4
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0dXNlciIsInJvbGUiOiJVU0VSIiwiaWF0IjoxNzMwNDcwNDc1LCJleHAiOjE3MzA1NTY4NzV9.kgbgDUG6aT7fZxHwsD6uzyNpeID-l2GfXcrOH9F0IMU
+
+### Get procent increase
+GET http://localhost:8080/lab1-1.0-SNAPSHOT/api/products/increase-price?percentage=10.0
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0dXNlciIsInJvbGUiOiJVU0VSIiwiaWF0IjoxNzMwNDcwNDc1LCJleHAiOjE3MzA1NTY4NzV9.kgbgDUG6aT7fZxHwsD6uzyNpeID-l2GfXcrOH9F0IMU
