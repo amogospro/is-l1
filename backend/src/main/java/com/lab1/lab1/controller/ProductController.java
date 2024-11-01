@@ -12,7 +12,6 @@ import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.*;
 
-import java.security.PublicKey;
 import java.util.List;
 import java.util.stream.Collectors;
 
