@@ -37,11 +37,11 @@ public class ProductRepository {
     public List<Product> findAll(String filterBy, String filter, String sortBy, String sortDirection, int offset, int limit) {
         String  queryStr = "SELECT p FROM Product p WHERE 1=1";
 
-        if (filterBy != null && isValidFilterColumn(filterBy) && filter != null && !filter.isEmpty()) {
+        if (filterBy != null && isValidColumn(filterBy) && filter != null && !filter.isEmpty()) {
             queryStr += " AND p." + filterBy + " LIKE :filter";
         }
 
-        if (sortBy != null && sortDirection != null && isValidSortColumn(sortBy) && isValidSortDirection(sortDirection)) {
+        if (sortBy != null && sortDirection != null && isValidColumn(sortBy) && isValidSortDirection(sortDirection)) {
             queryStr += " ORDER BY p." + sortBy + " " + sortDirection;
         }
 
@@ -66,17 +66,10 @@ public class ProductRepository {
         return products;
     }
 
-    private boolean isValidFilterColumn(String filterBy) {
+    private boolean isValidColumn(String value) {
         // Разрешённые колонки для фильтрации
         List<String> validColumns = Arrays.asList("name", "manufacturer.name", "owner.name");
-        return validColumns.contains(filterBy);
-    }
-
-    // Метод для проверки допустимых значений для сортировки
-    private boolean isValidSortColumn(String sortBy) {
-        // Разрешённые колонки для сортировки
-        List<String> validColumns = Arrays.asList("name", "price", "rating");
-        return validColumns.contains(sortBy);
+        return validColumns.contains(value);
     }
 
     // Метод для проверки направления сортировки

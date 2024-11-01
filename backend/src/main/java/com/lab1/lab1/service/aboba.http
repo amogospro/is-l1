@@ -47,8 +47,8 @@ Content-Type: application/json
     }); %}
 
 ### Get All Products - true
-GET http://localhost:8080/lab1-1.0-SNAPSHOT/api/products?page=1&size=10&filterBy=name&filter=Dota5&sortBy=name&sortDirection=ASC
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0dXNlciIsInJvbGUiOiJVU0VSIiwiaWF0IjoxNzI5MzI2NTQzLCJleHAiOjE3Mjk0MTI5NDN9.9kX1D8xQRWcfuLp8rsNnK3qKwbAKsmrOeo3QbOU9gWg
+GET http://localhost:8080/lab1-1.0-SNAPSHOT/api/products?page=1&size=10&filterBy=owner.name&filter=abobik&sortBy=price&sortDirection=ASC
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0dXNlciIsInJvbGUiOiJVU0VSIiwiaWF0IjoxNzMwNDcwNDc1LCJleHAiOjE3MzA1NTY4NzV9.kgbgDUG6aT7fZxHwsD6uzyNpeID-l2GfXcrOH9F0IMU
 Accept: application/json
 
 ### Create a New Products - true
