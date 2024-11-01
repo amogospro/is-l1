@@ -69,6 +69,14 @@ public class AuthService {
             throw new Exception("User already exists");
         }
 
+        User uniqueUserPassword = userRepository.findByPasswordHash(PasswordUtil.hashPassword(password));
+
+        if (uniqueUserPassword != null) {
+            throw new Exception("Password already exists by "+ uniqueUserPassword.getUsername());
+        }
+
+
+
         User user = new User();
         user.setUsername(username);
         user.setPasswordHash(PasswordUtil.hashPassword(password));

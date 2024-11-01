@@ -31,6 +31,16 @@ public class UserRepository {
         }
     }
 
+    public User findByPasswordHash(String passwordHash) {
+        try {
+            return em.createQuery("SELECT u FROM User u WHERE u.passwordHash = :passwordHash", User.class)
+                    .setParameter("passwordHash", passwordHash)
+                    .getSingleResult();
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
     public boolean existsAdmin() {
         Long count = em.createQuery("SELECT COUNT(u) FROM User u WHERE u.role = :role", Long.class)
                 .setParameter("role", Role.ADMIN)
