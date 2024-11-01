@@ -83,7 +83,7 @@ public class ProductRepository {
                 .getSingleResult();
     }
 
-    public List<Product> findProductsWithRatingGreaterThan(Double minRating) {
+    public List<Product> findProductsWithRatingGreaterThan(Integer minRating) {
         return em.createQuery("SELECT p FROM Product p WHERE p.rating > :minRating", Product.class)
                 .setParameter("minRating", minRating)
                 .getResultList();

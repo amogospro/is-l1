@@ -10,10 +10,7 @@ import com.lab1.lab1.repository.ProductRepository;
 import com.lab1.lab1.repository.UserRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
-import jakarta.ws.rs.core.Response;
 
 import java.util.List;
 
@@ -156,7 +153,7 @@ public class ProductService {
         return productRepository.calculateAverageRating();
     }
 
-    public List<Product> getProductsWithRatingGraterThan(Double minRating) {
+    public List<Product> getProductsWithRatingGraterThan(Integer minRating) {
         return productRepository.findProductsWithRatingGreaterThan(minRating);
     }
 

@@ -137,3 +137,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0dXNlciIsInJvbGUiOiJVU
 ### Approve Pending Admin User - true
 POST http://localhost:8080/lab1-1.0-SNAPSHOT/api/auth/approve-admin/3
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbnVzZXIiLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE3MjkwODg4NjQsImV4cCI6MTcyOTE3NTI2NH0.zfpUZFMO9AWvU8tl-EfpPKF8rO0nBgyTjuOkm0duOFo
+
+### Get All rating above
+GET http://localhost:8080/lab1-1.0-SNAPSHOT/api/products/rating-above?minRating=4
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0dXNlciIsInJvbGUiOiJVU0VSIiwiaWF0IjoxNzMwNDcwNDc1LCJleHAiOjE3MzA1NTY4NzV9.kgbgDUG6aT7fZxHwsD6uzyNpeID-l2GfXcrOH9F0IMU

@@ -106,7 +106,7 @@ public class ProductController {
 
     @GET
     @Path("/rating-above")
-    public Response getProductsWithRatingGraterThan(@QueryParam("minRating") Double minRating) {
+    public Response getProductsWithRatingGraterThan(@QueryParam("minRating") Integer minRating) {
         try {
             List<Product> products = productService.getProductsWithRatingGraterThan(minRating);
 
