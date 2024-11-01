@@ -1,9 +1,9 @@
 package com.lab1.lab1.controller;
 
-import com.lab1.lab1.model.dto.AuthResponse;
-import com.lab1.lab1.model.dto.ErrorResponse;
-import com.lab1.lab1.model.dto.LoginRequest;
-import com.lab1.lab1.model.dto.RegisterRequest;
+import com.lab1.lab1.model.dto.AuthResponseDTO;
+import com.lab1.lab1.model.dto.ErrorResponseDTO;
+import com.lab1.lab1.model.dto.LoginRequestDTO;
+import com.lab1.lab1.model.dto.RegisterRequestDTO;
 import com.lab1.lab1.model.entities.Role;
 import com.lab1.lab1.model.entities.User;
 import com.lab1.lab1.service.AuthService;
@@ -37,11 +37,11 @@ public class AuthController {
 
     @POST
     @Path("/login")
-    public Response login(LoginRequest request) throws NoSuchAlgorithmException {
+    public Response login(LoginRequestDTO request) throws NoSuchAlgorithmException {
         User user = authService.authenticate(request.getUsername(), request.getPassword());
         if (user != null) {
             String token = authService.generateToken(user);
-            return Response.ok(new AuthResponse(token)).build();
+            return Response.ok(new AuthResponseDTO(token)).build();
         } else {
             return Response.status(Response.Status.UNAUTHORIZED).entity("Invalid credentials").build();
         }
@@ -49,7 +49,7 @@ public class AuthController {
 
     @POST
     @Path("/register")
-    public Response register(RegisterRequest request) {
+    public Response register(RegisterRequestDTO request) {
         try {
             authService.register(request.getUsername(), request.getPassword(), request.isAdminRequest());
             return Response.status(Response.Status.CREATED).build();
@@ -80,7 +80,7 @@ public class AuthController {
             return Response.ok().build();
         } catch (Exception e) {
             return Response.status(Response.Status.BAD_REQUEST)
-                    .entity(new ErrorResponse(e.getMessage()))
+                    .entity(new ErrorResponseDTO(e.getMessage()))
                     .build();
         }
     }

@@ -92,12 +92,14 @@ public class ProductService {
             currentProduct.setUnitOfMeasure(product.getUnitOfMeasure());
 
             Organization organization = product.getManufacturer();
-            if (organization.getId() != null){
-                Organization existingOrganization = organizationRepository.findById(organization.getId());
-                if (existingOrganization == null) {
-                    throw new Exception("Manufacturer not found");
+            if (organization != null) {
+                if (organization.getId() != null) {
+                    Organization existingOrganization = organizationRepository.findById(organization.getId());
+                    if (existingOrganization == null) {
+                        throw new Exception("Manufacturer not found");
+                    }
+                    currentProduct.setManufacturer(existingOrganization);
                 }
-                currentProduct.setManufacturer(existingOrganization);
             }
 
             Person owner = product.getOwner();

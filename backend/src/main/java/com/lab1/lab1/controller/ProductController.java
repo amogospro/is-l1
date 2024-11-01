@@ -1,8 +1,12 @@
 package com.lab1.lab1.controller;
 
+import com.lab1.lab1.model.dto.PersonDTO;
+import com.lab1.lab1.model.dto.ProductDTO;
 import com.lab1.lab1.model.entities.Person;
 import com.lab1.lab1.model.entities.Product;
 import com.lab1.lab1.model.entities.User;
+import com.lab1.lab1.model.mapper.PersonMapper;
+import com.lab1.lab1.model.mapper.ProductMapper;
 import com.lab1.lab1.service.ProductService;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
@@ -10,6 +14,7 @@ import jakarta.ws.rs.core.*;
 
 import java.security.PublicKey;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * RESTful API for managing movies
@@ -33,7 +38,10 @@ public class ProductController {
                                 @QueryParam("sortBy") @DefaultValue("name") String sortBy,
                                 @QueryParam("sortDirection") @DefaultValue("ASC") String sortDirection) {
         List<Product> products = productService.getAllProducts(page, size, filterBy, filter, sortBy, sortDirection);
-        return Response.ok(products).build();
+        List<ProductDTO>productsDTO = products.stream()
+                                                .map(ProductMapper::toDTO)
+                                                .collect(Collectors.toList());
+        return Response.ok(productsDTO).build();
     }
 
     @GET
@@ -41,7 +49,7 @@ public class ProductController {
     public Response getProductsById(@PathParam("id") int id) {
         Product product = productService.getProductById(id);
         if (product != null) {
-            return Response.ok(product).build();
+            return Response.ok(ProductMapper.toDTO(product)).build();
         } else {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
@@ -54,9 +62,9 @@ public class ProductController {
             productService.createProduct(product, user);
         } catch (Exception e) {
             System.out.println(e.getMessage());
-            return Response.status(Response.Status.BAD_REQUEST).entity("Product owner not found").build();
+            return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
         }
-        return Response.status(Response.Status.CREATED).entity(product).build();
+        return Response.status(Response.Status.CREATED).build();
     }
 
     @PUT
@@ -66,7 +74,7 @@ public class ProductController {
             User user = (User) securityContext.getUserPrincipal();
             updatedProduct.setId(id);
             productService.updateProduct(updatedProduct, user);
-            return Response.ok(updatedProduct).build();
+            return Response.ok().build();
         } catch (Exception e) {
             return Response.status(Response.Status.FORBIDDEN).entity(e.getMessage()).build();
         }
@@ -86,32 +94,75 @@ public class ProductController {
 
     @GET
     @Path("/average-rating")
-    public Double getAverageRating() {
-        return productService.getAverageRating();
+    public Response getAverageRating() {
+        try {
+            Double averageRating = productService.getAverageRating();
+            return Response.ok(averageRating).build();  // Возвращаем значение с кодом 200
+        } catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity("Error calculating average rating").build();
+        }
     }
 
     @GET
     @Path("/rating-above")
-    public List<Product> getProductsWithRatingGraterThan(@QueryParam("minRating") Double minRating) {
-        return productService.getProductsWithRatingGraterThan(minRating);
+    public Response getProductsWithRatingGraterThan(@QueryParam("minRating") Double minRating) {
+        try {
+            List<Product> products = productService.getProductsWithRatingGraterThan(minRating);
+
+            List<ProductDTO> productDTO = products.stream()
+                    .map(ProductMapper::toDTO)
+                    .collect(Collectors.toList());
+
+            return Response.ok(productDTO).build();
+        } catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity("Error getting products with rating grater than " + minRating).build();
+        }
     }
 
     @GET
     @Path("/unique-owners")
-    public List<Person> getUniqueOwners() {
-        return productService.getUniqueOwners();
+    public Response getUniqueOwners() {
+        try {
+            List<Person> uniqueOwners = productService.getUniqueOwners();
+            List<PersonDTO> uniqueOwnersDTO = uniqueOwners.stream()
+                    .map(PersonMapper::toDTO)
+                    .collect(Collectors.toList());
+            return Response.ok(uniqueOwnersDTO).build();
+        } catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity("Error getting unique owners").build();
+        }
+
     }
 
     @GET
     @Path("/price-range")
-    public List<Product> getProductsByPriceRange(@QueryParam("minPrice") Double minPrice,
+    public Response getProductsByPriceRange(@QueryParam("minPrice") Double minPrice,
                                                  @QueryParam("maxPrice") Double maxPrice) {
-        return productService.getProductsByPriceRange(minPrice, maxPrice);
+        try {
+            List<Product> products = productService.getProductsByPriceRange(minPrice, maxPrice);
+            List<ProductDTO> productsDTO = products.stream()
+                    .map(ProductMapper::toDTO)
+                    .collect(Collectors.toList());
+            return Response.ok(productsDTO).build();
+        } catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity("Error getting products by price in range " + minPrice + "-" + maxPrice).build();
+        }
     }
 
     @GET
     @Path("/increase-price")
-    public void increasePriceForAllProducts(@QueryParam("percentage") Double percentage) {
-        productService.increasePriceForAllProducts(percentage);
+    public Response increasePriceForAllProducts(@QueryParam("percentage") Double percentage) {
+        try {
+            productService.increasePriceForAllProducts(percentage);
+            return Response.ok("Prices increased by " + percentage + "% for all products.").build();
+        } catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity("Failed to increase prices: " + percentage + "%")
+                    .build();
+        }
     }
 }

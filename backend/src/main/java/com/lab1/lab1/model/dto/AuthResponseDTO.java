@@ -5,6 +5,6 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class ErrorResponse {
-    private String message;
+public class AuthResponseDTO {
+    private String token;
 }

@@ -44,7 +44,6 @@ public class Organization {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "owner_id", nullable = false)
-    @EqualsAndHashCode.Exclude
     private User userOwner;
 
     // Additional fields like creation and update timestamps

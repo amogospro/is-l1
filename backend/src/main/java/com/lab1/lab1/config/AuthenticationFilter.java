@@ -1,6 +1,6 @@
 package com.lab1.lab1.config;
 
-import com.lab1.lab1.model.dto.ErrorResponse;
+import com.lab1.lab1.model.dto.ErrorResponseDTO;
 import com.lab1.lab1.model.entities.User;
 import jakarta.annotation.Priority;
 import jakarta.inject.Inject;
@@ -43,7 +43,7 @@ public class AuthenticationFilter implements ContainerRequestFilter {
         // Прерываем запрос, если аутентификация не удалась
         requestContext.abortWith(
                 jakarta.ws.rs.core.Response.status(jakarta.ws.rs.core.Response.Status.UNAUTHORIZED)
-                        .entity(new ErrorResponse("Недействительный или отсутствующий токен аутентификации"))
+                        .entity(new ErrorResponseDTO("Недействительный или отсутствующий токен аутентификации"))
                         .build()
         );
     }

@@ -1,8 +1,10 @@
 package com.lab1.lab1.controller;
 
+import com.lab1.lab1.model.dto.OrganizationDTO;
 import com.lab1.lab1.model.entities.Organization;
-import com.lab1.lab1.model.entities.Person;
 import com.lab1.lab1.model.entities.User;
+import com.lab1.lab1.model.mapper.OrganizationMapper;
+import com.lab1.lab1.model.mapper.PersonMapper;
 import com.lab1.lab1.service.OrganizationService;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
@@ -12,6 +14,7 @@ import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.SecurityContext;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Path("/organizations")
 @Produces(MediaType.APPLICATION_JSON)
@@ -26,8 +29,11 @@ public class OrganizationController {
     @GET
     public Response getOrganizations(@QueryParam("page") @DefaultValue("1") int page,
                                      @QueryParam("size") @DefaultValue("10") int size) {
-        List<Organization> organization = organizationService.getAllOrganizations(page, size);
-        return Response.ok(organization).build();
+        List<Organization> organizations = organizationService.getAllOrganizations(page, size);
+        List<OrganizationDTO>organizationsDTO = organizations.stream()
+                .map(OrganizationMapper::toDTO)
+                .collect(Collectors.toList());
+        return Response.ok(organizationsDTO).build();
     }
 
     @GET
@@ -35,7 +41,7 @@ public class OrganizationController {
     public Response getOrganizationsById(@PathParam("id") int id) {
         Organization organization = organizationService.getOrganizationById(id);
         if (organization != null) {
-            return Response.ok(organization).build();
+            return Response.ok(OrganizationMapper.toDTO(organization)).build();
         } else {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
@@ -49,7 +55,7 @@ public class OrganizationController {
         } catch (Exception e) {
             return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
         }
-        return Response.status(Response.Status.CREATED).entity(organization).build();
+        return Response.status(Response.Status.CREATED).build();
     }
 
     @PUT
@@ -59,7 +65,7 @@ public class OrganizationController {
             User user = (User) securityContext.getUserPrincipal();
             updatedOrganization.setId(id);
             organizationService.updateOrganization(updatedOrganization, user);
-            return Response.ok(updatedOrganization).build();
+            return Response.ok().build();
         } catch (Exception e) {
             return Response.status(Response.Status.FORBIDDEN).entity(e.getMessage()).build();
         }

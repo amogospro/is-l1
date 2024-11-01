@@ -42,7 +42,6 @@ public class Product {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "organization_id")
-    @EqualsAndHashCode.Exclude
     private Organization manufacturer;
 
     @Positive(message = "Price must be greater than 0")
@@ -56,13 +55,11 @@ public class Product {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "person_id")
     @NotNull
-    @EqualsAndHashCode.Exclude
     private Person owner;
 
     // Owner of the product
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "owner_id", nullable = false)
-    @EqualsAndHashCode.Exclude
     private User userOwner;
 
     // Additional fields like creation and update timestamps

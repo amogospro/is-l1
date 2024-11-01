@@ -57,7 +57,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0dXNlciIsInJvbGUiOiJVU
 Content-Type: application/json
 
 {
-  "name": "Dota6",
+  "name": "Dota7",
   "coordinates": {
     "x": 5,
     "y": 100
@@ -104,15 +104,15 @@ Content-Type: application/json
 
 ### Update a Products - true
 PUT http://localhost:8080/lab1-1.0-SNAPSHOT/api/products/1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0dXNlciIsInJvbGUiOiJVU0VSIiwiaWF0IjoxNzI5Mjg1OTExLCJleHAiOjE3MjkzNzIzMTF9.MA8ucIR55JePKpoffb0XseS55G5YE0Ic_0eZnxVrUYc
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0dXNlciIsInJvbGUiOiJVU0VSIiwiaWF0IjoxNzMwNDcwNDc1LCJleHAiOjE3MzA1NTY4NzV9.kgbgDUG6aT7fZxHwsD6uzyNpeID-l2GfXcrOH9F0IMU
 Content-Type: application/json
 
 {
   "id": 1,
-  "name": "Dota6",
+  "name": "Dota1498",
   "coordinates": {
     "x": 5,
-    "y": 100
+    "y": 110
   },
   "unitOfMeasure": "METERS",
   "manufacturer": {
@@ -128,7 +128,7 @@ Content-Type: application/json
 
 ### Delete a Product - true
 DELETE http://localhost:8080/lab1-1.0-SNAPSHOT/api/products/3
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0dXNlciIsInJvbGUiOiJVU0VSIiwiaWF0IjoxNzI5MzI2NTQzLCJleHAiOjE3Mjk0MTI5NDN9.9kX1D8xQRWcfuLp8rsNnK3qKwbAKsmrOeo3QbOU9gWg
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0dXNlciIsInJvbGUiOiJVU0VSIiwiaWF0IjoxNzMwNDcwNDc1LCJleHAiOjE3MzA1NTY4NzV9.kgbgDUG6aT7fZxHwsD6uzyNpeID-l2GfXcrOH9F0IMU
 
 ### Delete a Person - true
 DELETE http://localhost:8080/lab1-1.0-SNAPSHOT/api/persons/1

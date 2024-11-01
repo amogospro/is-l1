@@ -1,8 +1,9 @@
 package com.lab1.lab1.controller;
 
+import com.lab1.lab1.model.dto.PersonDTO;
 import com.lab1.lab1.model.entities.Person;
-import com.lab1.lab1.model.entities.Product;
 import com.lab1.lab1.model.entities.User;
+import com.lab1.lab1.model.mapper.PersonMapper;
 import com.lab1.lab1.service.PersonService;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
@@ -12,6 +13,7 @@ import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.SecurityContext;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Path("/persons")
 @Produces(MediaType.APPLICATION_JSON)
@@ -26,8 +28,11 @@ public class PersonController {
     @GET
     public Response getPersons(@QueryParam("page") @DefaultValue("1") int page,
                                @QueryParam("size") @DefaultValue("10") int size) {
-        List<Person> person = personService.getAllPersons(page, size);
-        return Response.ok(person).build();
+        List<Person> persons = personService.getAllPersons(page, size);
+        List<PersonDTO>personsDTO = persons.stream()
+                .map(PersonMapper::toDTO)
+                .collect(Collectors.toList());
+        return Response.ok(personsDTO).build();
     }
 
     @GET
@@ -35,7 +40,7 @@ public class PersonController {
     public Response getPersonsById(@PathParam("id") int id) {
         Person person = personService.getPersonById(id);
         if (person != null) {
-            return Response.ok(person).build();
+            return Response.ok(PersonMapper.toDTO(person)).build();
         } else {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
@@ -49,7 +54,7 @@ public class PersonController {
         } catch (Exception e) {
             return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
         }
-        return Response.status(Response.Status.CREATED).entity(person).build();
+        return Response.status(Response.Status.CREATED).build();
     }
 
     @PUT
@@ -59,7 +64,7 @@ public class PersonController {
             User user = (User) securityContext.getUserPrincipal();
             updatedPerson.setId(id);
             personService.updatePerson(updatedPerson, user);
-            return Response.ok(updatedPerson).build();
+            return Response.ok().build();
         } catch (Exception e) {
             return Response.status(Response.Status.FORBIDDEN).entity(e.getMessage()).build();
         }
