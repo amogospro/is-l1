@@ -1,14 +1,21 @@
 package com.lab1.lab1.repository;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.lab1.lab1.controller.WebSocketEndpoint;
 import com.lab1.lab1.model.entities.Person;
 import com.lab1.lab1.model.entities.Product;
+import com.lab1.lab1.model.entities.Role;
 import com.lab1.lab1.model.entities.User;
+import com.lab1.lab1.model.mapper.ProductMapper;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
 import jakarta.transaction.Transactional;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -102,13 +109,31 @@ public class ProductRepository {
     }
 
     @Transactional
-    public void increasePriceForAllProducts(Double percentage) {
-        // Обновляем цену всех продуктов, увеличивая её на указанный процент
-        List<Product> products = em.createQuery("SELECT p FROM Product p", Product.class).getResultList();
+    public void increasePriceForAllProducts(Double percentage, User user) throws IOException {
+        List<Product> products;
+
+        // Проверка роли пользователя
+        if (user.getRole() == Role.ADMIN) {
+            // Если пользователь — админ, выбираем все продукты
+            products = em.createQuery("SELECT p FROM Product p", Product.class).getResultList();
+        } else {
+            // Если пользователь — не админ, выбираем только те продукты, которые ему принадлежат
+            products = em.createQuery("SELECT p FROM Product p WHERE p.userOwner = :user", Product.class)
+                    .setParameter("user", user)
+                    .getResultList();
+        }
+
+        // Обновляем цену для всех выбранных продуктов
         for (Product product : products) {
             int updatedPrice = (int) Math.round(product.getPrice() * (1 + percentage / 100));
             product.setPrice(updatedPrice);
-            em.merge(product);
+            em.merge(product); // Сохраняем обновление
+
+            ObjectMapper objectMapper = new ObjectMapper();
+            objectMapper.registerModule(new JavaTimeModule());
+            String updateJson = objectMapper.writeValueAsString(ProductMapper.toDTO(product));
+
+            WebSocketEndpoint.sendUpdate(updateJson);
         }
     }
 
