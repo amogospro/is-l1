@@ -32,6 +32,8 @@
   import { createOrganization, createPerson, organizations, persons } from '$lib/api';
   import PersonForm from './person-form.svelte';
 
+  export let readonly = false;
+
   export let onSubmit: (data: ProductEdit) => any = (data) => {
     toast.success(`You submitted ${JSON.stringify(data, null, 2)}`);
   };
@@ -66,7 +68,9 @@
   let selectedManufacturerName: string | undefined;
   $: selectedManufacturer = $formData.manufacturer?.id
     ? {
-        label: selectedManufacturerName,
+        label:
+          selectedManufacturerName ??
+          (('name' in $formData.manufacturer && $formData.manufacturer.name) || undefined),
         value: $formData.manufacturer?.id
       }
     : undefined;
@@ -74,7 +78,8 @@
   let selectedOwnerName: string | undefined;
   $: selectedOwner = $formData.owner?.id
     ? {
-        label: selectedOwnerName,
+        label:
+          selectedOwnerName ?? (('name' in $formData.owner && $formData.owner.name) || undefined),
         value: $formData.owner?.id
       }
     : undefined;
@@ -94,7 +99,7 @@
           <Field {form} name="name">
             <Control let:attrs>
               <Label>Name</Label>
-              <Input {...attrs} bind:value={$formData.name} />
+              <Input {...attrs} {readonly} bind:value={$formData.name} />
             </Control>
             <FieldErrors />
           </Field>
@@ -105,14 +110,14 @@
             <Field {form} name="coordinates.x">
               <Control let:attrs>
                 <Label>x</Label>
-                <NumberInput {...attrs} bind:value={$formData.coordinates.x} />
+                <NumberInput {readonly} {...attrs} bind:value={$formData.coordinates.x} />
               </Control>
               <FieldErrors />
             </Field>
             <Field {form} name="coordinates.y">
               <Control let:attrs>
                 <Label>y</Label>
-                <NumberInput {...attrs} bind:value={$formData.coordinates.y} />
+                <NumberInput {readonly} {...attrs} bind:value={$formData.coordinates.y} />
               </Control>
               <FieldErrors />
             </Field>
@@ -122,7 +127,7 @@
           <Field {form} name="price">
             <Control let:attrs>
               <Label>Price</Label>
-              <NumberInput {...attrs} bind:value={$formData.price} />
+              <NumberInput {readonly} {...attrs} bind:value={$formData.price} />
             </Control>
             <FieldErrors />
           </Field>
@@ -131,7 +136,7 @@
           <Field {form} name="manufactureCost">
             <Control let:attrs>
               <Label>Manufacture Cost</Label>
-              <NumberInput {...attrs} bind:value={$formData.manufactureCost} />
+              <NumberInput {readonly} {...attrs} bind:value={$formData.manufactureCost} />
             </Control>
             <FieldErrors />
           </Field>
@@ -140,7 +145,7 @@
           <Field {form} name="rating">
             <Control let:attrs>
               <Label>Rating</Label>
-              <NumberInput {...attrs} bind:value={$formData.rating} />
+              <NumberInput {readonly} {...attrs} bind:value={$formData.rating} />
             </Control>
             <FieldErrors />
           </Field>
@@ -159,17 +164,19 @@
                 <Select.Trigger>
                   <Select.Value placeholder="Select Unit of Measure" />
                 </Select.Trigger>
-                <Select.Content>
-                  <Select.Group>
-                    <Select.Label>Units</Select.Label>
-                    {#each UnitOfMeasure.options as unit}
-                      {@const label = _.startCase(_.toLower(unit))}
-                      <Select.Item value={unit} {label}>
-                        {label}
-                      </Select.Item>
-                    {/each}
-                  </Select.Group>
-                </Select.Content>
+                {#if !readonly}
+                  <Select.Content>
+                    <Select.Group>
+                      <Select.Label>Units</Select.Label>
+                      {#each UnitOfMeasure.options as unit}
+                        {@const label = _.startCase(_.toLower(unit))}
+                        <Select.Item value={unit} {label}>
+                          {label}
+                        </Select.Item>
+                      {/each}
+                    </Select.Group>
+                  </Select.Content>
+                {/if}
               </Select.Root>
             </Control>
             <FieldErrors />
@@ -195,64 +202,67 @@
                   <Select.Trigger>
                     <Select.Value placeholder="Select Manufacturer" />
                   </Select.Trigger>
-                  <Select.Content>
-                    <Select.Group>
-                      <Select.Label>Manufacturers</Select.Label>
+                  {#if !readonly}
+                    <Select.Content>
+                      <Select.Group>
+                        <Select.Label>Manufacturers</Select.Label>
 
-                      {#each $organizations as organization}
-                        {@const label = _.startCase(_.toLower(organization.name))}
-                        <Select.Item value={organization.id} {label}>
-                          {label}
-                        </Select.Item>
-                      {/each}
-                      <Dialog.Root>
-                        <Dialog.Trigger class="ml-auto">
-                          <Button>Create new Organization</Button>
-                        </Dialog.Trigger>
-                        <Dialog.Content class="w-full max-w-[1500px]">
-                          <OrganizationForm
-                            onSubmit={async (data) => {
-                              console.log(data);
-                              await createOrganization(data);
-                              toast.info('Organization created');
-                            }}
-                            data={{
-                              name: 'Acme Corporation',
-                              officialAddress: {
-                                zipCode: '',
-                                town: {
-                                  x: 0,
-                                  y: 0,
-                                  z: 0
-                                }
-                              },
-                              annualTurnover: 0, // Value > 0
-                              employeesCount: 0, // Value > 0
-                              rating: 0, // Value > 0
-                              type: 'COMMERCIAL'
-                            }}
-                          >
-                            <svelte:fragment slot="title">Create new Organization</svelte:fragment>
-                            <svelte:fragment slot="button">Create</svelte:fragment>
-                          </OrganizationForm>
-                        </Dialog.Content>
-                      </Dialog.Root>
-                    </Select.Group>
-                  </Select.Content>
+                        {#each $organizations as organization}
+                          {@const label = _.startCase(_.toLower(organization.name))}
+                          <Select.Item value={organization.id} {label}>
+                            {label}
+                          </Select.Item>
+                        {/each}
+                        <Dialog.Root>
+                          <Dialog.Trigger class="ml-auto">
+                            <Button>Create new Organization</Button>
+                          </Dialog.Trigger>
+                          <Dialog.Content class="w-full max-w-[1500px]">
+                            <OrganizationForm
+                              onSubmit={async (data) => {
+                                console.log(data);
+                                await createOrganization(data);
+                                toast.info('Organization created');
+                              }}
+                              data={{
+                                name: 'Acme Corporation',
+                                officialAddress: {
+                                  zipCode: '',
+                                  town: {
+                                    x: 0,
+                                    y: 0,
+                                    z: 0
+                                  }
+                                },
+                                annualTurnover: 0, // Value > 0
+                                employeesCount: 0, // Value > 0
+                                rating: 0, // Value > 0
+                                type: 'COMMERCIAL'
+                              }}
+                            >
+                              <svelte:fragment slot="title">Create new Organization</svelte:fragment
+                              >
+                              <svelte:fragment slot="button">Create</svelte:fragment>
+                            </OrganizationForm>
+                          </Dialog.Content>
+                        </Dialog.Root>
+                      </Select.Group>
+                    </Select.Content>
+                  {/if}
                 </Select.Root>
               </Control>
               <FieldErrors />
             </Field>
-
-            <Button on:click={() => ($formData.manufacturer = undefined)}>
-              Remove Manufacturer
-            </Button>
-          {:else}
+            {#if !readonly}
+              <Button on:click={() => ($formData.manufacturer = undefined)}>
+                Remove Manufacturer
+              </Button>
+            {/if}
+          {:else if !readonly}
             <Button on:click={() => ($formData.manufacturer = { id: 0 })}>
               Include Manufacturer
             </Button>
           {/if}
-          <!-- <OrganizationForm /> -->
         </div>
 
         <div>
@@ -273,49 +283,50 @@
                 <Select.Trigger>
                   <Select.Value placeholder="Select Owner" />
                 </Select.Trigger>
-                <Select.Content>
-                  <Select.Group>
-                    <Select.Label>Owners</Select.Label>
+                {#if !readonly}
+                  <Select.Content>
+                    <Select.Group>
+                      <Select.Label>Owners</Select.Label>
 
-                    {#each $persons as person}
-                      {@const label = _.startCase(_.toLower(person.name))}
-                      <Select.Item value={person.id} {label}>
-                        {label}
-                      </Select.Item>
-                    {/each}
-                    <Dialog.Root>
-                      <Dialog.Trigger class="ml-auto">
-                        <Button>Create new Person</Button>
-                      </Dialog.Trigger>
-                      <Dialog.Content class="w-full max-w-[1500px]">
-                        <PersonForm
-                          onSubmit={async (data) => {
-                            console.log(data);
-                            await createPerson(data);
-                            toast.info('Person created');
-                          }}
-                          data={{
-                            name: '',
-                            eyeColor: 'BLUE',
-                            // birthday:
-                            // @ts-ignore
-                            birthday: '',
-                            hairColor: 'GREEN',
-                            nationality: 'USA',
-                            location: {
-                              x: 0,
-                              y: 0,
-                              z: 0
-                            }
-                          }}
-                        >
-                          <svelte:fragment slot="title">Create new Person</svelte:fragment>
-                          <svelte:fragment slot="button">Create</svelte:fragment>
-                        </PersonForm>
-                      </Dialog.Content>
-                    </Dialog.Root>
-                  </Select.Group>
-                </Select.Content>
+                      {#each $persons as person}
+                        {@const label = _.startCase(_.toLower(person.name))}
+                        <Select.Item value={person.id} {label}>
+                          {label}
+                        </Select.Item>
+                      {/each}
+                      <Dialog.Root>
+                        <Dialog.Trigger class="ml-auto">
+                          <Button>Create new Person</Button>
+                        </Dialog.Trigger>
+                        <Dialog.Content class="w-full max-w-[1500px]">
+                          <PersonForm
+                            onSubmit={async (data) => {
+                              console.log(data);
+                              await createPerson(data);
+                              toast.info('Person created');
+                            }}
+                            data={{
+                              name: '',
+                              eyeColor: 'BLUE',
+                              // @ts-ignore
+                              birthday: '',
+                              hairColor: 'GREEN',
+                              nationality: 'USA',
+                              location: {
+                                x: 0,
+                                y: 0,
+                                z: 0
+                              }
+                            }}
+                          >
+                            <svelte:fragment slot="title">Create new Person</svelte:fragment>
+                            <svelte:fragment slot="button">Create</svelte:fragment>
+                          </PersonForm>
+                        </Dialog.Content>
+                      </Dialog.Root>
+                    </Select.Group>
+                  </Select.Content>
+                {/if}
               </Select.Root>
             </Control>
             <FieldErrors />
@@ -324,13 +335,15 @@
         </div>
       </div>
     </Card.Content>
-    <Card.Footer>
-      <div class="flex w-full">
-        <Button class="ml-auto" type="submit">
-          <slot name="button">Update</slot>
-        </Button>
-      </div>
-    </Card.Footer>
+    <slot name="footer">
+      <Card.Footer>
+        <div class="flex w-full">
+          <Button class="ml-auto" type="submit">
+            <slot name="button">Update</slot>
+          </Button>
+        </div>
+      </Card.Footer>
+    </slot>
   </form>
 </div>
 <!-- <SuperDebug data={$formData} /> -->
