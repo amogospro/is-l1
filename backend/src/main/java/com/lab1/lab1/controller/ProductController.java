@@ -156,7 +156,8 @@ public class ProductController {
     @Path("/increase-price")
     public Response increasePriceForAllProducts(@QueryParam("percentage") Double percentage) {
         try {
-            productService.increasePriceForAllProducts(percentage);
+            User user = (User) securityContext.getUserPrincipal();
+            productService.increasePriceForAllProducts(percentage, user);
             return Response.ok("Prices increased by " + percentage + "% for all products.").build();
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)

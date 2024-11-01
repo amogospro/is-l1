@@ -13,6 +13,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 
+import java.io.IOException;
 import java.util.List;
 
 @ApplicationScoped
@@ -167,8 +168,8 @@ public class ProductService {
     }
 
     @Transactional
-    public void increasePriceForAllProducts(Double percentage) {
-        productRepository.increasePriceForAllProducts(percentage);
+    public void increasePriceForAllProducts(Double percentage, User user) throws IOException {
+        productRepository.increasePriceForAllProducts(percentage, user);
     }
 }
 
