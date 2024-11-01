@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.lab1.lab1.controller.WebSocketEndpoint;
 import com.lab1.lab1.model.entities.*;
+import com.lab1.lab1.model.mapper.ProductMapper;
 import com.lab1.lab1.repository.OrganizationRepository;
 import com.lab1.lab1.repository.PersonRepository;
 import com.lab1.lab1.repository.ProductRepository;
@@ -69,7 +70,7 @@ public class ProductService {
 
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
-        String updateJson = objectMapper.writeValueAsString(product);
+        String updateJson = objectMapper.writeValueAsString(ProductMapper.toDTO(product));
 
         WebSocketEndpoint.sendUpdate(updateJson);
     }
@@ -116,7 +117,7 @@ public class ProductService {
 
             ObjectMapper objectMapper = new ObjectMapper();
             objectMapper.registerModule(new JavaTimeModule());
-            String updateJson = objectMapper.writeValueAsString(product);
+            String updateJson = objectMapper.writeValueAsString(ProductMapper.toDTO(product));
 
             WebSocketEndpoint.sendUpdate(updateJson);
         } else {
@@ -135,7 +136,7 @@ public class ProductService {
 
                 ObjectMapper objectMapper = new ObjectMapper();
                 objectMapper.registerModule(new JavaTimeModule());
-                String updateJson = objectMapper.writeValueAsString(product);
+                String updateJson = objectMapper.writeValueAsString(ProductMapper.toDTO(product));
 
                 WebSocketEndpoint.sendUpdate(updateJson);
             } else {

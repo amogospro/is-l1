@@ -57,7 +57,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0dXNlcjIiLCJyb2xlIjoiV
 Content-Type: application/json
 
 {
-  "name": "Dota722",
+  "name": "Dota722222",
   "coordinates": {
     "x": 5,
     "y": 100
@@ -127,7 +127,7 @@ Content-Type: application/json
 }
 
 ### Delete a Product - true
-DELETE http://localhost:8080/lab1-1.0-SNAPSHOT/api/products/3
+DELETE http://localhost:8080/lab1-1.0-SNAPSHOT/api/products/2
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0dXNlciIsInJvbGUiOiJVU0VSIiwiaWF0IjoxNzMwNDcwNDc1LCJleHAiOjE3MzA1NTY4NzV9.kgbgDUG6aT7fZxHwsD6uzyNpeID-l2GfXcrOH9F0IMU
 
 ### Delete a Person - true

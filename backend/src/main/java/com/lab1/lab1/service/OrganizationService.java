@@ -6,6 +6,7 @@ import com.lab1.lab1.controller.WebSocketEndpoint;
 import com.lab1.lab1.model.entities.Organization;
 import com.lab1.lab1.model.entities.Role;
 import com.lab1.lab1.model.entities.User;
+import com.lab1.lab1.model.mapper.OrganizationMapper;
 import com.lab1.lab1.repository.OrganizationRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -25,7 +26,7 @@ public class OrganizationService {
 
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
-        String updateJson = objectMapper.writeValueAsString(organization);
+        String updateJson = objectMapper.writeValueAsString(OrganizationMapper.toDTO(organization));
 
         WebSocketEndpoint.sendUpdate(updateJson);
     }
@@ -47,7 +48,7 @@ public class OrganizationService {
 
             ObjectMapper objectMapper = new ObjectMapper();
             objectMapper.registerModule(new JavaTimeModule());
-            String updateJson = objectMapper.writeValueAsString(organization);
+            String updateJson = objectMapper.writeValueAsString(OrganizationMapper.toDTO(organization));
 
             WebSocketEndpoint.sendUpdate(updateJson);
         } else {
@@ -66,7 +67,7 @@ public class OrganizationService {
 
                 ObjectMapper objectMapper = new ObjectMapper();
                 objectMapper.registerModule(new JavaTimeModule());
-                String updateJson = objectMapper.writeValueAsString(organization);
+                String updateJson = objectMapper.writeValueAsString(OrganizationMapper.toDTO(organization));
 
                 WebSocketEndpoint.sendUpdate(updateJson);
             } else {

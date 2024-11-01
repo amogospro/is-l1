@@ -8,6 +8,7 @@ import com.lab1.lab1.model.entities.Person;
 import com.lab1.lab1.model.entities.Product;
 import com.lab1.lab1.model.entities.Role;
 import com.lab1.lab1.model.entities.User;
+import com.lab1.lab1.model.mapper.PersonMapper;
 import com.lab1.lab1.repository.PersonRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -28,7 +29,7 @@ public class PersonService {
 
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
-        String updateJson = objectMapper.writeValueAsString(person);
+        String updateJson = objectMapper.writeValueAsString(PersonMapper.toDTO(person));
 
         WebSocketEndpoint.sendUpdate(updateJson);
     }
@@ -50,7 +51,7 @@ public class PersonService {
 
             ObjectMapper objectMapper = new ObjectMapper();
             objectMapper.registerModule(new JavaTimeModule());
-            String updateJson = objectMapper.writeValueAsString(person);
+            String updateJson = objectMapper.writeValueAsString(PersonMapper.toDTO(person));
 
             WebSocketEndpoint.sendUpdate(updateJson);
         } else {
@@ -70,7 +71,7 @@ public class PersonService {
 
                 ObjectMapper objectMapper = new ObjectMapper();
                 objectMapper.registerModule(new JavaTimeModule());
-                String updateJson = objectMapper.writeValueAsString(person);
+                String updateJson = objectMapper.writeValueAsString(PersonMapper.toDTO(person));
 
                 WebSocketEndpoint.sendUpdate(updateJson);
             } else {
