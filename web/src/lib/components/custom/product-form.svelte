@@ -254,7 +254,7 @@
               <FieldErrors />
             </Field>
             {#if !readonly}
-              <Button on:click={() => ($formData.manufacturer = undefined)}>
+              <Button on:click={() => ($formData.manufacturer = null)}>
                 Remove Manufacturer
               </Button>
             {/if}

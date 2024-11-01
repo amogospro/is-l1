@@ -1,15 +1,23 @@
 <script lang="ts">
   import { toast } from 'svelte-sonner';
-  import GetAverageHealth from './get-average-health.svelte';
-  import GetByMelle from './get-by-melle.svelte';
+  import GetAverageRating from './get-average-rating.svelte';
+  import GetUniqueOwners from './get-unique-owners.svelte';
+  import GetRatingAbove from './rating-above.svelte';
   import RemoveByMelee from './remove-by-melee.svelte';
+  import PriceRange from './price-range.svelte';
 </script>
 
-<div class="grid grid-cols-2 gap-10">
+<div class="grid grid-cols-4 gap-10">
   <RemoveByMelee />
-  <GetAverageHealth />
+  <GetAverageRating />
   <div class="col-span-2">
-    <GetByMelle />
+    <GetUniqueOwners />
+  </div>
+  <div class="col-span-2">
+    <GetRatingAbove />
+  </div>
+  <div class="col-span-2">
+    <PriceRange />
   </div>
 </div>
 

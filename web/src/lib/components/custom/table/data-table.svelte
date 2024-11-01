@@ -26,7 +26,7 @@
   import _ from 'lodash';
   import SpaceMarineEdit from '../product-form.svelte';
   import { toast } from 'svelte-sonner';
-  import { createProduct, products, getProducts, refresh_signal } from '$lib/api';
+  import { createProduct, products as all_products, getProducts, refresh_signal } from '$lib/api';
   import { cn } from '$lib/utils';
   import { onMount } from 'svelte';
   import Link from '$lib/components/ui/link/link.svelte';
@@ -36,13 +36,16 @@
 
   // data = $products
 
+  export let products = all_products;
+
+  export let readonly = false;
   // products.subscribe((products) => {
   //   console.log(products);
   //   data = products;
   // });
 
   const table = createTable(products, {
-    page: addPagination(),
+    page: addPagination({ initialPageSize: readonly ? Infinity : 10 }),
     sort: addSortBy({ disableMultiSort: true, serverSide: true }),
     filter: addTableFilter({
       serverSide: true,
@@ -244,26 +247,35 @@
     hasPreviousPage.set(prev.length > 0);
   };
   $: {
-    refetch($pageSize, $pageIndex, $sortKeys, $filterValue);
+    if (!readonly) refetch($pageSize, $pageIndex, $sortKeys, $filterValue);
   }
+
   onMount(() => {
-    refresh_signal.subscribe(() => {
-      refetch($pageSize, $pageIndex, $sortKeys, $filterValue);
-    });
+    if (!readonly) {
+      refresh_signal.subscribe(() => {
+        refetch($pageSize, $pageIndex, $sortKeys, $filterValue);
+      });
+    }
   });
 </script>
 
 <div>
   <div class="gap-10px flex items-center py-4">
-    <Input class="max-w-sm" placeholder="Filter by name..." type="text" bind:value={$filterValue} />
+    {#if !readonly}
+      <Input
+        class="max-w-sm"
+        placeholder="Filter by name..."
+        type="text"
+        bind:value={$filterValue}
+      />
 
-    <Dialog.Root>
-      <Dialog.Trigger class="ml-auto">
-        <!-- <Icon class="h-[1.2rem] w-[1.2rem]" /> -->
-        <Button>New Product</Button>
-      </Dialog.Trigger>
-      <Dialog.Content class="w-full max-w-[1500px]">
-        <!-- <Dialog.Header>
+      <Dialog.Root>
+        <Dialog.Trigger class="ml-auto">
+          <!-- <Icon class="h-[1.2rem] w-[1.2rem]" /> -->
+          <Button>New Product</Button>
+        </Dialog.Trigger>
+        <Dialog.Content class="w-full max-w-[1500px]">
+          <!-- <Dialog.Header>
       <Dialog.Title>Are you sure absolutely sure?</Dialog.Title>
       <Dialog.Description>
         This action cannot be undone. This will permanently delete your account and remove your data
@@ -271,76 +283,77 @@
       </Dialog.Description>
     </Dialog.Header> -->
 
-        <SpaceMarineEdit
-          onSubmit={async (data) => {
-            console.log(data);
-            await createProduct(data);
-            toast.info('Product created');
-          }}
-          data={{
-            name: 'Super Widget',
-            coordinates: {
-              x: 500, // Within the maximum value of 864
-              y: 300
-            },
-            creationDate: new Date(), // Auto-generated
-            unitOfMeasure: 'METERS',
-            manufacturer: {
-              id: 1
-              //   name: 'Acme Corporation',
-              //   officialAddress: {
-              //     zipCode: '12345',
-              //     town: {
-              //       x: 10,
-              //       y: 20,
-              //       z: 30
-              //     }
-              //   },
-              //   annualTurnover: 1_000_000, // Value > 0
-              //   employeesCount: 250, // Value > 0
-              //   rating: 5, // Value > 0
-              //   type: 'COMMERCIAL'
-            },
-            price: 150, // Value > 0
-            manufactureCost: 75,
-            rating: 4, // Value > 0
-            owner: {
-              id: 2
-              //   name: 'Alice Johnson',
-              //   eyeColor: 'BLUE',
-              //   hairColor: 'YELLOW', // Valid enum value
-              //   location: {
-              //     x: 5,
-              //     y: 10,
-              //     z: 15
-              //   },
-              //   birthday: new Date('1990-01-01'),
-              //   nationality: 'USA'
-            }
-          }}
-        >
-          <svelte:fragment slot="title">Create new Product</svelte:fragment>
-          <svelte:fragment slot="button">Create</svelte:fragment>
-        </SpaceMarineEdit>
-      </Dialog.Content>
-    </Dialog.Root>
+          <SpaceMarineEdit
+            onSubmit={async (data) => {
+              console.log(data);
+              await createProduct(data);
+              toast.info('Product created');
+            }}
+            data={{
+              name: 'Super Widget',
+              coordinates: {
+                x: 500, // Within the maximum value of 864
+                y: 300
+              },
+              creationDate: new Date(), // Auto-generated
+              unitOfMeasure: 'METERS',
+              manufacturer: {
+                id: 1
+                //   name: 'Acme Corporation',
+                //   officialAddress: {
+                //     zipCode: '12345',
+                //     town: {
+                //       x: 10,
+                //       y: 20,
+                //       z: 30
+                //     }
+                //   },
+                //   annualTurnover: 1_000_000, // Value > 0
+                //   employeesCount: 250, // Value > 0
+                //   rating: 5, // Value > 0
+                //   type: 'COMMERCIAL'
+              },
+              price: 150, // Value > 0
+              manufactureCost: 75,
+              rating: 4, // Value > 0
+              owner: {
+                id: 2
+                //   name: 'Alice Johnson',
+                //   eyeColor: 'BLUE',
+                //   hairColor: 'YELLOW', // Valid enum value
+                //   location: {
+                //     x: 5,
+                //     y: 10,
+                //     z: 15
+                //   },
+                //   birthday: new Date('1990-01-01'),
+                //   nationality: 'USA'
+              }
+            }}
+          >
+            <svelte:fragment slot="title">Create new Product</svelte:fragment>
+            <svelte:fragment slot="button">Create</svelte:fragment>
+          </SpaceMarineEdit>
+        </Dialog.Content>
+      </Dialog.Root>
 
-    <DropdownMenu.Root>
-      <DropdownMenu.Trigger asChild let:builder>
-        <Button variant="outline" builders={[builder]}>
-          Columns <ChevronDown class="ml-2 h-4 w-4" />
-        </Button>
-      </DropdownMenu.Trigger>
-      <DropdownMenu.Content>
-        {#each flatColumns as col}
-          {#if hidableCols.includes(col.id)}
-            <DropdownMenu.CheckboxItem bind:checked={hideForId[col.id]}>
-              {col.header}
-            </DropdownMenu.CheckboxItem>
-          {/if}
-        {/each}
-      </DropdownMenu.Content>
-    </DropdownMenu.Root>
+      <DropdownMenu.Root>
+        <DropdownMenu.Trigger asChild let:builder>
+          <Button variant="outline" builders={[builder]}>
+            Columns <ChevronDown class="ml-2 h-4 w-4" />
+          </Button>
+        </DropdownMenu.Trigger>
+        <DropdownMenu.Content>
+          {#each flatColumns as col}
+            {#if hidableCols.includes(col.id)}
+              <DropdownMenu.CheckboxItem bind:checked={hideForId[col.id]}>
+                {col.header}
+              </DropdownMenu.CheckboxItem>
+            {/if}
+          {/each}
+        </DropdownMenu.Content>
+      </DropdownMenu.Root>
+    {/if}
   </div>
   <div class="rounded-md border">
     <Table.Root {...$tableAttrs}>
@@ -408,21 +421,23 @@
       </Table.Body>
     </Table.Root>
   </div>
-  <div class="flex items-center justify-end space-x-4 py-4">
-    <!-- <div class="text-muted-foreground flex-1 text-sm">
+  {#if !readonly}
+    <div class="flex items-center justify-end space-x-4 py-4">
+      <!-- <div class="text-muted-foreground flex-1 text-sm">
       {Object.keys($selectedDataIds).length} of {$rows.length} row(s) selected.
     </div> -->
-    <Button
-      variant="outline"
-      size="sm"
-      on:click={() => ($pageIndex = $pageIndex - 1)}
-      disabled={!$hasPreviousPage}>Previous</Button
-    >
-    <Button
-      variant="outline"
-      size="sm"
-      disabled={!$hasNextPage}
-      on:click={() => ($pageIndex = $pageIndex + 1)}>Next</Button
-    >
-  </div>
+      <Button
+        variant="outline"
+        size="sm"
+        on:click={() => ($pageIndex = $pageIndex - 1)}
+        disabled={!$hasPreviousPage}>Previous</Button
+      >
+      <Button
+        variant="outline"
+        size="sm"
+        disabled={!$hasNextPage}
+        on:click={() => ($pageIndex = $pageIndex + 1)}>Next</Button
+      >
+    </div>
+  {/if}
 </div>

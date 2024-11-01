@@ -71,7 +71,7 @@ export const ProductEditSchema = z.object({
   coordinates: CoordinatesSchema, // Cannot be null
   creationDate: z.coerce.date(), // Auto-generated, cannot be null
   unitOfMeasure: UnitOfMeasure.optional(), // Can be null
-  manufacturer: z.union([z.object({ id: z.number().optional() }), OrganizationSchema]).optional(), // Can be null
+  manufacturer: z.union([z.object({ id: z.number().optional() }), OrganizationSchema]).nullable(), // Can be null
   price: z.number().positive(), // Value > 0
   manufactureCost: z.number(), // No constraints specified
   rating: z.number().int().positive().optional().nullable(), // Can be null, value > 0
