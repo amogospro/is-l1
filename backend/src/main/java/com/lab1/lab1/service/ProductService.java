@@ -118,7 +118,7 @@ public class ProductService {
 
             ObjectMapper objectMapper = new ObjectMapper();
             objectMapper.registerModule(new JavaTimeModule());
-            String updateJson = objectMapper.writeValueAsString(ProductMapper.toDTO(product));
+            String updateJson = objectMapper.writeValueAsString(ProductMapper.toDTO(currentProduct));
 
             WebSocketEndpoint.sendUpdate(updateJson);
         } else {

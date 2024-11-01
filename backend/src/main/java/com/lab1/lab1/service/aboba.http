@@ -103,21 +103,18 @@ Content-Type: application/json
 }
 
 ### Update a Products - true
-PUT http://localhost:8080/lab1-1.0-SNAPSHOT/api/products/1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0dXNlciIsInJvbGUiOiJVU0VSIiwiaWF0IjoxNzMwNDcwNDc1LCJleHAiOjE3MzA1NTY4NzV9.kgbgDUG6aT7fZxHwsD6uzyNpeID-l2GfXcrOH9F0IMU
+PUT http://localhost:8080/lab1-1.0-SNAPSHOT/api/products/4
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0dXNlcjIiLCJyb2xlIjoiVVNFUiIsImlhdCI6MTczMDQ5NzQyOSwiZXhwIjoxNzMwNTgzODI5fQ.GABkrTm7aXphbar5OTpG7l5qwx6yEjsm0q9cWKKQ4VQ
 Content-Type: application/json
 
 {
-  "id": 1,
-  "name": "Dota1498",
+  "id": 4,
+  "name": "Dota142229",
   "coordinates": {
     "x": 5,
     "y": 110
   },
   "unitOfMeasure": "METERS",
-  "manufacturer": {
-    "id": 1
-  },
   "price": 20,
   "manufactureCost": 150.0,
   "rating": 5,

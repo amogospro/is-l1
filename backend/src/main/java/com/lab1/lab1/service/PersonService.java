@@ -51,7 +51,7 @@ public class PersonService {
 
             ObjectMapper objectMapper = new ObjectMapper();
             objectMapper.registerModule(new JavaTimeModule());
-            String updateJson = objectMapper.writeValueAsString(PersonMapper.toDTO(person));
+            String updateJson = objectMapper.writeValueAsString(PersonMapper.toDTO(currentPerson));
 
             WebSocketEndpoint.sendUpdate(updateJson);
         } else {

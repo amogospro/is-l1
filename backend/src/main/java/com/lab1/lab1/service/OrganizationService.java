@@ -48,7 +48,7 @@ public class OrganizationService {
 
             ObjectMapper objectMapper = new ObjectMapper();
             objectMapper.registerModule(new JavaTimeModule());
-            String updateJson = objectMapper.writeValueAsString(OrganizationMapper.toDTO(organization));
+            String updateJson = objectMapper.writeValueAsString(OrganizationMapper.toDTO(currentOrganization));
 
             WebSocketEndpoint.sendUpdate(updateJson);
         } else {
