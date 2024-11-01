@@ -38,7 +38,6 @@ public class ProductService {
         // Set owner
         // Проверяем, передан ли id владельца
         Person owner = product.getOwner();
-        Organization organization = product.getManufacturer();
 
         if (owner.getId() != 0) {
             // Если передан id, то ищем владельца по id
@@ -46,21 +45,26 @@ public class ProductService {
 
 
             if (existingOwner == null) {
-                throw new Exception("Owner not found");
+                throw new Exception("Product owner not found");
             }
 
 
             product.setOwner(existingOwner);
         }
 
-        if (organization.getId() != null) {
-            Organization existingOrganization = organizationRepository.findById(organization.getId());
+        Organization organization = product.getManufacturer();
 
-            if (existingOrganization == null) {
-                throw new Exception("Manufacturer not found");
+        if (organization != null) {
+            if (organization.getId() != null) {
+                Organization existingOrganization = organizationRepository.findById(organization.getId());
+
+                System.out.println(existingOrganization);
+                if (existingOrganization == null) {
+                    throw new Exception("Manufacturer not found");
+                }
+
+                product.setManufacturer(existingOrganization);
             }
-
-            product.setManufacturer(existingOrganization);
         }
 
         product.setUserOwner(user);

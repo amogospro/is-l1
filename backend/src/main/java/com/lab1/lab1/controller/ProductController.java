@@ -54,7 +54,7 @@ public class ProductController {
             productService.createProduct(product, user);
         } catch (Exception e) {
             System.out.println(e.getMessage());
-            return Response.status(Response.Status.BAD_REQUEST).entity("Owner not found").build();
+            return Response.status(Response.Status.BAD_REQUEST).entity("Product owner not found").build();
         }
         return Response.status(Response.Status.CREATED).entity(product).build();
     }

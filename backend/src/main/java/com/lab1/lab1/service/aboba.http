@@ -53,19 +53,16 @@ Accept: application/json
 
 ### Create a New Products - true
 POST http://localhost:8080/lab1-1.0-SNAPSHOT/api/products
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0dXNlciIsInJvbGUiOiJVU0VSIiwiaWF0IjoxNzI5Mjg1OTExLCJleHAiOjE3MjkzNzIzMTF9.MA8ucIR55JePKpoffb0XseS55G5YE0Ic_0eZnxVrUYc
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0dXNlciIsInJvbGUiOiJVU0VSIiwiaWF0IjoxNzMwNDcwNDc1LCJleHAiOjE3MzA1NTY4NzV9.kgbgDUG6aT7fZxHwsD6uzyNpeID-l2GfXcrOH9F0IMU
 Content-Type: application/json
 
 {
-  "name": "Dota4",
+  "name": "Dota6",
   "coordinates": {
     "x": 5,
     "y": 100
   },
   "unitOfMeasure": "METERS",
-  "manufacturer": {
-    "id": 1
-  },
   "price": 20,
   "manufactureCost": 150.0,
   "rating": 5,
@@ -76,7 +73,7 @@ Content-Type: application/json
 
 ### Create a New Person - true
 POST http://localhost:8080/lab1-1.0-SNAPSHOT/api/persons
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0dXNlciIsInJvbGUiOiJVU0VSIiwiaWF0IjoxNzI5Mjg1OTExLCJleHAiOjE3MjkzNzIzMTF9.MA8ucIR55JePKpoffb0XseS55G5YE0Ic_0eZnxVrUYc
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0dXNlciIsInJvbGUiOiJVU0VSIiwiaWF0IjoxNzMwNDcwNDc1LCJleHAiOjE3MzA1NTY4NzV9.kgbgDUG6aT7fZxHwsD6uzyNpeID-l2GfXcrOH9F0IMU
 Content-Type: application/json
 
 {
@@ -94,7 +91,7 @@ Content-Type: application/json
 
 ### Create a New Organization - true
 POST http://localhost:8080/lab1-1.0-SNAPSHOT/api/organizations
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0dXNlciIsInJvbGUiOiJVU0VSIiwiaWF0IjoxNzI5Mjg1OTExLCJleHAiOjE3MjkzNzIzMTF9.MA8ucIR55JePKpoffb0XseS55G5YE0Ic_0eZnxVrUYc
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0dXNlciIsInJvbGUiOiJVU0VSIiwiaWF0IjoxNzMwNDcwNDc1LCJleHAiOjE3MzA1NTY4NzV9.kgbgDUG6aT7fZxHwsD6uzyNpeID-l2GfXcrOH9F0IMU
 Content-Type: application/json
 
 {
