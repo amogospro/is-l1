@@ -3,15 +3,12 @@
   import * as d3 from 'd3';
   import { toast } from 'svelte-sonner';
   import * as Dialog from '$lib/components/ui/dialog/index.js';
-  import SpaceMarineEdit from '$lib/components/custom/product-form.svelte';
+  import ProductsForm from '$lib/components/custom/product-form.svelte';
   import type { Product } from '$lib/types';
-  import { products } from '$lib/data';
-
-  let svg;
+  import { getProducts, products, refresh_signal } from '$lib/api';
 
   let data: Product | null = null;
 
-  const spaceMarines = products;
   const hash = (str: string) => {
     let hash = 0;
     for (let i = 0; i < str.length; i++) {
@@ -20,18 +17,23 @@
       hash = hash & hash; // Convert to 32bit integer
     }
     const seed = Math.abs(hash);
-    const random = Math.sin(seed) * 10000;
+    const random = Math.sin(seed) * 1337;
     const res = Math.floor((random - Math.floor(random)) * 360);
 
     console.log(res);
     return res;
   };
 
-  onMount(() => {
-    const width = 800,
-      height = 800,
-      margin = 50;
+  let svg: d3.Selection<SVGSVGElement, unknown, HTMLElement, any>;
+  const width = 800,
+    height = 800,
+    margin = 50;
 
+  const refetch = async () => {
+    const new_products = await getProducts();
+    products.set(new_products);
+  };
+  onMount(() => {
     // const x = d3
     //   .scaleLinear()
     //   .domain([
@@ -50,6 +52,14 @@
 
     svg = d3.select('#visualization').append('svg').attr('width', width).attr('height', height);
 
+    refresh_signal.subscribe(() => {
+      refetch();
+    });
+    refetch();
+  });
+
+  const gen = () => {
+    const spaceMarines = $products;
     const x = d3
       .scaleLinear()
       .domain([
@@ -93,19 +103,22 @@
       .selectAll('.marine')
       .data(spaceMarines)
       .enter()
-      .append('image')
-      .attr('xlink:href', '/space-marine.png')
+      .append('text')
+      .text((d) => d.name)
       .attr('x', (d) => x(d.coordinates.x) - 25) // Adjust for image centering
       .attr('y', (d) => y(d.coordinates.y) - 25) // Adjust for image centering
       .attr('width', 50)
       .attr('height', 50)
+      .style('cursor', 'pointer')
       .attr('fill', (d) => d3.scaleOrdinal(d3.schemeCategory10)(d.name))
       .on('click', (e, item) => onClick(item))
       .attr(
         'filter',
-        (d) => `invert(20%) sepia(40%) saturate(1352%) hue-rotate(${hash(d.name)}deg)`
+        (d) =>
+          `invert(20%) sepia(40%) saturate(1352%) hue-rotate(${hash((d as any).userOwner.username)}deg)`
       );
-  });
+  };
+  $: if ($products && svg) gen();
 
   const onClick = (item: any) => {
     data = item;
@@ -128,7 +141,10 @@
     </Dialog.Header> -->
 
     {#if data != null}
-      <SpaceMarineEdit {data}  />
+      <ProductsForm {data} readonly>
+        <div slot="title">Product Info</div>
+        <div slot="footer"></div>
+      </ProductsForm>
     {/if}
   </Dialog.Content>
 </Dialog.Root>

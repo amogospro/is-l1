@@ -21,7 +21,10 @@
   <div class="container flex h-14 max-w-screen-2xl items-center gap-2">
     <h1 class="text-xl font-bold">Лабораторная работа #1</h1>
     <!-- <h1 class="text-xl">Space Marines</h1> -->
-    <Link href="/">Main menu</Link>
+    <Link href="/">Table</Link>
+    <Link href="/extra">Extra functions</Link>
+    <Link href="/visualization">Visualization</Link>
+
     <div class="flex flex-1 items-center justify-between space-x-2 md:justify-end">
       <nav class="gap-10px flex items-center">
         <div class="gap-10px flex">

@@ -1,7 +1,7 @@
 <script lang="ts">
-  import Link from '$lib/components/ui/link/link.svelte';
+  import DataTable from '$lib/components/custom/table/data-table.svelte';
 </script>
 
-<Link href="./extra">Extra functions</Link>
-<Link href="./table">Table</Link>
-<Link href="./visualization">Visualization</Link>
+<div class="container mx-auto grid w-full py-10">
+  <DataTable />
+</div>

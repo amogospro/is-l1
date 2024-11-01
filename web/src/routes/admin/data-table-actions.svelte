@@ -1,14 +1,8 @@
 <script lang="ts">
-  import Ellipsis from 'lucide-svelte/icons/ellipsis';
-  import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
   import { Button } from '$lib/components/ui/button';
-  import * as Dialog from '$lib/components/ui/dialog';
-  import type { Product } from '$lib/types';
-  import Pencil from 'svelte-radix/Pencil1.svelte';
-  import Trash from 'svelte-radix/Trash.svelte';
   import api, { deleteProduct, updateProduct } from '$lib/api';
   import { toast } from 'svelte-sonner';
-  import * as AlertDialog from '$lib/components/ui/alert-dialog/index.js';
+  import * as AlertDialog from '$lib/components/ui/alert-dialog/index.js';  
 
   export let id: string;
 
