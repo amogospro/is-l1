@@ -28,7 +28,7 @@ function updateUserDetails() {
 updateUserDetails();
 
 const api = axios.create({
-  baseURL: 'http://localhost:8080/lab1-1.0-SNAPSHOT/api',
+  baseURL: 'http://localhost:1488/lab1-1.0-SNAPSHOT/api',
   headers: {
     'Content-Type': 'application/json'
   }
@@ -138,7 +138,7 @@ export const connectToCommands = () => {
     socket.close(); // Close the current socket if it's open
   }
 
-  socket = new ReconnectingWebSocket(`ws://localhost:8080/lab1-1.0-SNAPSHOT/updates`);
+  socket = new ReconnectingWebSocket(`ws://localhost:1488/lab1-1.0-SNAPSHOT/updates`);
 
   socket.onmessage = async function (event) {
     console.log('Got control command', event.data);

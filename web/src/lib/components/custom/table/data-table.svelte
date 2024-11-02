@@ -330,10 +330,10 @@
               toast.info('Product created');
             }}
             data={{
-              name: 'Super Widget',
+              name: '',
               coordinates: {
-                x: 500, // Within the maximum value of 864
-                y: 300
+                x: 0, // Within the maximum value of 864
+                y: 0
               },
               creationDate: new Date(), // Auto-generated
               unitOfMeasure: 'METERS',
@@ -353,9 +353,9 @@
                 //   rating: 5, // Value > 0
                 //   type: 'COMMERCIAL'
               },
-              price: 150, // Value > 0
-              manufactureCost: 75,
-              rating: 4, // Value > 0
+              price: 0, // Value > 0
+              manufactureCost: 0,
+              rating: 0, // Value > 0
               owner: {
                 id: 2
                 //   name: 'Alice Johnson',

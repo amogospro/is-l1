@@ -8,10 +8,11 @@
   import _ from 'lodash';
   import { clearToken, role, username } from '$lib/api';
   import { goto } from '$app/navigation';
+  import { base } from '$app/paths';
 
   function logOut() {
     clearToken();
-    goto('/login');
+    goto(`${base}/login`);
   }
 </script>
 
@@ -21,9 +22,9 @@
   <div class="container flex h-14 max-w-screen-2xl items-center gap-2">
     <h1 class="text-xl font-bold">Лабораторная работа #1</h1>
     <!-- <h1 class="text-xl">Space Marines</h1> -->
-    <Link href="/">Table</Link>
-    <Link href="/extra">Extra functions</Link>
-    <Link href="/visualization">Visualization</Link>
+    <Link href="{base}/">Table</Link>
+    <Link href="{base}/extra">Extra functions</Link>
+    <Link href="{base}/visualization">Visualization</Link>
 
     <div class="flex flex-1 items-center justify-between space-x-2 md:justify-end">
       <nav class="gap-10px flex items-center">
@@ -39,7 +40,7 @@
           </p>
 
           {#if _.lowerCase($role) === 'admin'}
-            <Link class="ml-10px" href="./admin">Pending requests</Link>
+            <Link class="ml-10px" href="{base}/admin">Pending requests</Link>
           {/if}
         </div>
         <Button on:click={logOut} variant="outline" size="icon">

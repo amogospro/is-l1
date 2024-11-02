@@ -12,6 +12,7 @@
   import { Link } from '$lib/components/ui/link';
   import { register } from '$lib/api';
   import { Checkbox } from '$lib/components/ui/checkbox';
+    import { base } from '$app/paths';
 
   export const signUpSchema = z
     .object({
@@ -92,7 +93,7 @@
           </Control>
           <FieldErrors />
         </Field>
-        <Link href="/login">Login instead</Link>
+        <Link href="{base}/login">Login instead</Link>
       </Card.Content>
       <Card.Footer>
         <Button type="submit">Register</Button>

@@ -12,7 +12,8 @@
   import { Link } from '$lib/components/ui/link';
   import { login, register } from '$lib/api';
   import Checkbox from '$lib/components/ui/checkbox/checkbox.svelte';
-    import { goto } from '$app/navigation';
+  import { goto } from '$app/navigation';
+  import { base } from '$app/paths';
 
   export const registerSchema = z.object({
     username: z.string().min(6),
@@ -29,7 +30,7 @@
         $formData = f.data;
         await login(f.data);
         toast.success('Login successful');
-        goto('/')
+        goto(`${base}/`);
         // toast.success(`You submitted ${JSON.stringify(f.data, null, 2)}`);
       } else {
         toast.error('Please fix the errors in the form.');
@@ -66,7 +67,7 @@
           </Control>
           <FieldErrors />
         </Field>
-        <Link href="/register">Register instead</Link>
+        <Link href="{base}/register">Register instead</Link>
       </Card.Content>
       <Card.Footer>
         <Button type="submit">Login</Button>
