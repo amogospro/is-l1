@@ -69,17 +69,23 @@
   $: selectedManufacturer = $formData.manufacturer?.id
     ? {
         label:
-          selectedManufacturerName ??
-          (('name' in $formData.manufacturer && $formData.manufacturer.name) || undefined),
+          selectedManufacturerName ||
+          $organizations.filter((item) => item.id == $formData.manufacturer?.id)[0]?.name,
         value: $formData.manufacturer?.id
       }
     : undefined;
 
   let selectedOwnerName: string | undefined;
+
+  $: console.log($formData.owner?.id);
+
+  $: console.log($persons);
+
+  $: console.log();
   $: selectedOwner = $formData.owner?.id
     ? {
         label:
-          selectedOwnerName ?? (('name' in $formData.owner && $formData.owner.name) || undefined),
+          selectedOwnerName || $persons.filter((item) => item.id == $formData.owner?.id)[0]?.name,
         value: $formData.owner?.id
       }
     : undefined;
@@ -254,11 +260,13 @@
               <FieldErrors />
             </Field>
             {#if !readonly}
-              <Button on:click={() => ($formData.manufacturer = null)}>
-                Remove Manufacturer
-              </Button>
+              <Button on:click={() => ($formData.manufacturer = null)}>Remove Manufacturer</Button>
             {/if}
           {:else if !readonly}
+            <div>
+              <BaseLabel>Manufacturer</BaseLabel>
+            </div>
+            <br />
             <Button on:click={() => ($formData.manufacturer = { id: 0 })}>
               Include Manufacturer
             </Button>

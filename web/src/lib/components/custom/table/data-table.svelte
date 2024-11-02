@@ -9,6 +9,8 @@
     type SortKey
   } from 'svelte-headless-table/plugins';
   import * as Dialog from '$lib/components/ui/dialog';
+  import * as Select from '$lib/components/ui/select';
+
   import { readable, writable } from 'svelte/store';
   import ArrowUp from 'lucide-svelte/icons/arrow-up';
   import ArrowDown from 'lucide-svelte/icons/arrow-down';
@@ -32,6 +34,7 @@
   import Link from '$lib/components/ui/link/link.svelte';
   import ProductForm from '../product-form.svelte';
   import IdActions from './id-actions.svelte';
+  import { Label } from '$lib/components/ui/label';
   // let data: Product[] = JSON.parse(JSON.stringify([]));
 
   // data = $products
@@ -216,12 +219,19 @@
   ) => {
     if (pageIndex < 0) return [];
     const q = new URLSearchParams();
+
     if (sortKeys.length > 0) {
-      q.set('sortBy', sortKeys[0].id);
+      let key = sortKeys[0].id;
+      console.log(key);
+      if (key === 'owner') key = 'owner.name';
+      if (key === 'Manufacturer') key = 'manufacturer.name';
+      q.set('sortBy', key);
       q.set('sortDirection', sortKeys[0].order);
     }
-    q.set('filter', filterValue);
-    q.set('filterBy', 'name');
+    if (selectedOwner?.value && filterValue) {
+      q.set('filter', filterValue);
+      q.set('filterBy', selectedOwner.value);
+    }
     q.set('size', String(pageSize));
     q.set('page', String(pageIndex + 1));
     let data: Product[] = [];
@@ -257,11 +267,41 @@
       });
     }
   });
+
+  const fruits = [
+    { label: 'Name', value: 'name' },
+    { label: 'Owner name', value: 'owner.name' },
+    { label: 'Manufacturer', value: 'manufacturer.name' }
+  ];
+
+  let selectedOwner: any;
+  $: console.log(selectedOwner);
 </script>
 
 <div>
-  <div class="gap-10px flex items-center py-4">
+  <div class="gap-10px flex items-end py-4">
     {#if !readonly}
+      <div>
+        <!-- <Label>Select filter column</Label> -->
+        <Select.Root portal={null} bind:selected={selectedOwner}>
+          <Select.Trigger>
+            <Select.Value placeholder="Select filter column" />
+          </Select.Trigger>
+          {#if !readonly}
+            <Select.Content>
+              <Select.Group>
+                <Select.Label>Units</Select.Label>
+                {#each fruits as { label, value }}
+                  <Select.Item {value} {label}>
+                    {label}
+                  </Select.Item>
+                {/each}
+              </Select.Group>
+            </Select.Content>
+          {/if}
+        </Select.Root>
+      </div>
+
       <Input
         class="max-w-sm"
         placeholder="Filter by name..."
@@ -368,7 +408,7 @@
                       <div class="text-right font-medium">
                         <Render of={cell.render()} />
                       </div>
-                    {:else if cell.id === 'name'}
+                    {:else if ['name', 'Manufacturer', 'owner'].includes(cell.id)}
                       <Button variant="ghost" on:click={props.sort.toggle}>
                         <Render of={cell.render()} />
                         {#if props.sort.order === 'asc'}
