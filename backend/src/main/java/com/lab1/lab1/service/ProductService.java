@@ -99,6 +99,8 @@ public class ProductService {
                     }
                     currentProduct.setManufacturer(existingOrganization);
                 }
+            } else {
+                currentProduct.setManufacturer(null);
             }
 
             Person owner = product.getOwner();
