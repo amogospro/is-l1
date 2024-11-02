@@ -30,7 +30,12 @@
     margin = 50;
 
   const refetch = async () => {
-    const new_products = await getProducts();
+    const q = new URLSearchParams();
+
+    q.set('size', String(1000000));
+    q.set('page', String(1));
+    const new_products = await getProducts(q);
+    
     products.set(new_products);
   };
   onMount(() => {
