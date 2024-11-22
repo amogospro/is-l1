@@ -14,6 +14,7 @@ import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @ApplicationScoped
@@ -32,6 +33,8 @@ public class ProductService {
 
     @Transactional
     public void createProduct(Product product, User user) throws Exception {
+
+        System.out.println("[" + LocalDateTime.now() + "] Transaction started.");
 
         // Validate product fields
         // Set owner
@@ -69,11 +72,16 @@ public class ProductService {
         product.setUserOwner(user);
         productRepository.create(product);
 
+        System.out.println("[" + LocalDateTime.now() + "] Transaction completed. Preparing WebSocket update...");
+
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
         String updateJson = objectMapper.writeValueAsString(ProductMapper.toDTO(product));
 
-        WebSocketEndpoint.sendUpdate(updateJson);
+        // Отправляем данные асинхронно через WebSocket
+        WebSocketService.sendUpdateAsync(updateJson);
+
+        System.out.println("[" + LocalDateTime.now() + "] WebSocket update initiated asynchronously.");
     }
 
     public Product getProductById(int id) {
@@ -122,7 +130,8 @@ public class ProductService {
             objectMapper.registerModule(new JavaTimeModule());
             String updateJson = objectMapper.writeValueAsString(ProductMapper.toDTO(currentProduct));
 
-            WebSocketEndpoint.sendUpdate(updateJson);
+            // Отправляем данные асинхронно через WebSocket
+            WebSocketService.sendUpdateAsync(updateJson);
         } else {
             throw new Exception("Access Denied");
         }
@@ -141,7 +150,8 @@ public class ProductService {
                 objectMapper.registerModule(new JavaTimeModule());
                 String updateJson = objectMapper.writeValueAsString(ProductMapper.toDTO(product));
 
-                WebSocketEndpoint.sendUpdate(updateJson);
+                // Отправляем данные асинхронно через WebSocket
+                WebSocketService.sendUpdateAsync(updateJson);
             } else {
                 throw new Exception("Access Denied");
             }

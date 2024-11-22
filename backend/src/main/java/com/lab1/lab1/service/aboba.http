@@ -1,5 +1,5 @@
 ### Register a New User - true
-POST http://localhost:8080/lab1-1.0-SNAPSHOT/api/auth/register
+POST http://localhost:1488/lab1-1.0-SNAPSHOT/api/auth/register
 Content-Type: application/json
 
 {
@@ -9,7 +9,7 @@ Content-Type: application/json
 }
 
 ### Register a New Admin User (Pending Approval) - true
-POST http://localhost:8080/lab1-1.0-SNAPSHOT/api/auth/register
+POST http://localhost:1488/lab1-1.0-SNAPSHOT/api/auth/register
 Content-Type: application/json
 
 {
@@ -19,7 +19,7 @@ Content-Type: application/json
 }
 
 ### Login with Registered User - true
-POST http://localhost:8080/lab1-1.0-SNAPSHOT/api/auth/login
+POST http://localhost:1488/lab1-1.0-SNAPSHOT/api/auth/login
 Content-Type: application/json
 
 {
@@ -33,7 +33,7 @@ Content-Type: application/json
     }); %}
 
 ### Login with Admin User - true
-POST http://localhost:8080/lab1-1.0-SNAPSHOT/api/auth/login
+POST http://localhost:1488/lab1-1.0-SNAPSHOT/api/auth/login
 Content-Type: application/json
 
 {
@@ -47,13 +47,14 @@ Content-Type: application/json
     }); %}
 
 ### Get All Products - true
-GET http://localhost:8080/lab1-1.0-SNAPSHOT/api/products?page=1&size=10&filterBy=owner.name&filter=abobik&sortBy=price&sortDirection=ASC
+GET http://localhost:1488/lab1-1.0-SNAPSHOT/api/products?page=1&size=10&filterBy=owner.name&filter=abobik&sortBy=price&
+    sortDirection=ASC
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0dXNlciIsInJvbGUiOiJVU0VSIiwiaWF0IjoxNzMwNDcwNDc1LCJleHAiOjE3MzA1NTY4NzV9.kgbgDUG6aT7fZxHwsD6uzyNpeID-l2GfXcrOH9F0IMU
 Accept: application/json
 
 ### Create a New Products - true
-POST http://localhost:8080/lab1-1.0-SNAPSHOT/api/products
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0dXNlcjIiLCJyb2xlIjoiVVNFUiIsImlhdCI6MTczMDQ5NzQyOSwiZXhwIjoxNzMwNTgzODI5fQ.GABkrTm7aXphbar5OTpG7l5qwx6yEjsm0q9cWKKQ4VQ
+POST http://localhost:1488/lab1-1.0-SNAPSHOT/api/products
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0dXNlcjIiLCJyb2xlIjoiVVNFUiIsImlkIjoyLCJpYXQiOjE3MzIyOTc1MDksImV4cCI6MTczMjM4MzkwOX0.iyX0pWWfCD-m1oxwsJ-4wjWDISZtsJuL44lwWBA9QEk
 Content-Type: application/json
 
 {
@@ -72,7 +73,7 @@ Content-Type: application/json
 }
 
 ### Create a New Person - true
-POST http://localhost:8080/lab1-1.0-SNAPSHOT/api/persons
+POST http://localhost:1488/lab1-1.0-SNAPSHOT/api/persons
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0dXNlciIsInJvbGUiOiJVU0VSIiwiaWF0IjoxNzMwNDcwNDc1LCJleHAiOjE3MzA1NTY4NzV9.kgbgDUG6aT7fZxHwsD6uzyNpeID-l2GfXcrOH9F0IMU
 Content-Type: application/json
 
@@ -90,7 +91,7 @@ Content-Type: application/json
 }
 
 ### Create a New Organization - true
-POST http://localhost:8080/lab1-1.0-SNAPSHOT/api/organizations
+POST http://localhost:1488/lab1-1.0-SNAPSHOT/api/organizations
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0dXNlciIsInJvbGUiOiJVU0VSIiwiaWF0IjoxNzMwNDcwNDc1LCJleHAiOjE3MzA1NTY4NzV9.kgbgDUG6aT7fZxHwsD6uzyNpeID-l2GfXcrOH9F0IMU
 Content-Type: application/json
 
@@ -103,7 +104,7 @@ Content-Type: application/json
 }
 
 ### Update a Products - true
-PUT http://localhost:8080/lab1-1.0-SNAPSHOT/api/products/4
+PUT http://localhost:1488/lab1-1.0-SNAPSHOT/api/products/4
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0dXNlcjIiLCJyb2xlIjoiVVNFUiIsImlhdCI6MTczMDQ5NzQyOSwiZXhwIjoxNzMwNTgzODI5fQ.GABkrTm7aXphbar5OTpG7l5qwx6yEjsm0q9cWKKQ4VQ
 Content-Type: application/json
 
@@ -124,21 +125,21 @@ Content-Type: application/json
 }
 
 ### Delete a Product - true
-DELETE http://localhost:8080/lab1-1.0-SNAPSHOT/api/products/2
+DELETE http://localhost:1488/lab1-1.0-SNAPSHOT/api/products/2
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0dXNlciIsInJvbGUiOiJVU0VSIiwiaWF0IjoxNzMwNDcwNDc1LCJleHAiOjE3MzA1NTY4NzV9.kgbgDUG6aT7fZxHwsD6uzyNpeID-l2GfXcrOH9F0IMU
 
 ### Delete a Person - true
-DELETE http://localhost:8080/lab1-1.0-SNAPSHOT/api/persons/1
+DELETE http://localhost:1488/lab1-1.0-SNAPSHOT/api/persons/1
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0dXNlciIsInJvbGUiOiJVU0VSIiwiaWF0IjoxNzI5MzI2NTQzLCJleHAiOjE3Mjk0MTI5NDN9.9kX1D8xQRWcfuLp8rsNnK3qKwbAKsmrOeo3QbOU9gWg
 
 ### Approve Pending Admin User - true
-POST http://localhost:8080/lab1-1.0-SNAPSHOT/api/auth/approve-admin/3
+POST http://localhost:1488/lab1-1.0-SNAPSHOT/api/auth/approve-admin/3
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbnVzZXIiLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE3MjkwODg4NjQsImV4cCI6MTcyOTE3NTI2NH0.zfpUZFMO9AWvU8tl-EfpPKF8rO0nBgyTjuOkm0duOFo
 
 ### Get All rating above
-GET http://localhost:8080/lab1-1.0-SNAPSHOT/api/products/rating-above?minRating=4
+GET http://localhost:1488/lab1-1.0-SNAPSHOT/api/products/rating-above?minRating=4
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0dXNlciIsInJvbGUiOiJVU0VSIiwiaWF0IjoxNzMwNDcwNDc1LCJleHAiOjE3MzA1NTY4NzV9.kgbgDUG6aT7fZxHwsD6uzyNpeID-l2GfXcrOH9F0IMU
 
 ### Get procent increase
-GET http://localhost:8080/lab1-1.0-SNAPSHOT/api/products/increase-price?percentage=10.0
+GET http://localhost:1488/lab1-1.0-SNAPSHOT/api/products/increase-price?percentage=10.0
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0dXNlciIsInJvbGUiOiJVU0VSIiwiaWF0IjoxNzMwNDcwNDc1LCJleHAiOjE3MzA1NTY4NzV9.kgbgDUG6aT7fZxHwsD6uzyNpeID-l2GfXcrOH9F0IMU

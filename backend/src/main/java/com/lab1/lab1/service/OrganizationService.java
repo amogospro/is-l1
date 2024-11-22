@@ -28,7 +28,8 @@ public class OrganizationService {
         objectMapper.registerModule(new JavaTimeModule());
         String updateJson = objectMapper.writeValueAsString(OrganizationMapper.toDTO(organization));
 
-        WebSocketEndpoint.sendUpdate(updateJson);
+        // Отправляем данные асинхронно через WebSocket
+        WebSocketService.sendUpdateAsync(updateJson);
     }
 
     public Organization getOrganizationById(Integer id) { return organizationRepository.findById(id); }
@@ -50,7 +51,8 @@ public class OrganizationService {
             objectMapper.registerModule(new JavaTimeModule());
             String updateJson = objectMapper.writeValueAsString(OrganizationMapper.toDTO(currentOrganization));
 
-            WebSocketEndpoint.sendUpdate(updateJson);
+            // Отправляем данные асинхронно через WebSocket
+            WebSocketService.sendUpdateAsync(updateJson);
         } else {
             throw new Exception("Access Denied");
         }
@@ -69,7 +71,8 @@ public class OrganizationService {
                 objectMapper.registerModule(new JavaTimeModule());
                 String updateJson = objectMapper.writeValueAsString(OrganizationMapper.toDTO(organization));
 
-                WebSocketEndpoint.sendUpdate(updateJson);
+                // Отправляем данные асинхронно через WebSocket
+                WebSocketService.sendUpdateAsync(updateJson);
             } else {
                 throw new Exception("Access Denied");
             }

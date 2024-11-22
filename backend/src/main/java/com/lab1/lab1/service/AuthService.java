@@ -42,6 +42,7 @@ public class AuthService {
         return Jwts.builder()
                 .setSubject(user.getUsername())
                 .claim("role", user.getRole().name())
+                .claim("id", user.getId())
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + expirationTime))
                 .signWith(key, SignatureAlgorithm.HS256)
@@ -55,8 +56,16 @@ public class AuthService {
                     .build()
                     .parseClaimsJws(token);
 
-            String username = claimsJws.getBody().getSubject();
-            return userRepository.findByUsername(username);
+            String username = claimsJws.getBody().getSubject(); // Извлекаем имя пользователя из токена
+            String role = claimsJws.getBody().get("role", String.class); // Извлекаем роль из токена
+            Long id = claimsJws.getBody().get("id", Long.class); // Извлекаем ID пользователя из токена
+
+            // Создаём объект User без обращения к БД
+            User user = new User();
+            user.setUsername(username);
+            user.setRole(Role.valueOf(role));
+            user.setId(id);
+            return user;
         } catch (JwtException e) {
             // Токен недействителен
             return null;

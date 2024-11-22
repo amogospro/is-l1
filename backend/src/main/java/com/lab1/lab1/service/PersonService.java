@@ -31,7 +31,8 @@ public class PersonService {
         objectMapper.registerModule(new JavaTimeModule());
         String updateJson = objectMapper.writeValueAsString(PersonMapper.toDTO(person));
 
-        WebSocketEndpoint.sendUpdate(updateJson);
+        // Отправляем данные асинхронно через WebSocket
+        WebSocketService.sendUpdateAsync(updateJson);
     }
 
     public Person getPersonById(int id) { return personRepository.findById(id); }
@@ -53,7 +54,8 @@ public class PersonService {
             objectMapper.registerModule(new JavaTimeModule());
             String updateJson = objectMapper.writeValueAsString(PersonMapper.toDTO(currentPerson));
 
-            WebSocketEndpoint.sendUpdate(updateJson);
+            // Отправляем данные асинхронно через WebSocket
+            WebSocketService.sendUpdateAsync(updateJson);
         } else {
             throw new Exception("Access Denied");
         }
@@ -73,7 +75,8 @@ public class PersonService {
                 objectMapper.registerModule(new JavaTimeModule());
                 String updateJson = objectMapper.writeValueAsString(PersonMapper.toDTO(person));
 
-                WebSocketEndpoint.sendUpdate(updateJson);
+                // Отправляем данные асинхронно через WebSocket
+                WebSocketService.sendUpdateAsync(updateJson);
             } else {
                 throw new Exception("Access Denied");
             }
