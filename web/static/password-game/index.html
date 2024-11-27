@@ -1,0 +1,523 @@
+<!doctype html>
+<html data-n-head-ssr lang="en" class="password-game-body"
+	data-n-head="%7B%22lang%22:%7B%22ssr%22:%22en%22%7D,%22class%22:%7B%22ssr%22:%22password-game-body%22%7D%7D">
+
+<head>
+	<title>The Password Game</title>
+	<script data-n-head="ssr" type="text/javascript" async src="https://www.youtube.com/iframe_api"></script>
+	<link rel="preload" href="/_nuxt/26c24c8.js" as="script">
+	<link rel="preload" href="/_nuxt/6bd6cb3.js" as="script">
+	<link rel="preload" href="/_nuxt/7ca8a56.js" as="script">
+	<link rel="preload" href="/_nuxt/57a5676.js" as="script">
+	<link rel="preload" href="/_nuxt/6b074e1.js" as="script">
+	<link rel="preload" href="/_nuxt/0d0a72c.js" as="script">
+	<link rel="preload" href="/_nuxt/29fc085.js" as="script">
+	<link rel="preload" href="/_nuxt/a560b8a.js" as="script">
+	<link rel="preload" href="/_nuxt/39017cb.js" as="script">
+	<style data-vue-ssr-id="1a73ea6b:0 2ccdeb7a:0 be0a3e80:0 4ac24734:0 41b6af72:0 a81a4d70:0">
+		.nuxt-progress {
+			position: fixed;
+			top: 0;
+			left: 0;
+			right: 0;
+			height: 2px;
+			width: 0;
+			opacity: 1;
+			transition: width .1s, opacity .4s;
+			background-color: #000;
+			z-index: 999999
+		}
+
+		.nuxt-progress.nuxt-progress-notransition {
+			transition: none
+		}
+
+		.nuxt-progress-failed {
+			background-color: red
+		}
+
+		@font-face {
+			font-family: Roboto;
+			src: url(/_nuxt/fonts/Roboto-Medium.70ace38.woff2)
+		}
+
+		@font-face {
+			font-family: Roboto;
+			font-weight: 700;
+			src: url(/_nuxt/fonts/Roboto-Bold.002079d.woff2)
+		}
+
+		html {
+			font-size: 16px;
+			-ms-text-size-adjust: 100%;
+			-webkit-text-size-adjust: 100%;
+			-moz-osx-font-smoothing: grayscale;
+			-webkit-font-smoothing: antialiased;
+			box-sizing: border-box;
+			color: #000;
+			font-family: Roboto, sans-serif;
+			background: #fff
+		}
+
+		*,
+		:after,
+		:before {
+			box-sizing: border-box;
+			margin: 0
+		}
+
+		.simple-page {
+			background: #f1f2f6
+		}
+
+		.pw_report_ad_container {
+			display: none !important
+		}
+
+		.ProseMirror {
+			width: 100%;
+			padding: 15px;
+			font-size: 28px;
+			border: 1px solid #9d9d9d;
+			border-radius: 10px;
+			resize: none;
+			overflow: hidden;
+			word-break: break-all;
+			font-family: monospace;
+			min-height: 64px;
+			outline: 0;
+			background: 0 0;
+			transition: border-color .15s ease-in-out, border-radius .1s ease-in-out;
+			contain: layout
+		}
+
+		.has-toolbar .ProseMirror {
+			border-bottom-left-radius: 0;
+			border-bottom-right-radius: 0
+		}
+
+		.ProseMirror:focus {
+			border-color: #000
+		}
+
+		.error-highlight {
+			background: #ffd9d9
+		}
+
+		@font-face {
+			font-family: Wingdings;
+			src: url(/_nuxt/fonts/Wingdings.2c01544.woff2)
+		}
+
+		@font-face {
+			font-family: "Comic Sans";
+			src: url(/_nuxt/fonts/Comic-Sans.633e967.woff2)
+		}
+
+		.wrapper[data-v-56b284df] {
+			font-size: 16px;
+			padding: 15px;
+			font-family: Arial, Helvetica, sans-serif;
+			background-attachment: fixed
+		}
+
+		.password-box[data-v-56b284df] {
+			width: 100%;
+			margin-left: auto;
+			margin-right: auto
+		}
+
+		.password-box-inner.complete[data-v-56b284df],
+		.password-final[data-v-56b284df] {
+			background: #fff;
+			opacity: .8
+		}
+
+		.password-final[data-v-56b284df] {
+			border-radius: 10px !important;
+			pointer-events: none;
+			-webkit-user-select: none;
+			-moz-user-select: none;
+			user-select: none;
+			margin-bottom: 40px
+		}
+
+		.title[data-v-56b284df] {
+			position: absolute;
+			top: 80px;
+			left: 50%;
+			transform: translateX(-50%);
+			z-index: 10;
+			height: 22px;
+			display: block
+		}
+
+		.site-title[data-v-56b284df] {
+			max-width: 125px;
+			position: absolute;
+			top: 15px;
+			left: 15px
+		}
+
+		.password-bg[data-v-56b284df] {
+			position: absolute;
+			top: 0;
+			left: 0;
+			height: 100%;
+			width: 100%;
+			padding: 15px;
+			font-size: 28px;
+			border-radius: 10px;
+			font-family: monospace;
+			background: #fff;
+			color: transparent;
+			border: 1px solid transparent;
+			pointer-events: none;
+			-webkit-user-select: none;
+			-moz-user-select: none;
+			user-select: none;
+			word-break: break-all;
+			white-space: break-spaces;
+			word-wrap: break-word;
+			font-variant-ligatures: none;
+			font-feature-settings: "liga"0, none
+		}
+
+		.password-bg-loading[data-v-56b284df] {
+			border-color: #000
+		}
+
+		.password-box-inner[data-v-56b284df] {
+			position: relative;
+			min-height: 64px
+		}
+
+		.password-length[data-v-56b284df] {
+			position: absolute;
+			top: 50%;
+			right: -15px;
+			font-size: 18px;
+			transform: translate(100%, -50%);
+			opacity: 0;
+			transition: opacity .5s ease-in-out
+		}
+
+		.show-password-length[data-v-56b284df] {
+			opacity: 1
+		}
+
+		.password-wrapper[data-v-56b284df] {
+			max-width: 485px;
+			margin: 167px auto 60px
+		}
+
+		.password-label[data-v-56b284df] {
+			text-align: left;
+			margin-bottom: 8px;
+			font-size: 16px
+		}
+
+		.toolbar[data-v-56b284df] {
+			background: #fff;
+			border: 1px solid #000;
+			border-top: none;
+			padding: 10px;
+			border-radius: 10px;
+			border-top-left-radius: 0;
+			border-top-right-radius: 0;
+			display: flex;
+			flex-wrap: wrap;
+			grid-gap: 8px;
+			transform: scaleY(0);
+			transform-origin: center top;
+			animation: showToolbar-56b284df .4s ease-in-out forwards
+		}
+
+		.death-screen[data-v-56b284df] {
+			position: fixed;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			background: rgba(0, 0, 0, .8);
+			-webkit-backdrop-filter: saturate(0);
+			backdrop-filter: saturate(0);
+			z-index: 100;
+			animation: fadeInDeath-56b284df .5s ease-in-out forwards;
+			opacity: 0;
+			text-align: center
+		}
+
+		@keyframes fadeInDeath-56b284df {
+			to {
+				opacity: 1
+			}
+		}
+
+		.death-screen-strip[data-v-56b284df] {
+			position: absolute;
+			top: 50%;
+			transform: translateY(-50%);
+			left: 0;
+			width: 100%;
+			height: 100px;
+			background: rgba(0, 0, 0, .95);
+			color: red;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			font-size: 48px;
+			font-family: Georgia, Times, serif;
+			text-transform: uppercase;
+			box-shadow: 0 0 80px 50px rgba(0, 0, 0, .7)
+		}
+
+		@keyframes showToolbar-56b284df {
+			to {
+				transform: none
+			}
+		}
+
+		.error-match[data-v-56b284df] {
+			margin: 15px 0;
+			background-color: #ffecec;
+			border: 1px solid red;
+			box-shadow: 2px 2px 5px 2px rgba(255, 0, 0, .12);
+			padding: 15px;
+			width: 100%;
+			border-radius: 10px
+		}
+
+		.end-screen[data-v-56b284df],
+		.error-match[data-v-56b284df] {
+			text-align: center;
+			color: #000;
+			line-height: 1.5em
+		}
+
+		.end-screen[data-v-56b284df] {
+			margin-top: 15px;
+			font-size: 18px;
+			background-color: #daffda;
+			border: 1px solid #267b30;
+			box-shadow: 3px 3px 5px 2px rgba(60, 155, 71, .2);
+			padding: 14px 20px;
+			border-radius: 10px;
+			animation: endPopup-56b284df .4s ease-in-out forwards
+		}
+
+		@keyframes endPopup-56b284df {
+			0% {
+				opacity: 0;
+				transform: translateY(30px)
+			}
+
+			to {
+				opacity: 1;
+				transform: none
+			}
+		}
+
+		.toolbar button[data-v-56b284df] {
+			background: #fff;
+			font-size: 16px;
+			padding: 5px 11px;
+			border-radius: 5px;
+			cursor: pointer;
+			border: 1px solid #b3b3b3;
+			box-shadow: 2px 2px 2px 0 rgba(0, 0, 0, .05);
+			transition: background .15s linear;
+			color: #000;
+			opacity: 0;
+			animation: showButton-56b284df .4s ease-in-out forwards;
+			touch-action: manipulation
+		}
+
+		@keyframes showButton-56b284df {
+			to {
+				opacity: 1
+			}
+		}
+
+		.toolbar button.is-active[data-v-56b284df] {
+			background: #000;
+			border-color: #000;
+			color: #fff;
+			box-shadow: none
+		}
+
+		.toolbar select[data-v-56b284df] {
+			color: #000;
+			background: #fff;
+			font-size: 16px;
+			padding: 5px 35px 5px 12px;
+			border-radius: 5px;
+			cursor: pointer;
+			border: 1px solid #b3b3b3;
+			box-shadow: 2px 2px 2px 0 rgba(0, 0, 0, .05);
+			-webkit-appearance: none;
+			-moz-appearance: none;
+			appearance: none;
+			background-image: url(/password-game/chevron.svg);
+			background-size: 12px 12px;
+			background-repeat: no-repeat;
+			background-position: calc(100% - 10px) 9px
+		}
+
+		.bomb[data-v-56b284df] {
+			margin-bottom: 50px;
+			position: relative
+		}
+
+		.bomb-img[data-v-56b284df] {
+			width: 100px
+		}
+
+		.bomb-fuse[data-v-56b284df] {
+			width: 100%;
+			height: 2px;
+			background: #ff712f;
+			border-radius: 3px;
+			animation: bombFuse-56b284df 90s linear forwards;
+			transform-origin: center left;
+			position: absolute;
+			top: calc(100% - 6px);
+			left: 0
+		}
+
+		.bomb-fuse-pause[data-v-56b284df] {
+			animation-play-state: paused
+		}
+
+		.bomb-fuse[data-v-56b284df]:after {
+			content: "";
+			width: 50px;
+			height: 50px;
+			background-image: url(/password-game/sparkle.gif);
+			background-size: contain;
+			background-position: 50%;
+			position: absolute;
+			right: -25px;
+			top: -24px;
+			z-index: 10
+		}
+
+		.bomb-fuse-pause.bomb-fuse[data-v-56b284df]:after {
+			display: none
+		}
+
+		@keyframes bombFuse-56b284df {
+			to {
+				width: 100px
+			}
+		}
+
+		.list-item[data-v-56b284df] {
+			display: inline-block
+		}
+
+		.banner[data-v-56b284df] {
+			background: #ff2b2b;
+			color: #fff;
+			position: absolute;
+			top: 0;
+			right: 0;
+			padding: 10px;
+			font-size: 14px;
+			border-bottom-left-radius: 5px
+		}
+
+		@media screen and (max-width:600px) {
+			.wrapper[data-v-56b284df] {
+				padding: 20px
+			}
+
+			.password-length[data-v-56b284df] {
+				right: 5px;
+				top: -25px;
+				font-size: 16px;
+				transform: none
+			}
+
+			.password-wrapper[data-v-56b284df] {
+				margin-top: 120px
+			}
+
+			.site-title[data-v-56b284df] {
+				max-width: 95px;
+				opacity: .75
+			}
+
+			.death-screen-strip[data-v-56b284df] {
+				font-size: 36px
+			}
+
+			.title[data-v-56b284df] {
+				top: 102px;
+				height: 20px
+			}
+
+			.password-label[data-v-56b284df] {
+				margin-bottom: 6px
+			}
+
+			.password-wrapper[data-v-56b284df] {
+				margin-top: 160px
+			}
+		}
+
+		.letter[data-v-382aa60b] {
+			fill: none;
+			stroke: var(--color);
+			fill-rule: nonzero;
+			stroke-width: .57px
+		}
+
+		.letter-inner[data-v-382aa60b] {
+			fill: var(--color)
+		}
+
+		.logo[data-v-382aa60b]:hover {
+			transform: scale(1.04)
+		}
+
+		.list-move {
+			transition: transform .5s ease-in-out
+		}
+
+		.list-enter-active,
+		.list-leave-active {
+			transition: opacity .5s ease-in-out
+		}
+
+		.list-enter,
+		.list-leave-to {
+			opacity: 0
+		}
+	</style>
+	<link rel="preload" href="/_nuxt/static/1730312300/password-game/state.js" as="script">
+	<link rel="preload" href="/_nuxt/static/1730312300/password-game/payload.js" as="script">
+	<link rel="preload" href="/_nuxt/static/1730312300/manifest.js" as="script">
+</head>
+
+<body>
+	<div data-server-rendered="true" id="__nuxt">
+		<div id="__layout">
+			<div>
+				
+			</div>
+		</div>
+	</div>
+	<script defer src="/_nuxt/static/1730312300/password-game/state.js"></script>
+	<script src="/_nuxt/26c24c8.js" defer></script>
+	<script src="/_nuxt/6b074e1.js" defer></script>
+	<script src="/_nuxt/0d0a72c.js" defer></script>
+	<script src="/_nuxt/29fc085.js" defer></script>
+	<script src="/_nuxt/a560b8a.js" defer></script>
+	<script src="/_nuxt/39017cb.js" defer></script>
+	<script src="/_nuxt/6bd6cb3.js" defer></script>
+	<script src="/_nuxt/7ca8a56.js" defer></script>
+	<script src="/_nuxt/57a5676.js" defer></script>
+</body>
+
+</html>
