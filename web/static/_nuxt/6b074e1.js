@@ -59,7 +59,7 @@
     },
     1132: function(e, t, r) {
         var o = r(104)(!1);
-        o.push([e.i, ".sponsors[data-v-290ad9f2]{margin-top:15px;display:flex;justify-content:center;align-items:center}.sponsor[data-v-290ad9f2]{margin-left:17px;margin-right:17px;pointer-events:none}.sponsor.pepsi[data-v-290ad9f2],.sponsor.shell[data-v-290ad9f2],.sponsor.starbucks[data-v-290ad9f2]{height:85px}", ""]),
+        o.push([e.i, ".sponsors[data-v-290ad9f2]{margin-top:15px;display:flex;justify-content:center;align-items:center}.sponsor[data-v-290ad9f2]{margin-left:17px;margin-right:17px;pointer-events:none}.sponsor.itmo[data-v-290ad9f2],.sponsor.amogos[data-v-290ad9f2],.sponsor.baltika[data-v-290ad9f2]{height:65px}", ""]),
         e.exports = o
     },
     1133: function(e, t, r) {
@@ -683,7 +683,7 @@
             test: function(e) {
                 var t = e.toLowerCase();
                 return {
-                    isValid: ["pepsi", "starbucks", "shell"].some((function(e) {
+                    isValid: ["itmo", "amogos", "baltika"].some((function(e) {
                         return t.includes(e)
                     }
                     ))
@@ -2203,19 +2203,19 @@
             return t("div", {
                 staticClass: "sponsors"
             }, [t("img", {
-                staticClass: "sponsor pepsi",
+                staticClass: "sponsor itmo",
                 attrs: {
-                    src: "/password-game/sponsors/pepsi.svg"
+                    src: "/password-game/sponsors/itmo.png"
                 }
             }), e._v(" "), t("img", {
-                staticClass: "sponsor starbucks",
+                staticClass: "sponsor amogos",
                 attrs: {
-                    src: "/password-game/sponsors/starbucks.svg"
+                    src: "/password-game/sponsors/amogos.png"
                 }
             }), e._v(" "), t("img", {
-                staticClass: "sponsor shell",
+                staticClass: "sponsor baltika",
                 attrs: {
-                    src: "/password-game/sponsors/shell.svg"
+                    src: "/password-game/sponsors/baltika.png"
                 }
             })])
         }
