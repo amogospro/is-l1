@@ -45,7 +45,7 @@ public class ImportService {
     private ImportHistoryRepository importHistoryRepository;
 
     @Transactional
-    public void importObjects(InputStream fileInputStream, String fileName, User user) throws Exception {
+    public void importObjects(InputStream fileInputStream, User user) throws Exception {
         // Используем Jackson для парсинга JSON
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
@@ -123,13 +123,12 @@ public class ImportService {
             }
         }
 
-        logImportHistory(fileName, user.getUsername(), "SUCCESS", successCount);
+        logImportHistory(user.getUsername(), "SUCCESS", successCount);
     }
 
-    public void logImportHistory(String fileName, String userName, String status, int count) {
+    public void logImportHistory(String userName, String status, int count) {
         // Логирование истории импорта
         ImportHistory history = new ImportHistory();
-        history.setFileName(fileName);
         history.setUserName(userName);
         history.setTimestamp(LocalDateTime.now());
         history.setStatus(status);

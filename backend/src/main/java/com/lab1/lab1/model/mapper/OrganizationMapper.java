@@ -3,6 +3,8 @@ package com.lab1.lab1.model.mapper;
 import com.lab1.lab1.model.dto.OrganizationDTO;
 import com.lab1.lab1.model.entities.Organization;
 
+import java.util.Date;
+
 public class OrganizationMapper {
     public static OrganizationDTO toDTO(Organization organization) {
         if (organization == null) {
@@ -35,6 +37,11 @@ public class OrganizationMapper {
         organization.setType(organizationDTO.getType());
         organization.setUserOwner(UserMapper.toEntity(organizationDTO.getUserOwner()));
         organization.setUpdatedAt(organizationDTO.getUpdatedAt());
+
+        if (organization.getUpdatedAt() == null) {
+            organization.setUpdatedAt(new Date());
+        }
+
         return organization;
     }
 }

@@ -113,7 +113,7 @@ public class AuthService {
         User pendingUser = userRepository.findById(userId);
         if (pendingUser != null && pendingUser.getRole() == Role.PENDING_ADMIN) {
             pendingUser.setRole(Role.ADMIN);
-            // Update user in the database
+            userRepository.update(pendingUser);
         } else {
             throw new Exception("Invalid user or already approved");
         }

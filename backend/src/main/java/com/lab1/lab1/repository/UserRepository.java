@@ -1,6 +1,7 @@
 package com.lab1.lab1.repository;
 
 import com.lab1.lab1.model.entities.Person;
+import com.lab1.lab1.model.entities.Product;
 import com.lab1.lab1.model.entities.Role;
 import com.lab1.lab1.model.entities.User;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -19,6 +20,11 @@ public class UserRepository {
     @Transactional
     public void create(User user) {
         em.persist(user);
+    }
+
+    @Transactional
+    public void update(User user) {
+        em.merge(user);
     }
 
     public User findByUsername(String username) {

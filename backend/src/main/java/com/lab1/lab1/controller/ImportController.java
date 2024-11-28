@@ -36,11 +36,11 @@ public class ImportController {
     public Response importObjects(InputStream fileInputStream) {
         User user = (User) securityContext.getUserPrincipal();
         try {
-            importService.importObjects(fileInputStream, "importFile.json", user);  // Передаем поток данных
+            importService.importObjects(fileInputStream, user);  // Передаем поток данных
             return Response.status(Response.Status.CREATED).entity("Objects imported successfully").build();
         } catch (Exception e) {
             e.printStackTrace();
-            importService.logImportHistory("importFile.json", user.getUsername(), "FAIL", 0);
+            importService.logImportHistory(user.getUsername(), "FAIL", 0);
             return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
         }
     }

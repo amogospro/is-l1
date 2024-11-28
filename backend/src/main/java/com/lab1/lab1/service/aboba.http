@@ -13,8 +13,8 @@ POST http://localhost:1488/lab1-1.0-SNAPSHOT/api/auth/register
 Content-Type: application/json
 
 {
-  "username": "adminuser",
-  "password": "adminpassword",
+  "username": "adminuser2",
+  "password": "adminpassword2",
   "adminRequest": true
 }
 
@@ -49,12 +49,12 @@ Content-Type: application/json
 ### Get All Products - true
 GET http://localhost:1488/lab1-1.0-SNAPSHOT/api/products?page=1&size=10&filterBy=owner.name&filter=abobik&sortBy=price&
     sortDirection=ASC
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0dXNlciIsInJvbGUiOiJVU0VSIiwiaWF0IjoxNzMwNDcwNDc1LCJleHAiOjE3MzA1NTY4NzV9.kgbgDUG6aT7fZxHwsD6uzyNpeID-l2GfXcrOH9F0IMU
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0dXNlcjIiLCJyb2xlIjoiVVNFUiIsImlkIjoxLCJpYXQiOjE3MzI4MjUzMDgsImV4cCI6MTczMjkxMTcwOH0.aBgCjve-mSB31cCchFtq_cXXeWTDL2ZLSwm0YFyNKeg
 Accept: application/json
 
 ### Get Imports - true
 GET http://localhost:1488/lab1-1.0-SNAPSHOT/api/import
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0dXNlcjIiLCJyb2xlIjoiVVNFUiIsImlkIjoxLCJpYXQiOjE3MzI4MjE0NDAsImV4cCI6MTczMjkwNzg0MH0.WLvEwsJgtSsVhwbTFm9sPeMbrTq5c-XM9CHmbjgBrZw
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0dXNlcjIiLCJyb2xlIjoiVVNFUiIsImlkIjoxLCJpYXQiOjE3MzI4MjUzMDgsImV4cCI6MTczMjkxMTcwOH0.aBgCjve-mSB31cCchFtq_cXXeWTDL2ZLSwm0YFyNKeg
 Accept: application/json
 
 ### Massive create Products
@@ -65,7 +65,7 @@ Content-Type: application/json
 {
   "products": [
     {
-      "name": "Dota722",
+      "name": "Dota72",
       "coordinates": {
         "x": 5,
         "y": 100
@@ -82,7 +82,7 @@ Content-Type: application/json
       }
     },
     {
-      "name": "Dota733",
+      "name": "Dota33",
       "coordinates": {
         "x": 10,
         "y": 200
@@ -142,7 +142,7 @@ Content-Type: application/json
 
 ### Create a New Organization - true
 POST http://localhost:1488/lab1-1.0-SNAPSHOT/api/organizations
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0dXNlciIsInJvbGUiOiJVU0VSIiwiaWF0IjoxNzMwNDcwNDc1LCJleHAiOjE3MzA1NTY4NzV9.kgbgDUG6aT7fZxHwsD6uzyNpeID-l2GfXcrOH9F0IMU
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0dXNlcjIiLCJyb2xlIjoiVVNFUiIsImlkIjoxLCJpYXQiOjE3MzI4MjUzMDgsImV4cCI6MTczMjkxMTcwOH0.aBgCjve-mSB31cCchFtq_cXXeWTDL2ZLSwm0YFyNKeg
 Content-Type: application/json
 
 {
@@ -184,7 +184,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0dXNlciIsInJvbGUiOiJVU
 
 ### Approve Pending Admin User - true
 POST http://localhost:1488/lab1-1.0-SNAPSHOT/api/auth/approve-admin/3
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbnVzZXIiLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE3MjkwODg4NjQsImV4cCI6MTcyOTE3NTI2NH0.zfpUZFMO9AWvU8tl-EfpPKF8rO0nBgyTjuOkm0duOFo
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbnVzZXIiLCJyb2xlIjoiQURNSU4iLCJpZCI6MiwiaWF0IjoxNzMyODI1ODk0LCJleHAiOjE3MzI5MTIyOTR9.0WT907WbOqqZUpVffFh65l5vI_Yel7C09jNPnuukef0
 
 ### Get All rating above
 GET http://localhost:1488/lab1-1.0-SNAPSHOT/api/products/rating-above?minRating=4

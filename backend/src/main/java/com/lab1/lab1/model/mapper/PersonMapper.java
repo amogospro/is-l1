@@ -3,6 +3,8 @@ package com.lab1.lab1.model.mapper;
 import com.lab1.lab1.model.dto.PersonDTO;
 import com.lab1.lab1.model.entities.Person;
 
+import java.util.Date;
+
 public class PersonMapper {
     public static PersonDTO toDTO(Person person) {
         PersonDTO personDTO = new PersonDTO();
@@ -29,6 +31,11 @@ public class PersonMapper {
         person.setNationality(personDTO.getNationality());
         person.setUserOwner(UserMapper.toEntity(personDTO.getUserOwner()));
         person.setUpdatedAt(personDTO.getUpdatedAt());
+
+        if (person.getUpdatedAt() == null) {
+            person.setUpdatedAt(new Date());
+        }
+
         return person;
     }
 }

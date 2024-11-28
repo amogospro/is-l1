@@ -4,6 +4,7 @@ import com.lab1.lab1.model.dto.ProductDTO;
 import com.lab1.lab1.model.entities.Product;
 
 import java.time.LocalDate;
+import java.util.Date;
 
 public class ProductMapper {
     public static ProductDTO toDTO(Product product) {
@@ -40,6 +41,10 @@ public class ProductMapper {
 
         if (product.getCreationDate() == null) {
             product.setCreationDate(LocalDate.now());
+        }
+
+        if (product.getUpdatedAt() == null) {
+            product.setUpdatedAt(new Date());
         }
 
         return product;

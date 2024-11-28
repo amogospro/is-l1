@@ -14,7 +14,6 @@ public class ImportHistory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String fileName;
     private String userName;
     private LocalDateTime timestamp;
     private String status;
