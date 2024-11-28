@@ -13,13 +13,9 @@ public class WebSocketService {
     public static void sendUpdateAsync(String message) {
         executor.submit(() -> {
             try {
-                System.out.println("[" + LocalDateTime.now() + "] Starting WebSocket update...");
-                // Искусственная задержка для демонстрации асинхронности
-                Thread.sleep(3000); // Задержка 3 секунды
                 WebSocketEndpoint.sendUpdate(message); // Отправка через WebSocket
-                System.out.println("[" + LocalDateTime.now() + "] WebSocket update completed.");
             } catch (Exception e) {
-                e.printStackTrace(); // Логируем ошибки, чтобы не потерять их
+                e.printStackTrace();
             }
         });
     }

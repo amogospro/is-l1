@@ -2,7 +2,6 @@ package com.lab1.lab1.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.lab1.lab1.controller.WebSocketEndpoint;
 import com.lab1.lab1.model.entities.Organization;
 import com.lab1.lab1.model.entities.Role;
 import com.lab1.lab1.model.entities.User;
@@ -21,6 +20,10 @@ public class OrganizationService {
 
     @Transactional
     public void createOrganization(Organization organization, User user) throws Exception {
+        if (organizationRepository.findByName(organization.getName()) != null) {
+            throw new Exception("Организация с таким названием уже существует");
+        }
+
         organization.setUserOwner(user);
         organizationRepository.create(organization);
 

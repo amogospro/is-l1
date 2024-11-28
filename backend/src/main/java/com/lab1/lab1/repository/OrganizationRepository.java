@@ -1,6 +1,7 @@
 package com.lab1.lab1.repository;
 
 import com.lab1.lab1.model.entities.Organization;
+import com.lab1.lab1.model.entities.Product;
 import com.lab1.lab1.model.entities.User;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.persistence.EntityManager;
@@ -40,5 +41,15 @@ public class OrganizationRepository {
 
 
         return organizations;
+    }
+
+    public Organization findByName(String name) {
+        try {
+            return em.createQuery("SELECT o FROM Organization o WHERE o.name = :name", Organization.class)
+                    .setParameter("name", name)
+                    .getSingleResult();
+        } catch (Exception e) {
+            return null;
+        }
     }
 }

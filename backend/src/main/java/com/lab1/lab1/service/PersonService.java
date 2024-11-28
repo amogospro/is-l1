@@ -24,6 +24,10 @@ public class PersonService {
 
     @Transactional
     public void createPerson(Person person, User user) throws Exception {
+        if (personRepository.findByName(person.getName()) != null) {
+            throw new Exception("Человек с таким именем уже существует");
+        }
+
         person.setUserOwner(user);
         personRepository.create(person);
 

@@ -52,9 +52,54 @@ GET http://localhost:1488/lab1-1.0-SNAPSHOT/api/products?page=1&size=10&filterBy
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0dXNlciIsInJvbGUiOiJVU0VSIiwiaWF0IjoxNzMwNDcwNDc1LCJleHAiOjE3MzA1NTY4NzV9.kgbgDUG6aT7fZxHwsD6uzyNpeID-l2GfXcrOH9F0IMU
 Accept: application/json
 
+### Massive create Products
+POST http://localhost:1488/lab1-1.0-SNAPSHOT/api/import
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0dXNlcjIiLCJyb2xlIjoiVVNFUiIsImlkIjoxLCJpYXQiOjE3MzI4MjE0NDAsImV4cCI6MTczMjkwNzg0MH0.WLvEwsJgtSsVhwbTFm9sPeMbrTq5c-XM9CHmbjgBrZw
+Content-Type: application/json
+
+{
+  "products": [
+    {
+      "name": "Dota722",
+      "coordinates": {
+        "x": 5,
+        "y": 100
+      },
+      "unitOfMeasure": "METERS",
+      "price": 20,
+      "manufactureCost": 150.0,
+      "rating": 5,
+      "owner": {
+        "id": 1
+      },
+      "manufacturer": {
+        "id": 1
+      }
+    },
+    {
+      "name": "Dota733",
+      "coordinates": {
+        "x": 10,
+        "y": 200
+      },
+      "unitOfMeasure": "MILLILITERS",
+      "price": 30,
+      "manufactureCost": 200.0,
+      "rating": 4,
+      "owner": {
+        "id": 1
+      },
+      "manufacturer": {
+        "id": 1
+      }
+    }
+  ]
+}
+
+
 ### Create a New Products - true
 POST http://localhost:1488/lab1-1.0-SNAPSHOT/api/products
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0dXNlcjIiLCJyb2xlIjoiVVNFUiIsImlkIjoyLCJpYXQiOjE3MzIyOTc1MDksImV4cCI6MTczMjM4MzkwOX0.iyX0pWWfCD-m1oxwsJ-4wjWDISZtsJuL44lwWBA9QEk
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0dXNlcjIiLCJyb2xlIjoiVVNFUiIsImlkIjoxLCJpYXQiOjE3MzI4MjE0NDAsImV4cCI6MTczMjkwNzg0MH0.WLvEwsJgtSsVhwbTFm9sPeMbrTq5c-XM9CHmbjgBrZw
 Content-Type: application/json
 
 {
@@ -74,7 +119,7 @@ Content-Type: application/json
 
 ### Create a New Person - true
 POST http://localhost:1488/lab1-1.0-SNAPSHOT/api/persons
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0dXNlciIsInJvbGUiOiJVU0VSIiwiaWF0IjoxNzMwNDcwNDc1LCJleHAiOjE3MzA1NTY4NzV9.kgbgDUG6aT7fZxHwsD6uzyNpeID-l2GfXcrOH9F0IMU
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0dXNlcjIiLCJyb2xlIjoiVVNFUiIsImlkIjoxLCJpYXQiOjE3MzI4MjE0NDAsImV4cCI6MTczMjkwNzg0MH0.WLvEwsJgtSsVhwbTFm9sPeMbrTq5c-XM9CHmbjgBrZw
 Content-Type: application/json
 
 {

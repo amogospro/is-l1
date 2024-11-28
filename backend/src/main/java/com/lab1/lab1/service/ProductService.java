@@ -34,11 +34,6 @@ public class ProductService {
     @Transactional
     public void createProduct(Product product, User user) throws Exception {
 
-        System.out.println("[" + LocalDateTime.now() + "] Transaction started.");
-
-        // Validate product fields
-        // Set owner
-        // Проверяем, передан ли id владельца
         Person owner = product.getOwner();
 
         if (owner.getId() != 0) {
@@ -69,10 +64,13 @@ public class ProductService {
             }
         }
 
-        product.setUserOwner(user);
-        productRepository.create(product);
 
-        System.out.println("[" + LocalDateTime.now() + "] Transaction completed. Preparing WebSocket update...");
+
+        product.setUserOwner(user);
+        if (productRepository.findByName(product.getName()) != null) {
+            throw new Exception("Продукт с таким именем уже существует");
+        }
+        productRepository.create(product);
 
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
@@ -80,8 +78,6 @@ public class ProductService {
 
         // Отправляем данные асинхронно через WebSocket
         WebSocketService.sendUpdateAsync(updateJson);
-
-        System.out.println("[" + LocalDateTime.now() + "] WebSocket update initiated asynchronously.");
     }
 
     public Product getProductById(int id) {

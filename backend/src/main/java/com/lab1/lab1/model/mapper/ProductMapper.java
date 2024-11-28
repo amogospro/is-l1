@@ -3,6 +3,8 @@ package com.lab1.lab1.model.mapper;
 import com.lab1.lab1.model.dto.ProductDTO;
 import com.lab1.lab1.model.entities.Product;
 
+import java.time.LocalDate;
+
 public class ProductMapper {
     public static ProductDTO toDTO(Product product) {
         ProductDTO productDTO = new ProductDTO();
@@ -35,6 +37,11 @@ public class ProductMapper {
         product.setOwner(PersonMapper.toEntity(productDTO.getOwner()));
         product.setUserOwner(UserMapper.toEntity(productDTO.getUserOwner()));
         product.setUpdatedAt(productDTO.getUpdatedAt());
+
+        if (product.getCreationDate() == null) {
+            product.setCreationDate(LocalDate.now());
+        }
+
         return product;
     }
 }

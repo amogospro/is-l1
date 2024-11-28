@@ -1,6 +1,5 @@
 package com.lab1.lab1.repository;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.lab1.lab1.controller.WebSocketEndpoint;
@@ -134,6 +133,16 @@ public class ProductRepository {
             String updateJson = objectMapper.writeValueAsString(ProductMapper.toDTO(product));
 
             WebSocketEndpoint.sendUpdate(updateJson);
+        }
+    }
+
+    public Product findByName(String name) {
+        try {
+            return em.createQuery("SELECT p FROM Product p WHERE p.name = :name", Product.class)
+                    .setParameter("name", name)
+                    .getSingleResult();
+        } catch (Exception e) {
+            return null;
         }
     }
 

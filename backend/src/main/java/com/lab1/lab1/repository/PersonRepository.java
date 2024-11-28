@@ -1,6 +1,7 @@
 package com.lab1.lab1.repository;
 
 import com.lab1.lab1.model.entities.Person;
+import com.lab1.lab1.model.entities.Product;
 import com.lab1.lab1.model.entities.User;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.persistence.EntityManager;
@@ -39,5 +40,15 @@ public class PersonRepository {
         });
 
         return persons;
+    }
+
+    public Person findByName(String name) {
+        try {
+            return em.createQuery("SELECT p FROM Person p WHERE p.name = :name", Person.class)
+                    .setParameter("name", name)
+                    .getSingleResult();
+        } catch (Exception e) {
+            return null;
+        }
     }
 }
