@@ -136,5 +136,9 @@ public class ImportService {
         history.setImportedObjectsCount(count);
         importHistoryRepository.create(history);
     }
+
+    public List<ImportHistory> getImportHistory(User user) {
+        return importHistoryRepository.findByUser(user);
+    }
 }
 

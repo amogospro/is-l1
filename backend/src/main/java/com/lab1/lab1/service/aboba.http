@@ -52,6 +52,11 @@ GET http://localhost:1488/lab1-1.0-SNAPSHOT/api/products?page=1&size=10&filterBy
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0dXNlciIsInJvbGUiOiJVU0VSIiwiaWF0IjoxNzMwNDcwNDc1LCJleHAiOjE3MzA1NTY4NzV9.kgbgDUG6aT7fZxHwsD6uzyNpeID-l2GfXcrOH9F0IMU
 Accept: application/json
 
+### Get Imports - true
+GET http://localhost:1488/lab1-1.0-SNAPSHOT/api/import
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0dXNlcjIiLCJyb2xlIjoiVVNFUiIsImlkIjoxLCJpYXQiOjE3MzI4MjE0NDAsImV4cCI6MTczMjkwNzg0MH0.WLvEwsJgtSsVhwbTFm9sPeMbrTq5c-XM9CHmbjgBrZw
+Accept: application/json
+
 ### Massive create Products
 POST http://localhost:1488/lab1-1.0-SNAPSHOT/api/import
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0dXNlcjIiLCJyb2xlIjoiVVNFUiIsImlkIjoxLCJpYXQiOjE3MzI4MjE0NDAsImV4cCI6MTczMjkwNzg0MH0.WLvEwsJgtSsVhwbTFm9sPeMbrTq5c-XM9CHmbjgBrZw

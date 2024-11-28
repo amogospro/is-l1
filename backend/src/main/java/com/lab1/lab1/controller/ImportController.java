@@ -44,4 +44,15 @@ public class ImportController {
             return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
         }
     }
+
+    @GET
+    public Response getImportHistory() {
+        User user = (User) securityContext.getUserPrincipal();
+        try {
+            List<ImportHistory> history = importService.getImportHistory(user);
+            return Response.ok(history).build();
+        } catch (Exception e) {
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
+    }
 }
