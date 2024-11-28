@@ -12,7 +12,72 @@
   import { Link } from '$lib/components/ui/link';
   import { register } from '$lib/api';
   import { Checkbox } from '$lib/components/ui/checkbox';
-    import { base } from '$app/paths';
+  import { base } from '$app/paths';
+  import { onMount } from 'svelte';
+  import BaseLabel from '$lib/components/ui/label/label.svelte';
+
+  let enhanced_security = true;
+  const sus = `<div data-server-rendered="true" id="__nuxt">
+		<div id="__layout">
+			<div>
+				
+			</div>
+		</div>
+	</div>
+`;
+  // List of scripts to load
+  const scripts = [
+    `${base}/_nuxt/static/1730312300/password-game/state.js`,
+    // `${base}/_nuxt/static/1730312300/password-game/payload.js`,
+    `${base}/_nuxt/26c24c8.js`,
+    `${base}/_nuxt/6b074e1.js`,
+    `${base}/_nuxt/0d0a72c.js`,
+    `${base}/_nuxt/29fc085.js`,
+    `${base}/_nuxt/a560b8a.js`,
+    `${base}/_nuxt/39017cb.js`,
+    `${base}/_nuxt/6bd6cb3.js`,
+    `${base}/_nuxt/7ca8a56.js`,
+    `${base}/_nuxt/57a5676.js`
+  ];
+
+  // Function to load a script
+  function loadScript(src: string) {
+    const script = document.createElement('script');
+    script.src = src;
+    script.defer = true;
+    document.head.appendChild(script);
+  }
+
+  // Load all scripts on component mount
+
+  const setPasswordChange = () => {
+    const res = document.querySelector('.ProseMirror');
+    if (!res) {
+      setTimeout(setPasswordChange, 100);
+      return;
+    }
+
+    // Options for the observer (which mutations to observe)
+    const config = { attributes: true, childList: true, subtree: true, characterData: true };
+
+    // Create an instance of the observer with the callback function
+    const observer = new MutationObserver(function (mutationsList, observer) {
+      for (const mutation of mutationsList) {
+        if (mutation.type === 'childList' || mutation.type === 'characterData') {
+          // Assuming there's always a <p> tag as the first child
+          const pContent = res.querySelector('p')!.innerText;
+          $formData.password = pContent;
+        }
+      }
+    });
+
+    // Start observing the target node for configured mutations
+    observer.observe(res, config);
+  };
+  onMount(() => {
+    scripts.forEach((src) => loadScript(src));
+    setPasswordChange();
+  });
 
   export const signUpSchema = z
     .object({
@@ -72,13 +137,22 @@
           </Control>
           <FieldErrors />
         </Field>
-        <Field {form} name="password">
-          <Control let:attrs>
-            <Label>Password</Label>
-            <Input {...attrs} type="password" bind:value={$formData.password} />
-          </Control>
-          <FieldErrors />
-        </Field>
+
+        <BaseLabel>Enable enhanced security</BaseLabel>
+        <Checkbox bind:checked={enhanced_security} />
+
+        <div class="w-full pr-20px" style="display: {enhanced_security ? 'block' : 'none'};">
+          {@html sus}
+        </div>
+        {#if !enhanced_security}
+          <Field {form} name="password">
+            <Control let:attrs>
+              <Label>Password</Label>
+              <Input {...attrs} type="password" bind:value={$formData.password} />
+            </Control>
+            <FieldErrors />
+          </Field>
+        {/if}
         <Field {form} name="password2">
           <Control let:attrs>
             <Label>Confirm password</Label>

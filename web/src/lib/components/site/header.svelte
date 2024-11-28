@@ -25,6 +25,7 @@
     <Link href="{base}/">Table</Link>
     <Link href="{base}/extra">Extra functions</Link>
     <Link href="{base}/visualization">Visualization</Link>
+    <Link href="{base}/import">File import</Link>
 
     <div class="flex flex-1 items-center justify-between space-x-2 md:justify-end">
       <nav class="gap-10px flex items-center">
