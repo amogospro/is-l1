@@ -1,0 +1,38 @@
+{
+  "products": [
+    {
+      "name": "Dota722",
+      "coordinates": {
+        "x": 5,
+        "y": 100
+      },
+      "unitOfMeasure": "METERS",
+      "price": 20,
+      "manufactureCost": 150.0,
+      "rating": 5,
+      "owner": {
+        "id": 1
+      },
+      "manufacturer": {
+        "id": 1
+      }
+    },
+    {
+      "name": "Dota733",
+      "coordinates": {
+        "x": 10,
+        "y": 200
+      },
+      "unitOfMeasure": "MILLILITERS",
+      "price": 30,
+      "manufactureCost": 200.0,
+      "rating": 4,
+      "owner": {
+        "id": 1
+      },
+      "manufacturer": {
+        "id": 1
+      }
+    }
+  ]
+}

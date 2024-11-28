@@ -29,27 +29,29 @@
 
   type ImportRes = {
     id: number;
+    fileName: string;
+    userName: string;
+    timestamp: string;
     status: string;
-    username: string;
-    added_items: number;
+    importedObjectsCount: number;
   };
   let data = writable<ImportRes[]>([]);
 
-  const importHistory: ImportRes[] = [
-    { id: 1, status: 'completed', username: 'user1', added_items: 150 },
-    { id: 2, status: 'failed', username: 'user2', added_items: 0 },
-    { id: 3, status: 'completed', username: 'admin1', added_items: 200 },
-    { id: 4, status: 'completed', username: 'user1', added_items: 120 },
-    { id: 5, status: 'failed', username: 'user3', added_items: 0 },
-    { id: 6, status: 'completed', username: 'user4', added_items: 90 },
-    { id: 7, status: 'completed', username: 'admin1', added_items: 50 },
-    { id: 8, status: 'completed', username: 'user2', added_items: 135 },
-    { id: 9, status: 'failed', username: 'user4', added_items: 0 },
-    { id: 10, status: 'completed', username: 'user5', added_items: 85 }
-  ];
+  // const importHistory: ImportRes[] = [
+  //   { id: 1, status: 'completed', userName: 'user1', importedObjectsCount: 150 },
+  //   { id: 2, status: 'failed', userName: 'user2', importedObjectsCount: 0 },
+  //   { id: 3, status: 'completed', userName: 'admin1', importedObjectsCount: 200 },
+  //   { id: 4, status: 'completed', userName: 'user1', importedObjectsCount: 120 },
+  //   { id: 5, status: 'failed', userName: 'user3', importedObjectsCount: 0 },
+  //   { id: 6, status: 'completed', userName: 'user4', importedObjectsCount: 90 },
+  //   { id: 7, status: 'completed', userName: 'admin1', importedObjectsCount: 50 },
+  //   { id: 8, status: 'completed', userName: 'user2', importedObjectsCount: 135 },
+  //   { id: 9, status: 'failed', userName: 'user4', importedObjectsCount: 0 },
+  //   { id: 10, status: 'completed', userName: 'user5', importedObjectsCount: 85 }
+  // ];
 
   const refresh = async () => {
-    data.set(importHistory);
+    data.set((await api.get('/import')).data);
     // data.set((await api.get('/auth/pending')).data);
     console.log($data);
   };
@@ -67,9 +69,9 @@
 
   const statusToEmoji = (status: string) => {
     switch (status) {
-      case 'completed':
+      case 'SUCCESS':
         return '✅'; // Emoji for completed
-      case 'failed':
+      case 'FAIL':
         return '❌'; // Emoji for failed
       default:
         return '🔄'; // Emoji for in-progress or unknown
@@ -89,12 +91,20 @@
       }
     }),
     table.column({
-      accessor: 'username',
+      accessor: 'userName',
       header: 'Username'
     }),
     table.column({
-      accessor: 'added_items',
+      accessor: 'importedObjectsCount',
       header: 'Added items'
+    }),
+    table.column({
+      accessor: 'timestamp',
+      header: 'When',
+      cell: ({ value }) => {
+        const formatted = moment.utc(value).fromNow();
+        return formatted;
+      }
     })
   ]);
 
@@ -129,7 +139,7 @@
                 {#each row.cells as cell (cell.id)}
                   <Subscribe attrs={cell.attrs()} let:attrs>
                     <Table.Cell {...attrs} class="[&:has([role=checkbox])]:pl-3">
-                      {#if cell.id === 'username'}
+                      {#if cell.id === 'userName'}
                         <div class="w-150px">
                           <Render of={cell.render()} />
                         </div>
