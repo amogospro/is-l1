@@ -43,7 +43,7 @@ public class MinIOTransactionalResource implements TransactionalResource {
                 minioService.deleteFile(bucketName, fileName);
             }
         } catch (Exception e) {
-            e.printStackTrace(); // Логируем ошибку
+            e.printStackTrace();
         }
     }
 }

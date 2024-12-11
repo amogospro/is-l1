@@ -57,4 +57,12 @@ public class ImportController {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
     }
+
+    @GET
+    @Path("/download/{bucketName}/{fileName}")
+    @Produces(MediaType.APPLICATION_OCTET_STREAM)
+    public Response downloadFile(@PathParam("bucketName") String bucketName, @PathParam("fileName") String fileName) {
+        return importService.downloadFileFromMinIO(bucketName, fileName);
+    }
+
 }

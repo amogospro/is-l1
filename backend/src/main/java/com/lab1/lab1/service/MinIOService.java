@@ -67,4 +67,15 @@ public class MinIOService {
         }
     }
 
+    public InputStream downloadFile(String bucketName, String fileName) throws Exception {
+        try {
+            return minioClient.getObject(GetObjectArgs.builder()
+                    .bucket(bucketName)
+                    .object(fileName)
+                    .build());
+        } catch (Exception e) {
+            throw new Exception("Ошибка при скачивании файла из MinIO", e);
+        }
+    }
+
 }

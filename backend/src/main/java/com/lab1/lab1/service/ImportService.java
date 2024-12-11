@@ -16,10 +16,12 @@ import com.lab1.lab1.model.mapper.UserMapper;
 import com.lab1.lab1.repository.ImportHistoryRepository;
 import com.lab1.lab1.repository.OrganizationRepository;
 import com.lab1.lab1.repository.PersonRepository;
+import io.minio.GetObjectArgs;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.validation.ValidationException;
+import jakarta.ws.rs.core.Response;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -154,6 +156,20 @@ public class ImportService {
 
     public List<ImportHistory> getImportHistory(User user) {
         return importHistoryRepository.findByUser(user);
+    }
+
+    public Response downloadFileFromMinIO(String bucketName, String fileName) {
+        try {
+            InputStream fileStream = minioService.downloadFile(bucketName, fileName);
+
+            // Возвращаем файл как ответ
+            return Response.ok(fileStream)
+                    .header("Content-Disposition", "attachment; filename=\"" + fileName + "\"")
+                    .build();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Ошибка при скачивании файла").build();
+        }
     }
 }
 
