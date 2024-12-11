@@ -1,18 +1,18 @@
 version: '3.7'
 
 services:
-  wildfly:
-    build: ./backend
-    ports:
-      - '1488:8080'
-    depends_on:
-      - db
-    environment:
-      - DB_HOST=db
-      - DB_PORT=5432
-      - DB_NAME=studs
-      - DB_USER=s368100
-      - DB_PASSWORD=peUGVgjH0345TYXh # Replace <password> with the actual password
+  # wildfly:
+    # build: ./backend
+    # ports:
+      # - '1488:8080'
+    # depends_on:
+      # - db
+    # environment:
+      # - DB_HOST=db
+      # - DB_PORT=5432
+      # - DB_NAME=studs
+      # - DB_USER=s368100
+      # - DB_PASSWORD=peUGVgjH0345TYXh # Replace <password> with the actual password
 
   db:
     image: postgres:latest
@@ -25,6 +25,21 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
       - ./postgres-init:/docker-entrypoint-initdb.d
+      
+  minio:
+    image: quay.io/minio/minio
+    container_name: minio
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    environment:
+      MINIO_ROOT_USER: admin
+      MINIO_ROOT_PASSWORD: admin123
+    command: server /data --console-address ":9001"
+    volumes:
+      - minio_data:/data
+    restart: always
 
 volumes:
+  minio_data:
   postgres_data:

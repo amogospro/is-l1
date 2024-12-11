@@ -15,6 +15,7 @@ import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.SecurityContext;
 
 import java.io.InputStream;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -33,14 +34,15 @@ public class ImportController {
     private SecurityContext securityContext;
 
     @POST
-    public Response importObjects(InputStream fileInputStream) {
+    public Response importObjects(InputStream fileInputStream, @QueryParam("fileName") String fileName) {
         User user = (User) securityContext.getUserPrincipal();
+        fileName = fileName + LocalDateTime.now();
         try {
-            importService.importObjects(fileInputStream, user);  // Передаем поток данных
+            importService.importObjects(fileInputStream, user, fileName);  // Передаем поток данных
             return Response.status(Response.Status.CREATED).entity("Objects imported successfully").build();
         } catch (Exception e) {
             e.printStackTrace();
-            importService.logImportHistory(user.getUsername(), "FAIL", 0);
+            importService.logImportHistory(user.getUsername(), "FAIL", 0, fileName);
             return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
         }
     }

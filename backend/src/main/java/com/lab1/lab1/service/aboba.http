@@ -58,14 +58,14 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0dXNlcjIiLCJyb2xlIjoiV
 Accept: application/json
 
 ### Massive create Products
-POST http://localhost:1488/lab1-1.0-SNAPSHOT/api/import
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0dXNlcjIiLCJyb2xlIjoiVVNFUiIsImlkIjoxLCJpYXQiOjE3MzI4MjE0NDAsImV4cCI6MTczMjkwNzg0MH0.WLvEwsJgtSsVhwbTFm9sPeMbrTq5c-XM9CHmbjgBrZw
+POST http://localhost:1488/lab1-1.0-SNAPSHOT/api/import?fileName=1.json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0dXNlcjIiLCJyb2xlIjoiVVNFUiIsImlkIjoxLCJpYXQiOjE3MzM5NDk3NTMsImV4cCI6MTczNDAzNjE1M30.DiAF3iukTeFo4kuaND2eylGFvRE5Ueeewmqu1RdQGcA
 Content-Type: application/json
 
 {
   "products": [
     {
-      "name": "Dota72",
+      "name": "Dota7222",
       "coordinates": {
         "x": 5,
         "y": 100
@@ -82,7 +82,7 @@ Content-Type: application/json
       }
     },
     {
-      "name": "Dota33",
+      "name": "Dota3322",
       "coordinates": {
         "x": 10,
         "y": 200
@@ -124,7 +124,7 @@ Content-Type: application/json
 
 ### Create a New Person - true
 POST http://localhost:1488/lab1-1.0-SNAPSHOT/api/persons
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0dXNlcjIiLCJyb2xlIjoiVVNFUiIsImlkIjoxLCJpYXQiOjE3MzI4MjE0NDAsImV4cCI6MTczMjkwNzg0MH0.WLvEwsJgtSsVhwbTFm9sPeMbrTq5c-XM9CHmbjgBrZw
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0dXNlcjIiLCJyb2xlIjoiVVNFUiIsImlkIjoxLCJpYXQiOjE3MzM5NDk3NTMsImV4cCI6MTczNDAzNjE1M30.DiAF3iukTeFo4kuaND2eylGFvRE5Ueeewmqu1RdQGcA
 Content-Type: application/json
 
 {
@@ -142,7 +142,7 @@ Content-Type: application/json
 
 ### Create a New Organization - true
 POST http://localhost:1488/lab1-1.0-SNAPSHOT/api/organizations
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0dXNlcjIiLCJyb2xlIjoiVVNFUiIsImlkIjoxLCJpYXQiOjE3MzI4MjUzMDgsImV4cCI6MTczMjkxMTcwOH0.aBgCjve-mSB31cCchFtq_cXXeWTDL2ZLSwm0YFyNKeg
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0dXNlcjIiLCJyb2xlIjoiVVNFUiIsImlkIjoxLCJpYXQiOjE3MzM5NDk3NTMsImV4cCI6MTczNDAzNjE1M30.DiAF3iukTeFo4kuaND2eylGFvRE5Ueeewmqu1RdQGcA
 Content-Type: application/json
 
 {
