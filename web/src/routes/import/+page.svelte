@@ -7,7 +7,9 @@
   import Table from './table.svelte';
 
   const handleFileUpload = async (event: Event) => {
-    let obj = {}
+    let obj = {};
+    let filename = 'file.json';
+
     try {
       const input = event.target as HTMLInputElement;
       const file = input.files?.[0];
@@ -17,13 +19,14 @@
       }
 
       const str = await file.text();
-      obj = JSON.parse(str)
+      obj = JSON.parse(str);
+      filename = file.name;
     } catch (e: any) {
       toast.error(e.message ?? e);
       return;
     }
 
-    const { data } = await api.post(`/import`, obj);
+    const { data } = await api.post(`/import?fileName=${filename}`, obj);
     toast.success('File uploaded successfully');
   };
 </script>
@@ -44,7 +47,7 @@
         <Card.Content>
           <div class="grid w-full max-w-sm items-center gap-1.5">
             <Label for="picture">File</Label>
-            <Input id="picture" type="file" on:change={handleFileUpload} accept=".json"/>
+            <Input id="picture" type="file" on:change={handleFileUpload} accept=".json" />
           </div>
         </Card.Content>
       </Card.Root>

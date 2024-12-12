@@ -26,6 +26,7 @@
   import api, { createProduct, products, getProducts, refresh_signal } from '$lib/api';
   import { cn } from '$lib/utils';
   import { onMount } from 'svelte';
+  import FileAction from './file-action.svelte';
 
   type ImportRes = {
     id: number;
@@ -97,6 +98,15 @@
     table.column({
       accessor: 'importedObjectsCount',
       header: 'Added items'
+    }),
+    table.column({
+      accessor: 'fileName',
+      header: 'File',
+      cell: (cell) => {
+        return createRender(FileAction, {
+          file: cell.value
+        });
+      }
     }),
     table.column({
       accessor: 'timestamp',
