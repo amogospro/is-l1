@@ -18,8 +18,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
-import javax.management.relation.Role;
-
 @ApplicationScoped
 public class ProductService {
     @Inject
