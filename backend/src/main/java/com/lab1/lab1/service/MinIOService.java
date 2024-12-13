@@ -11,6 +11,8 @@ import java.io.InputStream;
 public class MinIOService {
     private final MinioClient minioClient;
 
+    private boolean simulateError = false;
+
     public MinIOService() {
         minioClient = MinioClient.builder()
                 .endpoint("http://localhost:9000")
@@ -19,6 +21,10 @@ public class MinIOService {
     }
 
     public void uploadFile(String bucketName, String fileName, InputStream stream) throws Exception {
+        if (simulateError) {
+            throw new Exception("Simulated MinIO failure");
+        }
+
         try {
             // Создаем bucket, если его нет
             if (!bucketExists(bucketName)) {

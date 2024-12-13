@@ -59,7 +59,7 @@ Accept: application/json
 
 ### Massive create Products
 POST http://localhost:1488/lab1-1.0-SNAPSHOT/api/import?fileName=1.json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0dXNlcjIiLCJyb2xlIjoiVVNFUiIsImlkIjoxLCJpYXQiOjE3MzM5NDk3NTMsImV4cCI6MTczNDAzNjE1M30.DiAF3iukTeFo4kuaND2eylGFvRE5Ueeewmqu1RdQGcA
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0dXNlcjIiLCJyb2xlIjoiVVNFUiIsImlkIjoxMiwiaWF0IjoxNzM0MTE1NTAwLCJleHAiOjE3MzQyMDE5MDB9.zxRfim7C9AMgx44tpWO_B2ejmoQcgfe-GWGLUMyIVXU
 Content-Type: application/json
 
 {
@@ -104,7 +104,7 @@ Content-Type: application/json
 
 ### Create a New Products - true
 POST http://localhost:1488/lab1-1.0-SNAPSHOT/api/products
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0dXNlcjIiLCJyb2xlIjoiVVNFUiIsImlkIjoxLCJpYXQiOjE3MzI4MjE0NDAsImV4cCI6MTczMjkwNzg0MH0.WLvEwsJgtSsVhwbTFm9sPeMbrTq5c-XM9CHmbjgBrZw
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0dXNlcjIiLCJyb2xlIjoiVVNFUiIsImlkIjoxMiwiaWF0IjoxNzM0MTE1NTAwLCJleHAiOjE3MzQyMDE5MDB9.zxRfim7C9AMgx44tpWO_B2ejmoQcgfe-GWGLUMyIVXU
 Content-Type: application/json
 
 {
@@ -124,11 +124,11 @@ Content-Type: application/json
 
 ### Create a New Person - true
 POST http://localhost:1488/lab1-1.0-SNAPSHOT/api/persons
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0dXNlcjIiLCJyb2xlIjoiVVNFUiIsImlkIjoxLCJpYXQiOjE3MzM5NDk3NTMsImV4cCI6MTczNDAzNjE1M30.DiAF3iukTeFo4kuaND2eylGFvRE5Ueeewmqu1RdQGcA
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0dXNlcjIiLCJyb2xlIjoiVVNFUiIsImlkIjoxMiwiaWF0IjoxNzM0MTE1NTAwLCJleHAiOjE3MzQyMDE5MDB9.zxRfim7C9AMgx44tpWO_B2ejmoQcgfe-GWGLUMyIVXU
 Content-Type: application/json
 
 {
-  "name": "abobik",
+  "name": "abobiak",
   "eyeColor": "GREEN",
   "hairColor": "BLUE",
   "birthday": "1990-01-01T12:00:00",
@@ -142,7 +142,7 @@ Content-Type: application/json
 
 ### Create a New Organization - true
 POST http://localhost:1488/lab1-1.0-SNAPSHOT/api/organizations
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0dXNlcjIiLCJyb2xlIjoiVVNFUiIsImlkIjoxLCJpYXQiOjE3MzM5NDk3NTMsImV4cCI6MTczNDAzNjE1M30.DiAF3iukTeFo4kuaND2eylGFvRE5Ueeewmqu1RdQGcA
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0dXNlcjIiLCJyb2xlIjoiVVNFUiIsImlkIjoxMiwiaWF0IjoxNzM0MTE1NTAwLCJleHAiOjE3MzQyMDE5MDB9.zxRfim7C9AMgx44tpWO_B2ejmoQcgfe-GWGLUMyIVXU
 Content-Type: application/json
 
 {

@@ -47,13 +47,15 @@ public class ImportService {
     @Inject
     private ImportHistoryRepository importHistoryRepository;
 
+    private boolean simulateError = false;
+
     @Transactional
     public void importObjects(InputStream fileInputStream, User user, String fileName) throws Exception {
+        if (simulateError) {
+            throw new RuntimeException("Беды с башкой");
+        }
+
         String bucketName = "imported-files";
-
-        System.out.println(fileName + "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-
-
 
         if (fileName.length() > 255) {
             fileName = fileName.substring(0, 255);

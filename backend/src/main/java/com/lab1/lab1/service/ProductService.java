@@ -31,8 +31,14 @@ public class ProductService {
     @Inject
     private UserRepository userRepository;
 
+    private boolean simulateError = false;
+
     @Transactional
     public void createProduct(Product product, User user) throws Exception {
+
+        if (simulateError) {
+            throw new RuntimeException("Simulated Database failure");
+        }
 
         Person owner = product.getOwner();
 
