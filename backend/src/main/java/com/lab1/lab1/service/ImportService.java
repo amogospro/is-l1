@@ -2,6 +2,7 @@ package com.lab1.lab1.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.lab1.lab1.MinIOTransaction.DatabaseTransactionalResource;
 import com.lab1.lab1.MinIOTransaction.MinIOTransactionalResource;
 import com.lab1.lab1.MinIOTransaction.TwoPhaseTransactionCoordinator;
 import com.lab1.lab1.model.dto.OrganizationDTO;
@@ -95,6 +96,7 @@ public class ImportService {
                     }
 
                     Product product = ProductMapper.toEntity(productDTO);
+                    coordinator.addResource(new DatabaseTransactionalResource(productService, product, user));
 
                     PersonDTO personDTO = productDTO.getOwner();
                     OrganizationDTO organizationDTO = productDTO.getManufacturer();
@@ -125,8 +127,6 @@ public class ImportService {
                         }
 
                     }
-
-                    productService.createProduct(product, user);
 
                     successCount++;
                 } catch (ValidationException e) {
