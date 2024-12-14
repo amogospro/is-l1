@@ -59,13 +59,13 @@ Accept: application/json
 
 ### Massive create Products
 POST http://localhost:1488/lab1-1.0-SNAPSHOT/api/import?fileName=1.json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0dXNlcjIiLCJyb2xlIjoiVVNFUiIsImlkIjoxMiwiaWF0IjoxNzM0MTE1NTAwLCJleHAiOjE3MzQyMDE5MDB9.zxRfim7C9AMgx44tpWO_B2ejmoQcgfe-GWGLUMyIVXU
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0dXNlcjIiLCJyb2xlIjoiVVNFUiIsImlkIjoxLCJpYXQiOjE3MzQxNzk4NDgsImV4cCI6MTczNDI2NjI0OH0.XIqn3sS8BeInffxgXgWqQYfPIb-aZqIo-iW3NpHNkbA
 Content-Type: application/json
 
 {
   "products": [
     {
-      "name": "Dota7222",
+      "name": "Dota722222",
       "coordinates": {
         "x": 5,
         "y": 100
@@ -82,7 +82,7 @@ Content-Type: application/json
       }
     },
     {
-      "name": "Dota3322",
+      "name": "Dota332222",
       "coordinates": {
         "x": 10,
         "y": 200
@@ -124,7 +124,7 @@ Content-Type: application/json
 
 ### Create a New Person - true
 POST http://localhost:1488/lab1-1.0-SNAPSHOT/api/persons
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0dXNlcjIiLCJyb2xlIjoiVVNFUiIsImlkIjoxMiwiaWF0IjoxNzM0MTE1NTAwLCJleHAiOjE3MzQyMDE5MDB9.zxRfim7C9AMgx44tpWO_B2ejmoQcgfe-GWGLUMyIVXU
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0dXNlcjIiLCJyb2xlIjoiVVNFUiIsImlkIjoxLCJpYXQiOjE3MzQxNzk4NDgsImV4cCI6MTczNDI2NjI0OH0.XIqn3sS8BeInffxgXgWqQYfPIb-aZqIo-iW3NpHNkbA
 Content-Type: application/json
 
 {
@@ -142,7 +142,7 @@ Content-Type: application/json
 
 ### Create a New Organization - true
 POST http://localhost:1488/lab1-1.0-SNAPSHOT/api/organizations
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0dXNlcjIiLCJyb2xlIjoiVVNFUiIsImlkIjoxMiwiaWF0IjoxNzM0MTE1NTAwLCJleHAiOjE3MzQyMDE5MDB9.zxRfim7C9AMgx44tpWO_B2ejmoQcgfe-GWGLUMyIVXU
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0dXNlcjIiLCJyb2xlIjoiVVNFUiIsImlkIjoxLCJpYXQiOjE3MzQxNzk4NDgsImV4cCI6MTczNDI2NjI0OH0.XIqn3sS8BeInffxgXgWqQYfPIb-aZqIo-iW3NpHNkbA
 Content-Type: application/json
 
 {

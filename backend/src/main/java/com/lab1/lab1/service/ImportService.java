@@ -71,9 +71,6 @@ public class ImportService {
         coordinator.addResource(new MinIOTransactionalResource(minioService, bucketName, fileName, minioInputStream));
 
         try {
-            // Подготовка и фиксация файла в MinIO
-            coordinator.execute();
-
             // Используем Jackson для парсинга JSON
             ObjectMapper objectMapper = new ObjectMapper();
             objectMapper.registerModule(new JavaTimeModule());
@@ -136,6 +133,9 @@ public class ImportService {
                     throw new Exception("Error at line " + lineNumber + ": " + e.getMessage(), e);
                 }
             }
+
+            // Подготовка и фиксация файла в MinIO
+            coordinator.execute();
 
             logImportHistory(user.getUsername(), "SUCCESS", successCount, fileName);
 
